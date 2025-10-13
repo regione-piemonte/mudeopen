@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://impl.web.be.business.mudeopensrvsoap.mudeopen.csi.it/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" name="GestionaleImplService" targetNamespace="http://impl.web.be.business.mudeopensrvsoap.mudeopen.csi.it/">
+  <wsdl:import location="http://localhost:8080/mudeopen/api/soap/GestionaleImpl?wsdl=GestionaleSrvPort.wsdl" namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/">
+    </wsdl:import>
+  <wsdl:binding name="GestionaleImplServiceSoapBinding" type="ns1:GestionaleSrvPort">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="modificaStatoIstanza">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="modificaStatoIstanza">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="modificaStatoIstanzaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaPaginataIstanze">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaPaginataIstanze">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaPaginataIstanze03Response">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ValoreNonAmmessoException">
+        <soap:fault name="ValoreNonAmmessoException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="SystemException">
+        <soap:fault name="SystemException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ComuneNonAbilitatoException">
+        <soap:fault name="ComuneNonAbilitatoException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="NumeroTicketInesistente">
+        <soap:fault name="NumeroTicketInesistente" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="StatoIstanzaConsultazioneException">
+        <soap:fault name="StatoIstanzaConsultazioneException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedException">
+        <soap:fault name="NotAuthorizedException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="StatoInesistenteException">
+        <soap:fault name="StatoInesistenteException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="FruitoreNonAbilitatoComuneException">
+        <soap:fault name="FruitoreNonAbilitatoComuneException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="CampoObbligatorioException">
+        <soap:fault name="CampoObbligatorioException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="visualizzazioneNotifica">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="visualizzazioneNotifica">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="visualizzazioneNotificaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaElencoAllegati">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaElencoAllegati">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaElencoAllegatiResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaStatiIstanza">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaStatiIstanza">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaStatiIstanzaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="elencoAllegatiNotifica">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="elencoAllegatiNotifica">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="elencoAllegatiNotificaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaStatiIstanzaAmmessi">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaStatiIstanzaAmmessi">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaStatiIstanzaAmmessiResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaDatiSintesiIstanza">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaDatiSintesiIstanza">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaDatiSintesiIstanzaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaPratiche">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaPratiche">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaPraticheResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="elencoNotificheInviate">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="elencoNotificheInviate">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="elencoNotificheInviateResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="scaricoXml">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="scaricoXml">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="scaricoXmlResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaTipoDocumento">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaTipoDocumento">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaTipoDocumentoResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ottieniTipiNotifica">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ottieniTipiNotifica">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ottieniTipiNotificaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="inserisciNotifica">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="inserisciNotifica">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="inserisciNotificaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaRuoli">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaRuoli">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaRuoliResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ricercaElencoDocumentiPratica">
+      <soap:operation soapAction="" style="rpc"/>
+      <wsdl:input name="ricercaElencoDocumentiPratica">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ricercaElencoDocumentiPraticaResponse">
+        <soap:body namespace="http://gestionale.interfacews.mudesrvextsic.mude.csi.it/" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GestionaleImplService">
+    <wsdl:port binding="tns:GestionaleImplServiceSoapBinding" name="GestionaleImplPort">
+      <soap:address location="http://localhost:8080/mudeopen/api/soap/GestionaleImpl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

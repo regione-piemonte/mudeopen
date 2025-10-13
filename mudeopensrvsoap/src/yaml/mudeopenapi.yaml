@@ -1,0 +1,5727 @@
+#
+#  SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+#  SPDX-License-Identifier: EUPL-1.2
+#
+swagger: '2.0'
+info:
+  title: MUDEOPEN API 04-05
+  description: API per il backend del test case allegato alle linee guida SPA.
+  version: 1.0.0
+host: 'localhost:8080'
+schemes:
+  - http
+basePath: /mudeopen/api/rest
+definitions:
+  RegimeGiuridicoVO:
+    properties:
+      denominazione:
+        type: string
+      id_regime:
+        format: int64
+        type: integer
+      priorita:
+        format: int64
+        type: integer
+    type: object
+  CategoriaInterventoVO:
+    properties:
+      denominazione:
+        type: string
+      id_categoria:
+        format: int64
+        type: integer
+      regime_giuridico:
+        $ref: '#/definitions/RegimeGiuridicoVO'
+    type: object
+  OperaVO:
+    properties:
+      categoria:
+        $ref: '#/definitions/CategoriaInterventoVO'
+      denominazione:
+        type: string
+      id_opera:
+        format: int64
+        type: integer
+    type: object
+  ElementoVO:
+    properties:
+      denominazione:
+        type: string
+      id_elemento:
+        format: int64
+        type: integer
+      opere:
+        items:
+          $ref: '#/definitions/OperaVO'
+        type: array
+        uniqueItems: true
+      posizione:
+        format: int64
+        type: integer
+    type: object
+  TipoIstanzaResponse:
+    properties:
+      denominazione:
+        type: string
+      id:
+        type: string
+    type: object
+  RegimeAggiuntivoVO:
+    properties:
+      denominazione:
+        type: string
+      id_regime:
+        format: int64
+        type: integer
+      priorita:
+        format: int64
+        type: integer
+    type: object
+  AdempimentoVO:
+    properties:
+      ambito:
+        type: string
+      denominazione:
+        type: string
+      id_adempimento:
+        format: int64
+        type: integer
+      posizione:
+        format: int64
+        type: integer
+      regime_aggiuntivo:
+        $ref: '#/definitions/RegimeAggiuntivoVO'
+      tipologia:
+        type: string
+    type: object
+  AggiungiSoggettoIstanzaRequest:
+    properties:
+      contatto:
+        $ref: '#/definitions/ContattoVO'
+      idIstanza:
+        format: int64
+        type: integer
+      ruoloSoggetto:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      ruoliPossibili:
+        type: string
+    type: object
+  AnagraficaVO:
+    properties:
+      cellulare:
+        type: string
+      codiceFiscale:
+        type: string
+      cognome:
+        type: string
+      comuneNascita:
+        $ref: '#/definitions/ComuneVO'
+      dataNascita:
+        format: date
+        type: string
+      mail:
+        type: string
+      nome:
+        type: string
+      pec:
+        type: string
+      provinciaNascita:
+        $ref: '#/definitions/ProvinciaVO'
+      sesso:
+        type: string
+      statoNascita:
+        $ref: '#/definitions/NazioneVO'
+      telefono:
+        type: string
+      statoEstero:
+        type: string
+      userCf:
+        type: string
+      codiceFiscaleLegaleRappresentante:
+        type: string
+      cognomeLegaleRappresentante:
+        type: string
+      nazionalita:
+        type: string
+      nomeLegaleRappresentante:
+        type: string
+      partitaIva:
+        type: string
+      partitaIvaComunitaria:
+        type: string
+      ragioneSociale:
+        type: string
+      statoMembro:
+        $ref: '#/definitions/SelectVO'
+      tipoAttivita:
+        type: string
+    type: object
+  ComuneVO:
+    properties:
+      codBelfiore:
+        type: string
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  ContattoVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      userCf:
+        type: string
+      nome:
+        type: string
+      tipo_contatto:
+        type: string
+      guid:
+        type: string
+        format: uuid
+      uuid:
+        type: string
+        format: uuid
+      updatable:
+        type: boolean
+      id_user_accreditato:
+        format: int64
+        type: integer
+      contatto_in_rubrica:
+        type: boolean
+      titolare:
+        type: boolean
+      impresa_lavori:
+        type: boolean
+      professionista:
+        type: boolean
+      anagrafica:
+        $ref: '#/definitions/AnagraficaVO'
+      indirizzi:
+        items:
+          $ref: '#/definitions/IndirizzoVO'
+        type: array
+      qualificheProfessionali:
+        items:
+          $ref: '#/definitions/QualificaVO'
+        type: array
+      no_obbligo_iscrizione_ordine:
+        type: boolean
+      motivazione:
+        type: string
+      legaleRappresentante:
+        $ref: '#/definitions/ContattoVO'
+      id_titolo_rappresentante:
+        type: string
+    type: object
+  PfPgVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      soggetto_pf:
+        $ref: '#/definitions/ContattoVO'
+      soggetto_pg:
+        $ref: '#/definitions/ContattoVO'
+      id_titolo:
+        type: string
+    type: object
+  DefaultResponse:
+    properties:
+      code:
+        type: string
+      detail:
+        additionalProperties:
+          type: string
+        type: object
+      status:
+        type: string
+    type: object
+  FascicoloVO:
+    properties:
+      codice_fascicolo:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      data_creazione:
+        format: date-time
+        type: string
+      id_fascicolo:
+        format: int64
+        type: integer
+      intestatario:
+        $ref: '#/definitions/ContattoVO'
+      json_data:
+        type: string
+      ubicazione:
+        $ref: '#/definitions/IndirizzoVO'
+      tipologia_intervento:
+        $ref: '#/definitions/DizionarioVO'
+      tipo_istanza:
+        $ref: '#/definitions/SelectVO'
+      elimina:
+        type: boolean
+      modifica:
+        type: boolean
+      visualizza:
+        type: boolean
+      nuova_istanza:
+        type: boolean
+      assegna_abilitazioni:
+        type: boolean
+      index_folder:
+        type: string
+      stato_fascicolo:
+        $ref: '#/definitions/DizionarioVO'
+    type: object
+  IndirizzoPGVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      cap:
+        type: string
+      cellulare:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      comuneIndirizzoEstero:
+        type: string
+      duf:
+        type: string
+      dug:
+        $ref: '#/definitions/SelectVO'
+      localita:
+        type: string
+      mail:
+        type: string
+      numero:
+        type: string
+      pec:
+        type: string
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      stato:
+        $ref: '#/definitions/NazioneVO'
+      telefono:
+        type: string
+      tipologiaIndirizzo:
+        $ref: '#/definitions/SelectVO'
+    type: object
+  IndirizzoVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      cap:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      comuneIndirizzoEstero:
+        type: string
+      duf:
+        type: string
+      dug:
+        $ref: '#/definitions/SelectVO'
+      localita:
+        type: string
+      numero:
+        type: string
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      stato:
+        $ref: '#/definitions/NazioneVO'
+      tipologiaIndirizzo:
+        $ref: '#/definitions/SelectVO'
+      telefono:
+        type: string
+      cellulare:
+        type: string
+      mail:
+        type: string
+      pec:
+        type: string
+    type: object
+  InputPart:
+    properties:
+      bodyAsString:
+        type: string
+      contentTypeFromMessage:
+        type: boolean
+      headers:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        properties:
+          empty:
+            type: boolean
+        type: object
+      mediaType:
+        properties:
+          parameters:
+            additionalProperties:
+              type: string
+            type: object
+          subtype:
+            type: string
+          type:
+            type: string
+          wildcardSubtype:
+            type: boolean
+          wildcardType:
+            type: boolean
+        type: object
+    type: object
+  JDataIstanzaVO:
+    properties:
+      id_istanza:
+        format: int64
+        type: integer
+      id_quadro:
+        format: int64
+        type: integer
+      cod_tipo_quadro:
+        type: string
+      is_obbligatoria_nomina_pm:
+        type: boolean
+      quadro_modificabile:
+        type: boolean
+      json_data:
+        type: string
+      abilitazioni:
+        items:
+          $ref: '#/definitions/AbilitazioneFunzioneSlimCustomVO'
+        type: array
+    type: object
+  IstanzaVO:
+    properties:
+      anno:
+        format: int64
+        type: integer
+      codice_istanza:
+        type: string
+      codice_istanza_riferimento:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      data_creazione:
+        format: date-time
+        type: string
+      data_registrazione_pratica:
+        format: date-time
+        type: string
+      elimina:
+        type: boolean
+      id_fascicolo:
+        format: int64
+        type: integer
+      fascicolo:
+        $ref: '#/definitions/FascicoloVO'
+      id_istanza:
+        format: int64
+        type: integer
+      id_istanza_riferimento:
+        format: int64
+        type: integer
+      id_template:
+        format: int64
+        type: integer
+      branch:
+        format: int32
+        type: integer
+      json_data:
+        type: string
+      modifica:
+        type: boolean
+      assegna_abilitazioni:
+        type: boolean
+      numero_pratica:
+        type: string
+      numero_protocollo:
+        type: string
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      soggetto_abilitato:
+        $ref: '#/definitions/UtenteVO'
+      soggetto_list:
+        items:
+          $ref: '#/definitions/SoggettoIstanzaVO'
+        type: array
+      step:
+        enum:
+          - CREATA
+          - DEFINITO_TIPO_PRESENTATORE
+          - DEFINITO_TITOLO_PRESENTATORE
+          - AGGIUNTI_SOGGETTI
+        type: string
+      stato_istanza:
+        $ref: '#/definitions/DizionarioVO'
+      tipologia_istanza:
+        $ref: '#/definitions/SelectVO'
+      tipologia_presentatore:
+        $ref: '#/definitions/SelectVO'
+      titolo_soggetto_abilitato:
+        $ref: '#/definitions/SelectVO'
+      visualizza:
+        type: boolean
+      nuova_istanza:
+        type: boolean
+      index_folder:
+        type: string
+      index_node:
+        type: string
+      nome_file_istanza:
+        type: string
+      dimensione_file_istanza:
+        format: int64
+        type: integer
+      data_caricamento_file_istanza:
+        format: date
+        type: string
+      hash_file_istanza_generato:
+        type: string
+      abilitazioni:
+        items:
+          $ref: '#/definitions/AbilitazioneFunzioneSlimCustomVO'
+        type: array
+      indirizzo:
+        $ref: '#/definitions/IndirizzoVO'
+    type: object
+  MultipartFormDataInput:
+    properties:
+      formData:
+        additionalProperties:
+          $ref: '#/definitions/InputPart'
+        type: object
+      formDataMap:
+        additionalProperties:
+          items:
+            $ref: '#/definitions/InputPart'
+          type: array
+        type: object
+      parts:
+        items:
+          $ref: '#/definitions/InputPart'
+        type: array
+      preamble:
+        type: string
+    type: object
+  NazioneVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  ProfiloResponse:
+    properties:
+      code:
+        type: string
+      detail:
+        additionalProperties:
+          type: string
+        type: object
+      dugList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      infoUtente:
+        $ref: '#/definitions/UtenteVO'
+      ordineList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      profiloCompleto:
+        type: boolean
+      qualificaList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      status:
+        type: string
+      tipoIstanzaList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      tipoResidenzaList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      tipoDittaList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      tipoInterventoList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      statoIstanzaList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      statoFascicoloList:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+    type: object
+  ProvinciaVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  QualificaVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      iscrizioneCassaEdile:
+        type: string
+      ordineProfessionale:
+        $ref: '#/definitions/SelectVO'
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      tipologiaQualificaProfessionale:
+        $ref: '#/definitions/SelectVO'
+    type: object
+  RegioneVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  RuoliIstanzaResponse:
+    properties:
+      ruoliObbligatori:
+        items:
+          $ref: '#/definitions/RuoloObbligatorioVO'
+        type: array
+      ruoliPossibili:
+        items:
+          $ref: '#/definitions/RuoloPossibileVO'
+        type: array
+      soggettoPFList:
+        items:
+          $ref: '#/definitions/SoggettoIstanzaVO'
+        type: array
+      soggettoPFRappresentato:
+        $ref: '#/definitions/ContattoVO'
+      soggettoPGList:
+        items:
+          $ref: '#/definitions/SoggettoIstanzaVO'
+        type: array
+      soggettoPGRappresentato:
+        $ref: '#/definitions/ContattoVO'
+      almenoUnRuolo:
+        type: boolean
+    type: object
+  RuoloObbligatorioVO:
+    properties:
+      id:
+        type: string
+      presente:
+        type: boolean
+      value:
+        type: string
+    type: object
+  RuoloPossibileVO:
+    properties:
+      id:
+        type: string
+      default:
+        type: boolean
+      visibile:
+        type: boolean
+      value:
+        type: string
+      gruppo:
+        type: string
+    type: object
+  SalvaFascicoloRequest:
+    properties:
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      tipologia_istanza:
+        $ref: '#/definitions/SelectVO'
+      tipologia_intervento:
+        $ref: '#/definitions/SelectVO'
+    type: object
+  SalvaIstanzaRequest:
+    properties:
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      id_istanza:
+        format: int64
+        type: integer
+      id_fascicolo:
+        format: int64
+        type: integer
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      tipologia_istanza:
+        $ref: '#/definitions/SelectVO'
+      tipologia_presentatore:
+        $ref: '#/definitions/SelectVO'
+      bo_template_override:
+        type: string
+    type: object
+  SalvaTitoloSoggettoAbilitatoRequest:
+    properties:
+      id_istanza:
+        format: int64
+        type: integer
+      soggetto_rappresentato:
+        $ref: '#/definitions/ContattoVO'
+      titolo_soggetto_abilitato:
+        $ref: '#/definitions/SelectVO'
+    type: object
+  SelectVO:
+    properties:
+      id:
+        type: string
+      value:
+        type: string
+    type: object
+  SoggettoIstanzaVO:
+    properties:
+      contatto:
+        $ref: '#/definitions/ContattoVO'
+      idSoggetto:
+        format: int64
+        type: integer
+      ruoloSoggetto:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      idTitoloSoggetto:
+        format: int64
+        type: integer
+      abilitazioni:
+        items:
+          $ref: '#/definitions/IstanzaUtenteVO'
+        type: array
+      dipendente_intestatario_istanza:
+        type: boolean
+      funzionario_pa:
+        type: boolean
+    type: object
+  TipoCassaEdileVO:
+    properties:
+      codiceCassa:
+        type: string
+      codiceImpresa:
+        type: string
+      indirizzo:
+        $ref: '#/definitions/IndirizzoVO'
+    type: object
+  TipoINAILVO:
+    properties:
+      codice:
+        type: string
+      indirizzo:
+        $ref: '#/definitions/IndirizzoVO'
+    type: object
+  TipoINPSVO:
+    properties:
+      indirizzo:
+        $ref: '#/definitions/IndirizzoVO'
+      matricola:
+        type: string
+      posizioneContributiva:
+        type: string
+    type: object
+  UtenteVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      cellulare:
+        type: string
+      codiceFiscale:
+        type: string
+      cognome:
+        type: string
+      comuneNascita:
+        $ref: '#/definitions/ComuneVO'
+      dataNascita:
+        format: date
+        type: string
+      mail:
+        type: string
+      nome:
+        type: string
+      pec:
+        type: string
+      provinciaNascita:
+        $ref: '#/definitions/ProvinciaVO'
+      sesso:
+        type: string
+      statoNascita:
+        $ref: '#/definitions/NazioneVO'
+      telefono:
+        type: string
+      statoEstero:
+        type: string
+      backofficeUser:
+        type: boolean
+    type: object
+  TemplateResponse:
+    properties:
+      cod_template:
+        type: string
+      data_cessazione:
+        format: date-time
+        type: string
+      data_inizio_validita:
+        format: date-time
+        type: string
+      des_template:
+        type: string
+      id_template:
+        format: int32
+        type: integer
+      ver_template:
+        format: int64
+        type: integer
+      stato_template:
+        format: int64
+        type: integer
+      json_configura_template:
+        type: string
+      quadri:
+        items:
+          $ref: '#/definitions/TemplateQuadroResponse'
+        type: array
+      tipo_istanza:
+        $ref: '#/definitions/TipoIstanzaVO'
+      modello_documentale:
+        $ref: '#/definitions/ModelloVO'
+      previsto_pm:
+        type: boolean
+    type: object
+  TipoIstanzaVO:
+    properties:
+      id:
+        type: string
+      value:
+        type: string
+    type: object
+  TipoQuadroVO:
+    properties:
+      cod_tipo_quadro:
+        type: string
+      des_tipo_quadro:
+        type: string
+      id_tipo_quadro:
+        format: int64
+        type: integer
+      id_categoria_quadro:
+        format: int64
+        type: integer
+      funzioni_richieste:
+        type: string
+    type: object
+  TemplateQuadroResponse:
+    properties:
+      flg_attivo:
+        format: int64
+        type: integer
+      flg_quadro_obbigatorio:
+        type: boolean
+      flg_tipo_gestione:
+        type: string
+      id_quadro:
+        format: int64
+        type: integer
+      id_template_quadro:
+        format: int64
+        type: integer
+      json_configura_quadro:
+        type: string
+      num_versione:
+        format: int64
+        type: integer
+      ordinamento_template_quadro:
+        format: int64
+        type: integer
+      tipo_quadro:
+        $ref: '#/definitions/TipoQuadroVO'
+    type: object
+  TemplateQuadroVO:
+    properties:
+      flg_quadro_obbigatorio:
+        type: boolean
+      id_template_quadro:
+        format: int64
+        type: integer
+      ordinamento_template_quadro:
+        format: int64
+        type: integer
+      quadro:
+        $ref: '#/definitions/QuadroVO'
+      template:
+        $ref: '#/definitions/TemplateVO'
+    type: object
+  TemplateVO:
+    properties:
+      cod_template:
+        type: string
+      data_cessazione:
+        type: string
+        description: formato dd/MM/yyyy HH:mm:ss
+      data_inizio_validita:
+        type: string
+        description: formato dd/MM/yyyy HH:mm:ss
+      des_template:
+        type: string
+      flg_attivo:
+        format: int64
+        type: integer
+      id_template:
+        format: int64
+        type: integer
+      json_configura_template:
+        type: string
+      tipo_istanza:
+        $ref: '#/definitions/TipoIstanzaVO'
+      modello_documentale:
+        $ref: '#/definitions/ModelloVO'
+      modello_intestazione:
+        $ref: '#/definitions/ModelloVO'
+      num_versione:
+        format: int64
+        type: integer
+      ultima_versione:
+        type: boolean
+      obbligatoria_nomina pm:
+        type: boolean
+      modificabile:
+        type: boolean
+    type: object
+  QuadroVO:
+    properties:
+      flg_attivo:
+        format: int64
+        type: integer
+      flg_tipo_gestione:
+        type: string
+      flg_eliminabile:
+        type: boolean
+      flg_modificabile:
+        type: boolean
+      flg_creabile:
+        type: boolean
+      ultima_versione:
+        type: boolean
+      id_quadro:
+        format: int64
+        type: integer
+      json_configura_quadro:
+        type: string
+      num_versione:
+        format: int64
+        type: integer
+      tipo_quadro:
+        $ref: '#/definitions/TipoQuadroVO'
+      json_default:
+        type: string
+      modello_documentale:
+        $ref: '#/definitions/ModelloVO'
+      id_quadro_parent:
+        format: int64
+        type: integer
+    type: object
+  IstanzaTemplateQuadroVO:
+    properties:
+      gest_attore_ins:
+        type: string
+      gest_attore_upd:
+        type: string
+      gest_data_ins:
+        format: date-time
+        type: string
+      gest_data_upd:
+        format: date-time
+        type: string
+      istanza:
+        $ref: '#/definitions/IstanzaVO'
+      json_data_quadro:
+        type: string
+      template_quadro:
+        $ref: '#/definitions/TemplateQuadroVO'
+      cod_sub_quadro:
+        type: string
+      json_data_subquadro:
+        type: string
+      quadro_modificabile:
+        type: boolean
+      id_sub_quadro:
+        type: boolean
+    type: object
+  IstanzaTemplateResponse:
+    properties:
+      istanza:
+        $ref: '#/definitions/IstanzaResponse'
+      template:
+        $ref: '#/definitions/TemplateResponse'
+    type: object
+  IstanzaTemplateQuadroRequest:
+    properties:
+      idIstanza:
+        format: int64
+        type: integer
+      idTemplateQuadro:
+        format: int64
+        type: integer
+      jsonDataQuadro:
+        type: string
+      cod_sub_quadro:
+        type: string
+      jsondata_subquadro:
+        type: string
+      jsondata_modificato:
+        type: boolean
+      main_quadro_validated:
+        type: boolean
+      id_sub_quadro:
+        type: boolean
+    type: object
+  IstanzaResponse:
+    properties:
+      data_inserimento_istanza:
+        format: date-time
+        type: string
+      id_istanza:
+        format: int64
+        type: integer
+      json_data:
+        type: string
+      stato:
+        type: string
+      step:
+        type: string
+      tipo_istanza:
+        $ref: '#/definitions/TipoIstanzaVO'
+    type: object
+  TipoAllegatoVO:
+    properties:
+      codice_tipo_allegato:
+        type: string
+      sub_cod_tipo_allegato:
+        type: string
+      descrizione_breve_tipo_allegato:
+        type: string
+      descrizione_tipo_allegato:
+        type: string
+      categoria_allegato:
+        $ref: '#/definitions/CategoriaAllegatoVO'
+      valida_firma:
+        type: boolean
+      firma_obbligatoria:
+        type: boolean
+    type: object
+  TipoAllegatoExtendedVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      codice_tipo_allegato:
+        type: string
+      sub_cod_tipo_allegato:
+        type: string
+      descrizione_breve_tipo_allegato:
+        type: string
+      descrizione_tipo_allegato:
+        type: string
+      categoria_allegato:
+        $ref: '#/definitions/CategoriaAllegatoVO'
+      valida_firma:
+        type: boolean
+      firma_obbligatoria:
+        type: boolean
+      obbligatorio:
+        type: boolean
+      ripetibile:
+        type: boolean
+      espressione_obbligatorieta:
+        type: string
+      espressione_ripetibilita:
+        type: string
+      id_template:
+        format: int64
+        type: integer
+      ordinamento:
+        format: int64
+        type: integer
+      modello_allegato:
+        $ref: '#/definitions/ModelloVO'
+      flag_ricorrente:
+        type: boolean
+    type: object
+  ModelloVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      denominazione:
+        type: string
+      path_modello:
+        type: string
+      dimensione_file:
+        format: int64
+        type: integer
+    type: object
+  ErrorResponse:
+    properties:
+      status:
+        type: string
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: object
+        additionalProperties:
+          type: string
+      links:
+        type: array
+        items:
+          type: string
+    type: object
+  AllegatoVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      tipo_allegato:
+        $ref: '#/definitions/TipoAllegatoVO'
+      istanza:
+        $ref: '#/definitions/IstanzaVO'
+      nome_file_allegato:
+        type: string
+      desc_breve_allegato:
+        type: string
+      firmato:
+        type: boolean
+      index_node:
+        type: string
+      dimensione_file:
+        format: int64
+        type: integer
+      data_caricamento:
+        format: date
+        type: string
+    #      utente:
+    #        $ref: '#/definitions/UtenteVO'
+    type: object
+  DizionarioVO:
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      descrizione_estesa:
+        type: string
+    type: object
+  CategoriaAllegatoVO:
+    properties:
+      id_categoria_allegato:
+        type: string
+      descrizione_categoria_allegato:
+        type: string
+      descrizione_estesa_categoria_allegato:
+        type: string
+    type: object
+  FascicoloUtenteVO:
+    properties:
+      id_fascicolo_utente:
+        format: int64
+        type: integer
+      fascicolo:
+        $ref: '#/definitions/FascicoloVO'
+      utente:
+        $ref: '#/definitions/UtenteVO'
+      abilitazione:
+        $ref: '#/definitions/AbilitazioneVO'
+      abilitatore:
+        $ref: '#/definitions/UtenteVO'
+      modificabile:
+        type: boolean
+    type: object
+  IstanzaUtenteVO:
+    properties:
+      id_istanza_utente:
+        format: int64
+        type: integer
+      istanza:
+        $ref: '#/definitions/IstanzaVO'
+      utente:
+        $ref: '#/definitions/UtenteVO'
+      abilitazione:
+        $ref: '#/definitions/AbilitazioneVO'
+      abilitatore:
+        $ref: '#/definitions/UtenteVO'
+      modificabile:
+        type: boolean
+    type: object
+  AbilitazioneVO:
+    properties:
+      id_abilitazione:
+        format: int64
+        type: integer
+      codice_abilitazione:
+        type: string
+      desc_abilitazione:
+        type: string
+      tipo_abilitazione:
+        type: string
+      necessaria_iscrizione_albo:
+        type: boolean
+      necessaria_presenza_in_istanza:
+        type: boolean
+      necessaria_selezione_quadro:
+        type: boolean
+    type: object
+  CategoriaQuadroVO:
+    properties:
+      id_categoria_quadro:
+        format: int64
+        type: integer
+      codice_categoria_quadro:
+        type: string
+      desc_categoria_quadro:
+        type: string
+    type: object
+  FunzioneVO:
+    properties:
+      id_funzione:
+        format: int64
+        type: integer
+      codice_funzione:
+        type: string
+      desc_funzione:
+        type: string
+      tipo_funzione:
+        type: string
+      categoria_quadro:
+        $ref: '#/definitions/CategoriaQuadroVO'
+      previsto_pm:
+        type: boolean
+    type: object
+  AbilitazioneFunzioneCustomVO:
+    properties:
+      abilitazione:
+        $ref: '#/definitions/AbilitazioneVO'
+      funzioni:
+        type: array
+        items:
+          $ref: '#/definitions/FunzioneVO'
+      id_utente:
+        format: int64
+        type: integer
+      quadri:
+        type: array
+        items:
+          $ref: '#/definitions/QuadroVO'
+    type: object
+  AbilitazioneFunzioneSlimCustomVO:
+    properties:
+      abilitazione:
+        type: string
+      funzioni:
+        type: array
+        items:
+          type: string
+      quadri:
+        type: array
+        items:
+          format: int64
+          type: integer
+    type: object
+paths:
+  /contatti:
+    get:
+      operationId: ricercaContatto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - in: query
+          name: sort
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/ContattoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: saveContatto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/ContattoVO'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ContattoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    put:
+      consumes:
+        - application/json
+      operationId: modificaContatto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/ContattoVO'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+    delete:
+      operationId: eliminaContatto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: codiceFiscale
+          required: false
+          type: string
+        - in: query
+          name: partitaIva
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /fascicoli:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: filter
+          type: string
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/FascicoloVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaFascicoli
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SalvaFascicoloRequest'
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/FascicoloVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: salvaFascicolo
+  '/fascicoli/{idFascicolo}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/FascicoloVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaFascicolo
+    put:
+      operationId: modificaFascicolo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SalvaFascicoloRequest'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    delete:
+      operationId: eliminaFascicolo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/fascicoli/{idFascicolo}/tipi-istanza':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaTipiIstanzaFascicolo
+  '/fascicoli/{idFascicolo}/tipi-istanza/{idIstanza}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaTipiIstanzaFascicoloIstanza
+  /istanze:
+    get:
+      operationId: recuperaIstanze
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: salvaIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SalvaIstanzaRequest'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /istanze/search:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: cercaIstanze
+  '/istanze/{idIstanza}':
+    get:
+      operationId: recuperaIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    delete:
+      operationId: eliminaIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/ruoli':
+    get:
+      operationId: getRuoliIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - in: query
+          name: excl_user_ids
+          type: string
+        - in: query
+          name: load_abilitazioni
+          type: boolean
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/RuoliIstanzaResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/soggetti':
+    post:
+      consumes:
+        - application/json
+      operationId: aggiungiSoggettoCoinvolto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/AggiungiSoggettoIstanzaRequest'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/soggetti/{idSoggetto}':
+    delete:
+      operationId: eliminaSoggettoCoinvolto
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: idSoggetto
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/tipoPresentatore':
+    post:
+      consumes:
+        - application/json
+      operationId: salvaTipoPresentatore
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SalvaIstanzaRequest'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/titoloSoggettoAbilitato':
+    post:
+      consumes:
+        - application/json
+      operationId: salvaTitoloSoggettoAbilitato
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SalvaTitoloSoggettoAbilitatoRequest'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/fascicolo/{idFascicolo}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: istanzeFascicolo
+  '/istanze/titoloPresentatore/{idTipoPresentatore}':
+    get:
+      consumes:
+        - application/json
+      operationId: getListaTipoPresentatore
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTipoPresentatore
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanze/{idIstanza}/templates/{idTemplate}':
+    get:
+      produces:
+        - application/json
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            format: binary
+            type: string
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: downloadTemplate
+  '/istanze/{idIstanza}/templates/istanza':
+    get:
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: downloadTemplatePDFIstanza
+  '/istanze/upload':
+    post:
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: formData
+          name: istanza
+          type: string
+          required: true
+          description: '{"id_istanza":"2010"}'
+        - in: formData
+          name: file
+          required: true
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      operationId: uploadIstanzaFirmata
+  /istanze/signed-file/{idIstanza}:
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      operationId: deleteFileIstanzaFirmata
+  '/luoghi/comuni':
+    get:
+      operationId: getComuni
+      parameters:
+        - in: query
+          name: filter
+          type: string
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/ComuneVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/luoghi/nazioni':
+    get:
+      operationId: getNazioni
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/NazioneVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/luoghi/nazioni/stati-membri-ue':
+    get:
+      operationId: getStatiMembriUE
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/NazioneVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /luoghi/province:
+    get:
+      operationId: getProvince
+      parameters:
+        - in: query
+          name: filter
+          type: string
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/ProvinciaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /luoghi/regioni:
+    get:
+      operationId: getRegioni
+      parameters:
+        - in: query
+          name: filter
+          type: string
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/RegioneVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /luoghi/province/registered:
+    get:
+      operationId: getProvinceForComuniRegistered
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /luoghi/comuni/registered/{idProvincia}:
+    get:
+      operationId: getProvinceForComuniRegistered
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idProvincia
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /ping:
+    get:
+      operationId: ping
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        default:
+          description: default response
+  /pratiche/search:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaPratiche
+
+  /utenti/infoProfilo:
+    get:
+      operationId: getInfoProfilo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/ProfiloResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: salvaInfoProfilo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/UtenteVO'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    put:
+      consumes:
+        - application/json
+      operationId: modificaInfoProfilo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/UtenteVO'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/wizard/adempimenti/{tipologia}':
+    get:
+      operationId: recuperaAdempimenti
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipologia
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/AdempimentoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /wizard/elementi:
+    get:
+      operationId: recuperaElementi
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/ElementoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/wizard/tipo-istanze/{idRegimeGiuridico}/{idRegimeAggiuntivo}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idRegimeGiuridico
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: idRegimeAggiuntivo
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoIstanzaResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/template-quadri/code-template/{idTipoIstanza}':
+    get:
+      operationId: loadTemplateQuadriByCodeTemplate
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: idTipoIstanza
+          required: true
+          type: string
+        - in: query
+          name: boTemplateOverride
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/TemplateResponse'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/template-quadri/tipo-istanza/{tipoIstanza}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipoIstanza
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTemplateQuadriByTipoIstanza
+  '/template-quadri/id-template-quadro/{idTemplateQuadro}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplateQuadro
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTemplateQuadriByIdTemplateQuadro
+  '/template-quadri/id-quadro/{idQuadro}':
+    get:
+      operationId: loadQuadroById
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idQuadro
+          required: true
+          type: integer
+        - format: int64
+          in: query
+          name: idIstanza
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/QuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /template-quadri/istanza/{idIstanza}:
+    get:
+      operationId: loadJDataIstanza
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - name: idIstanza
+          in: path
+          format: int64
+          required: true
+          type: integer
+        - name: idQuadro
+          format: int64
+          in: query
+          required: false
+          type: integer
+        - name: codTipoQuadro
+          in: query
+          required: false
+          type: string
+        - name: isObbligatoriaNominaPM
+          in: query
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/JDataIstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  '/istanza-template-quadri/id-istanza/{idIstanza}/id-template-quadro/{idTemplateQuadro}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: idTemplateQuadro
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaTemplateQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: getIstanzaTemplateQuadro
+  '/istanza-template-quadri/id-istanza/{idIstanza}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaTemplateResponse'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadIstanzaTemplateQuadroByIdistanza
+  '/istanza-template-quadri/code-template/{codeTemplate}/id-istanza/{idIstanza}':
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codeTemplate
+          required: true
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaTemplateResponse'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: getTemplateQuadriByCodeTemplateAndIdIstanza
+  /istanza-template-quadri:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/IstanzaTemplateQuadroRequest'
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaTemplateQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: saveIstanzaTempleteQuadro
+  /categorie-allegato:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/CategoriaAllegatoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadCategorieAllegato
+  /tipi-allegato:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/TipoAllegatoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTipiAllegato
+  /tipi-allegato/codice-tipo-allegato/{codTipoAllegato}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codTipoAllegato
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoAllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTipoAllegatoByCode
+  /tipi-allegato/id-categoria-allegato/{codCategoriaAllegato}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: codCategoriaAllegato
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              type: array
+              $ref: '#/definitions/TipoAllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTipiAllegatoByCategoriaAllegato
+  /tipi-allegato/codice-tipo-allegato/{codTipoAllegato}/sub-codice-tipo-allegato/{subCodTipoAllegato}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codTipoAllegato
+          required: true
+          type: string
+        - in: path
+          name: subCodTipoAllegato
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoAllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadByCodTipoAllegatoAndSubCodeTipoAllegato
+  /tipi-allegato/id-template-quadro/{idTemplateQuadro}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplateQuadro
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              type: array
+              $ref: '#/definitions/TipoAllegatoExtendedVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadTipiAllegatoByTemplateQuadro
+  /modelli:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/ModelloVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadModelli
+  /modelli/{idModello}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idModello
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoAllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadModello
+  /modelli/denominazione/{denomModello}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: denomModello
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoAllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadModelloByDenominazione
+  /modelli/download/{idModello}:
+    get:
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idModello
+          required: true
+          type: integer
+        - format: int64
+          in: query
+          name: idIstanza
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: downloadModello
+  /allegati:
+    post:
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: formData
+          name: allegatoIstanza
+          type: string
+          required: true
+          description: '{"cod_tipo_allegato":"PAR004","id_istanza":"2010","desc_breve_allegato":""}'
+        - in: formData
+          name: file
+          required: true
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/AllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      operationId: uploadAllegato
+  /allegati/{idAllegato}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idAllegato
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/AllegatoVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadAllegato
+    delete:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idAllegato
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      operationId: deleteAllegato
+  /allegati/id-istanza/{idIstanza}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/AllegatoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadAllegatiIstanza
+  /allegati/download/{uuid}:
+    get:
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: uuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: downloadAllegato
+  /legale-rappresentante:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/PfPgVO'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PfPgVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: saveLegaleRappresentante
+  /legale-rappresentante/pg/{id}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/PfPgVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadLegaleRappresentanteByPG
+  /legale-rappresentante/pf/{id}:
+    get:
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/PfPgVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadPgByLegaleRappresentante
+  #
+  #  dizionario APIs
+  #
+  /dizionari/{tipo_dizionario}/{codice}:
+    get:
+      parameters:
+        - in: path
+          name: tipo_dizionario
+          required: true
+          type: string
+        - in: query
+          name: codice
+          required: true
+          type: string
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DizionarioVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: recuperaVoceDizionarioByCodice
+  /dizionari/{tipo_dizionario}/search:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipo_dizionario
+          required: true
+          type: string
+        - in: query
+          name: codice
+          required: false
+          type: string
+        - in: query
+          name: descrizione
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/DizionarioVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: ricercaVociDizionario
+  /dizionari/{tipo_dizionario}:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipo_dizionario
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/DizionarioVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+      operationId: loadDizionario
+  /tendine/{tipo_select}:
+    get:
+      operationId: loadSelect
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipo_select
+          required: true
+          type: string
+          description: Allowed values':' qualifica|ordine|tipo_ditta|tipo_istanza|tipo_intervento|dug|regione|provincia|comune .
+        - in: query
+          name: additional_param
+          type: string
+          description: Used to pass parent id when retrieving provincia and comune.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /tendine/{tipo_select}/search:
+    get:
+      operationId: ricercaPerDescrizione
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: tipo_select
+          required: true
+          type: string
+          description: Allowed values':' qualifica|ordine|tipo_ditta|tipo_istanza|tipo_intervento|dug|regione|provincia|comune .
+        - in: query
+          name: descrizione
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  #
+  #  BO APIs
+  #
+  /bo-quadri/tipo-quadri:
+    get:
+      operationId: listaTipoQuadri
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - in: query
+          name: sort
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/TipoQuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: salvaTipoQuadro
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/TipoQuadroVO'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+
+  /bo-quadri/tipo-quadri/{idTipoQuadro}:
+    delete:
+      consumes:
+        - application/json
+      operationId: eliminaTipoQuadro
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: idTipoQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/quadri-per-tipo/{idTipoQuadro}:
+    get:
+      operationId: listaQuadriPerTipo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTipoQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/QuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/categoria-tipo-quadri:
+    get:
+      operationId: listaCategoriaTipoQuadri
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/CategoriaQuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/quadri:
+    get:
+      operationId: listaQuadri
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - in: query
+          name: sort
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/QuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      operationId: salvaQuadro
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: formData
+          name: quadroVO
+          type: string
+        - in: formData
+          name: file
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/QuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /bo-quadri/quadri/{idQuadro}:
+    delete:
+      consumes:
+        - application/json
+      operationId: eliminaQuadro
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: idQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/quadri/templates/{idTipoQuadro}:
+    get:
+      operationId: recuperaTemplateAssociaQuadro
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTipoQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/quadri/pubblica/{idTipoQuadro}:
+    get:
+      operationId: pubblicaQuadro
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTipoQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template:
+    get:
+      operationId: listaTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - in: query
+          name: sort
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/TemplateVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: salvaTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/TemplateVO'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/{idTemplate}:
+    delete:
+      consumes:
+        - application/json
+      operationId: eliminaTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: idTemplate
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/quadri/{idTemplate}:
+    get:
+      operationId: listaQuadriTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/TemplateQuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      consumes:
+        - application/json
+      operationId: salvaQuadroTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/TemplateQuadroVO'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateQuadroVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/allegati/{idTemplate}:
+    get:
+      operationId: listaAllegatiTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/TipoAllegatoExtendedVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+    post:
+      operationId: salvaAllegatoTemplate
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - in: formData
+          name: tipoAllegatoExtendedVO
+          type: string
+        - in: formData
+          name: file
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TipoAllegatoExtendedVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /bo-quadri/template/intestazione/{idTemplate}:
+    post:
+      operationId: salvaIntestazioneTemplate
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - in: formData
+          name: templateVO
+          type: string
+        - in: formData
+          name: file
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /bo-quadri/template/quadri/{idTemplateQuadro}:
+    delete:
+      consumes:
+        - application/json
+      operationId: eliminaQuadroTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: idTemplateQuadro
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/allegati/{id}:
+    delete:
+      consumes:
+        - application/json
+      operationId: eliminaAllegatoTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/versiona/{idTemplate}:
+    get:
+      operationId: nuovaVersioneTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/duplica/{idTemplate}:
+    get:
+      operationId: duplicaTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - in: query
+          name: idTipoIstanza
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/pubblica/{idTemplate}:
+    get:
+      operationId: pubblicaTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - in: query
+          name: publishingMode
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/TemplateVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /bo-quadri/template/modello/{idTemplate}:
+    get:
+      operationId: downloadModelloDocxTemplate
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  #
+  #  FO abilitazioni APIs
+  #
+  /utenti/accreditamenti:
+    get:
+      operationId: recuperaAccreditamenti
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: query
+          name: filter
+          type: string
+        - in: query
+          name: sort
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/UtenteVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /istanze/abilitazioni-istanza/{idIstanza}:
+    get:
+      operationId: recuperaAbilitazioniIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaUtenteVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /fascicoli/abilitazioni-fascicolo/{idFascicolo}:
+    get:
+      operationId: recuperaAbilitazioniFascicolo
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/FascicoloUtenteVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /template-quadri/quadri/template/{idTemplate}:
+    get:
+      operationId: retrieveAllQuadriInTemplate
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idTemplate
+          required: true
+          type: integer
+        - format: int64
+          in: query
+          name: idIstanza
+          required: false
+          type: integer
+        - format: int64
+          in: query
+          name: idUser
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/QuadroVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  #
+  #  FO funzioni APIs
+  #
+  /abilitazioni-funzioni:
+    get:
+      operationId: loadFunzioniAbilitazioni
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: query
+          name: idFascicolo
+          required: false
+          type: integer
+        - format: int64
+          in: query
+          name: idIstanza
+          required: false
+          type: integer
+        - in: query
+          name: excludeFilters
+          required: false
+          type: boolean
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/AbilitazioneFunzioneCustomVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /abilitazioni-funzioni/funzioni/{codiceAbilitazione}:
+    get:
+      operationId: loadFunzioniByAbilitazione
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codiceAbilitazione
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AbilitazioneFunzioneCustomVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /istanze-utenti:
+    post:
+      operationId: saveIstanzaUtente
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/IstanzaUtenteVO'
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaUtenteVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /istanze-utenti/id-istanza/{idIstanza}:
+    post:
+      operationId: saveAbilitazioniFunzioniPerIstanzaUtente
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanza
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/AbilitazioneFunzioneCustomVO'
+      responses:
+        '201':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /istanze-utenti/{idIstanzaUtente}:
+    delete:
+      operationId: deleteIstanzaUtente
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idIstanzaUtente
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /fascicoli-utenti:
+    post:
+      operationId: saveFascicoloUtente
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/FascicoloUtenteVO'
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/FascicoloUtenteVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /fascicoli-utenti/id-fascicolo/{idFascicolo}:
+    post:
+      operationId: saveAbilitazioniFunzioniPerFascicoloUtente
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicolo
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/AbilitazioneFunzioneCustomVO'
+      responses:
+        '201':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /fascicoli-utenti/{idFascicoloUtente}:
+    delete:
+      operationId: deleteFascicoloUtente
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idFascicoloUtente
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: successful response
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '403':
+          description: Forbidden - validation failed
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /tipi-istanze/id-comune/{idComune}:
+    get:
+      operationId: loadByComuneRegisteredForCreaFascicoloIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - format: int64
+          in: path
+          name: idComune
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /tipi-istanze/id-tipo-istanza/{codiceTipoIstanzaPadre}/id-comune/{idComune}:
+    get:
+      operationId: loadByComuneRegisteredForCreaIstanzaFiglia
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codiceTipoIstanzaPadre
+          required: true
+          type: string
+        - format: int64
+          in: path
+          name: idComune
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /tipi-intervento/id-tipo-istanza/{codiceTipoIstanza}:
+    get:
+      operationId: loadByTipoIstanzaForCreaFascicoloIstanza
+      parameters:
+        - in: header
+          name: user-cf
+          type: string
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: path
+          name: codiceTipoIstanza
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/SelectVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          
+          
