@@ -87,7 +87,7 @@ Nei file README.md dei singoli componenti sono presenti le istruzioni per la com
 
 I pacchetti generati dalla compilazione delle componenti devono essere deployati su Wildfly17.
 
-Per quanto riguarda il DB, gli script per la creazione delle strutture e il popolamento delle tavole di decodifica e la configurazione della tavola delle property, sono contenute dentro la cartella db/.
+Per quanto riguarda il DB, gli script per la creazione delle strutture e il popolamento delle tavole di decodifica e la configurazione della tavola delle property, sono contenute dentro la cartella [db](./db/).
 
 Nelle singole componenti viene utilizzato ivy come repository, ricordare di cambiarne il puntamento ad un indirizzo raggiungibile.
 
