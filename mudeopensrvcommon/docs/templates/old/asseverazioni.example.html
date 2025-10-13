@@ -1,0 +1,2270 @@
+<!--
+  SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+  SPDX-License-Identifier: EUPL-1.2
+-->
+<!doctype html>
+<head>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.form.io/formiojs/formio.full.min.css">
+<script src="https://cdn.form.io/formiojs/formio.full.min.js"></script>
+</head>
+<body>
+<div id="formio"></formio>
+
+<script>
+
+const template = {
+  "applicabile": "form",
+  "components": [
+    {
+      "title": "Asseverazioni",
+      "collapsible": false,
+      "tableView": false,
+      "key": "home",
+      "type": "panel",
+      "label": "Home",
+      "input": false,
+      "components": [
+        {
+          "html": "<p>Il progettista, in qualità di tecnico asseverante, preso atto di assumere la qualità di persona esercente un servizio di pubblica necessità ai sensi degli articoli 359 e 481 del Codice Penale, consapevole che le dichiarazioni false, la falsità negli atti e l'uso di atti falsi comportano l'applicazione delle sanzioni penali previste dagli artt. 75 e 76 del d.P.R. n. 445/2000, sotto la propria responsabilità ed esperiti i necessari accertamenti di carattere urbanistico, edilizio, statico, igienico ed a seguito del sopralluogo,</p><p style=\"text-align:center;\"><strong>ASSEVERA</strong></p>",
+          "label": "Content",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "content",
+          "type": "content",
+          "input": false
+        },
+        {
+          "html": "<p><strong>L) Dichiarazione di conformità</strong></p><p>che l`intervento, compiutamente descritto negli elaborati progettuali, è conforme agli strumenti urbanistici approvati e ai regolamenti edilizi vigenti, nonché che è compatibile con la normativa sul rendimento energetico nell'edilizia e che non vi è interessamento delle parti strutturali dell'edificio.</p><p>Qualora l'intervento non rientri nei casi sotto indicati, selezionare la voce \"NO\"</p>",
+          "label": "Content",
+          "refreshOnChange": false,
+          "tableView": false,
+          "key": "content1",
+          "type": "content",
+          "input": false
+        },
+        {
+          "label": "<strong>M) Interventi strutturali e/o in zona sismica</strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.m",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "m1.applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "<strong>prevede</strong> la realizzazione di <strong>opere di conglomerato cementizio armato</strong>, normale e precompresso ed a struttura metallica e pertanto",
+              "optionsLabelPosition": "right",
+              "inline": false,
+              "tableView": false,
+              "values": [
+                {
+                  "label": "si allega la documentazione relativa alla denuncia di cui all`articolo 65 TUE",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "la relativa denuncia è già stata depositata:",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "m1.allega_documentazione",
+              "conditional": {
+                "show": true,
+                "when": "m1.applicabile",
+                "eq": "true"
+              },
+              "type": "radio",
+              "input": true,
+              "defaultValue": true
+            },
+            {
+              "label": "prot./estremi",
+              "labelPosition": "left-left",
+              "tableView": true,
+              "case": "uppercase",
+              "validate": {
+                "required": true
+              },
+              "key": "m1.denuncia.estremi",
+              "conditional": {
+                "show": true,
+                "when": "m1.allega_documentazione",
+                "eq": "false"
+              },
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "label": "in data",
+              "labelPosition": "left-left",
+              "suffix": "<i ref=\"icon\" class=\"fa fa-clock-o\" style=\"\"></i>",
+              "widget": {
+                "type": "calendar"
+              },
+              "tableView": true,
+              "validate": {
+                "required": true
+              },
+              "key": "m1.denuncia.data_denunica",
+              "conditional": {
+                "show": true,
+                "when": "m1.allega_documentazione",
+                "eq": "false"
+              },
+              "type": "textfield",
+              "input": true
+            },
+            {
+              "html": "<p><strong>non prevede</strong> la realizzazione di<strong> opere di conglomerato cementizio armato</strong>, normale e precompresso ed a struttura metallica</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "content1",
+              "conditional": {
+                "show": true,
+                "when": "m1.applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            },
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "m2.applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "m2.zone_sismiche",
+              "optionsLabelPosition": "right",
+              "inline": false,
+              "hideLabel": true,
+              "tableView": false,
+              "defaultValue": "variante",
+              "values": [
+                {
+                  "label": "costituisce una variante non sostanziale riguardante parti strutturali relativa ad un progetto esecutivo delle strutture precedentemente presentato",
+                  "value": "variante",
+                  "shortcut": ""
+                },
+                {
+                  "label": "prevede opere in zona sismica da denunciare ai sensi dell`articolo 93 TUE come recepito dalla normativa regionale DGR 21 Maggio 2014, n.65-7656 e si allega la documentazione relativa alla denuncia dei lavori in zona sismica",
+                  "value": "allega_documentazione",
+                  "shortcut": ""
+                },
+                {
+                  "label": "prevede opere in zona sismica da denunciare ai sensi dell`articolo 93 TUE come recepito dalla normativa regionale DGR 21 Maggio 2014, n.65-7656 e la documentazione necessaria sarà presentata prima dell'inizio dei lavori strutturali",
+                  "value": "documentazione_ad_inizio_lavori",
+                  "shortcut": ""
+                },
+                {
+                  "label": "prevede opere strutturali soggette ad autorizzazione sismica ai sensi dell`articolo 94 TUE come recepito dalla normativa regionale DGR 21 Maggio 2014, n.65-7656 e pertanto si allega la documentazione necessaria per il rilascio dell`autorizzazione sismica",
+                  "value": "allega_autorizzazione_sismica",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "string",
+              "key": "m2.documentazione_zona_sismica",
+              "conditional": {
+                "show": true,
+                "when": "m2.applicabile",
+                "eq": "true"
+              },
+              "type": "radio",
+              "input": true
+            },
+            {
+              "html": "<p><strong>non prevede</strong> opere da denunciare o autorizzare ai sensi degli articoli 93 e 94 TUE come recepito dalla normativa regionale DGR 21 Maggio 2014, n.65-7656 e pertanto</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "m2.content",
+              "conditional": {
+                "show": true,
+                "when": "m2.applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>O) Impianti</strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.o",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "o.impianti",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che, con riferimento al rispetto della normativa per la sicurezza degli impianti D.M. 37/08, in relazione allo specifico intervento:",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "o.Impianti",
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "html": "<p>il rispetto della normativa per la sicurezza degli impianti è definito nel Quadro Informativo che segue <strong>DICHIARAZIONE DI PROGETTO DEGLI IMPIANTI D.M. 37/08</strong>, compilato e sottoscritto.</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "o.content.dichiarazione",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "content",
+              "input": false
+            },
+            {
+              "html": "<p><strong>nessuno degli impianti è soggetto alla redazione del progetto</strong> di cui all'art. 5 del D.M. 37/08</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "o.content.redazione_progetto",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>P) Consumi energetici </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.p",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "p.consumi_energetici",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che, in relazione al deposito del progetto delle opere e della relazione tecnica sul rispetto delle prescrizioni dell'art. 125 TUE (ex legge n.\n10/1991) in materia di norme per il contenimento dei consumi energetici ed in relazione al D. Lgs. 192/2005 e s.m.i. e D. Lgs. 28/2011:",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "p.consumi_energetici",
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "html": "<p>l'intervento è soggetto alle disposizioni di legge e <strong>si allega la relazione tecnica sul rispetto delle prescrizioni in materia di risparmio energetico</strong>, di fonti rinnovabili e la documentazione in conformità alla normativa vigente ovvero l'impossibilità tecnica di ottemperare, in tutto o in parte, agli obblighi previsti.</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "p.content.relazione_tecnica",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "content",
+              "input": false
+            },
+            {
+              "html": "<p>lo specifico intervento <strong>non è soggetto alle disposizioni di legge</strong></p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "p.content.non_sogggetto",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>P.1) Miglioramento energetico degli edifici </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.p1",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "p1.miglioramento_energetico",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che l'intervento, in relazione al miglioramento energetico degli edifici:",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "p1.miglioramento_energetico",
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "tableView": false,
+              "key": "miglioramento_energetico.content",
+              "conditional": {
+                "show": true,
+                "when": "p1.applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "Field Set",
+              "input": false,
+              "components": [
+                {
+                  "label": "ricade nell`articolo 14, comma 6, del d.lgs. n. 102/2014 in merito al computo degli spessori delle murature, nonché alla deroga alle distanze minime e alle altezze massime degli edifici, pertanto si certifica nella relazione tecnica una riduzione minima del 20 per cento dell'indice di prestazione energetica previsto dal d.lgs. n. 192/2005",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "art16_comma6",
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "ricade nell`articolo 14, comma 7, del d.lgs. n. 102/2014 in merito alle deroga alle distanze minime e alle altezze massime degli edifici, pertanto si certifica nella relazione tecnica una riduzione minima del 10 per cento del limite di trasmittanza previsto dal d.lgs. n. 192/2005",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "art14_comma7",
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "ricade nell`articolo 12, comma 1, del d.lgs. n. 28/2011 in merito al bonus volumetrico del 5 per cento, pertanto si certifica nella relazione tecnica una copertura dei consumi di calore, di elettricità e per il raffrescamento, mediante energia prodotta da fonti rinnovabili, in misura superiore di almeno il 30 per cento rispetto ai valori minimi obbligatori di cui all'allegato 3 del d.lgs.n. 28/2011",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "art12_comma1",
+                  "type": "checkbox",
+                  "input": true
+                }
+              ]
+            },
+            {
+              "html": "<p><strong>non prevede miglioramento</strong></p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "p1.content.non_sogggetto",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>Q) Barriere architettoniche </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.q",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "barriere_architettoniche",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che, con riferimento all'eliminazione delle barriere architettoniche l'intervento proposto:",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "barriere_architettoniche",
+              "conditional": {
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "tableView": false,
+              "key": "barriere_architettoniche.content",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "Field Set",
+              "input": false,
+              "components": [
+                {
+                  "label": "q.barriere_architettoniche.radio",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "defaultValue": "privato_conforme",
+                  "values": [
+                    {
+                      "label": "interessa un edificio privato aperto al pubblico e le opere previste sono conformi all'art. 24 della L. 104/1992 come da relazione e schemi dimostrativi allegati.",
+                      "value": "privato_conforme",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "è soggetto alle prescrizioni del capo III artt. 77 e seguenti TUE e del D.M. 236/1989, come da relazione e schemi dimostrativi allegati, soddisfa il requisito di:",
+                      "value": "soggetto_prescrizioni",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "pur essendo soggetto alle prescrizioni del capo III artt. 77 e seguenti TUE e del D.M. 236/1989, non rispetta la normativa in materia di barriere architettoniche e pertanto",
+                      "value": "deroga",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "key": "barriere_architettoniche",
+                  "type": "radio",
+                  "input": true
+                },
+                {
+                  "label": "accessibilità",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "soggetto_prescrizioni.accessibilita",
+                  "conditional": {
+                    "show": true,
+                    "when": "barriere_architettoniche",
+                    "eq": "soggetto_prescrizioni"
+                  },
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "visitabilità",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "soggetto_prescrizioni.visitabilita",
+                  "conditional": {
+                    "show": true,
+                    "when": "barriere_architettoniche",
+                    "eq": "soggetto_prescrizioni"
+                  },
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "adattabilità",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "soggetto_prescrizioni.adattabilita",
+                  "conditional": {
+                    "show": true,
+                    "when": "barriere_architettoniche",
+                    "eq": "soggetto_prescrizioni"
+                  },
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "deroga",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "defaultValue": "deroga_richiesta",
+                  "values": [
+                    {
+                      "label": "si richiede la deroga (se prevista dal R.E. comunale), come meglio descritto nella relazione tecnica e schemi dimostrativi allegati.",
+                      "value": "deroga_richiesta",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "a deroga è stata ottenuta con",
+                      "value": "deroga_ottenuta",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "key": "deroga.tipo",
+                  "conditional": {
+                    "show": true,
+                    "when": "barriere_architettoniche",
+                    "eq": "deroga"
+                  },
+                  "type": "radio",
+                  "input": true
+                },
+                {
+                  "tableView": false,
+                  "key": "deroga.content",
+                  "conditional": {
+                    "show": true,
+                    "when": "deroga.tipo",
+                    "eq": "deroga_ottenuta"
+                  },
+                  "type": "fieldset",
+                  "label": "Field Set",
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "prot./estremi",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "deroga.estremi",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "in data",
+                      "labelPosition": "left-left",
+                      "suffix": "<i ref=\"icon\" class=\"fa fa-clock-o\" style=\"\"></i>",
+                      "widget": {
+                        "type": "calendar"
+                      },
+                      "tableView": true,
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "deroga.data_deroga",
+                      "type": "textfield",
+                      "input": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "non è soggetto alle prescrizioni del capo III artt. 77 e seguenti TUE e del D.M. 236/1989 in quanto",
+              "autoExpand": false,
+              "tableView": true,
+              "validate": {
+                "required": true
+              },
+              "key": "barriere_architettoniche.non_soggetto",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "textarea",
+              "input": true
+            }
+          ]
+        },
+        {
+          "label": "<strong>R) Prevenzione Incendi </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.r",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "prevenzione_incendi_header",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che, con riferimento al D.P.R. n. 151 del 1 agosto 2011 - Regolamento recante semplificazione della disciplina dei procedimenti relativi alla\nprevenzione degli incendi, a norma dell'art. 49, comma 4-quater, del decreto legge 31 maggio 2010, n. 78, convertito, con modificazioni,\ndalla legge 30 luglio 2010, n. 122, l'intervento:",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "prevenzione_incendi_header",
+              "conditional": {
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "input": false
+            },
+            {
+              "tableView": false,
+              "key": "prevenzione_incendi.content",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "Field Set",
+              "input": false,
+              "components": [
+                {
+                  "label": "Radio",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "defaultValue": "norme_rispettate",
+                  "values": [
+                    {
+                      "label": "è soggetto alle norme tecniche di prevenzione incendi e le stesse sono rispettate nel progetto",
+                      "value": "norme_rispettate",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "non è conforme alle norme tecniche di prevenzione incendi e pertanto",
+                      "value": "non_conforme",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "è soggetto alla presentazione, prima dell`esercizio dell`attività, di segnalazione certificata di inizio attività ai fini della sicurezza antincendio (attività di categoria A) al Comando Provinciale dei Vigili del Fuoco, ai sensi dell`articolo 4 del d.P.R. 151/2011",
+                      "value": "certificato_inizio_attivita",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "è soggetto alla valutazione del progetto (attività di categoria B e C) da parte del Comando Provinciale dei Vigili del Fuoco, ai sensi dell`articolo 3 del d.P.R. 151/2011 e pertanto:",
+                      "value": "valutazione_vvf",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "costituisce variante e il sottoscritto assevera che le modifiche non costituiscono variazione dei requisiti di sicurezza antincendio già approvati con parere del Comando Provinciale dei Vigili del fuoco rilasciato",
+                      "value": "certificato_antincendio_esistente",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "key": "prevenzione_incendi.radio",
+                  "type": "radio",
+                  "input": true
+                }
+              ]
+            },
+            {
+              "html": "<p>non prevede alcuna attività soggetta a controllo di prevenzione incendi ai sensi del D.P.R. n. 151 del 1 agosto 2011</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "tableView": false,
+              "key": "r.content.non_sogggetto",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>S) Relazione energetico ambientale </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.s",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "che con riferimento alle DGR 46-11968 del 4 agosto 2009, DGR 45-11967 del 4 agosto 2009, al D. Lgs. 28/2011 e all'Allegato Energetico - Ambientale al Regolamento Edilizio qualora presente, l'intervento ricade nella tipologia:",
+              "optionsLabelPosition": "right",
+              "inline": false,
+              "tableView": false,
+              "defaultValue": "rientrano",
+              "values": [
+                {
+                  "label": "di opere che rientrano nel campo di applicazione delle norme energetico ambientali, come da allegata documentazione attestante il rispetto delle prescrizioni energetiche degli edifici (Relazione energetico ambientale + allegati)",
+                  "value": "rientrano",
+                  "shortcut": ""
+                },
+                {
+                  "label": "di opere che non rientrano nel campo di applicazione delle norme energetico ambientali in quanto:",
+                  "value": "non_rientrano",
+                  "shortcut": ""
+                }
+              ],
+              "validate": {
+                "onlyAvailableItems": false
+              },
+              "key": "relazione_energetico_ambientale.radio",
+              "type": "radio",
+              "input": true
+            },
+            {
+              "label": "Text Area",
+              "autoExpand": false,
+              "hideLabel": true,
+              "tableView": true,
+              "validate": {
+                "required": true
+              },
+              "key": "relazione_energetico_ambientale.motivazioni",
+              "conditional": {
+                "show": true,
+                "when": "asseverazioni.s.relazione_energetico_ambientale.radio",
+                "eq": "non_rientrano"
+              },
+              "type": "textarea",
+              "input": true
+            }
+          ]
+        },
+        {
+          "label": "<strong>T) Tutela inquinamento acustico </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.t",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "inquinamento_acustico_header",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che, in merito al rispetto della L.447/95 del D.P.R.n. 227/2011, della L.R. n. 52/2000 e del Regolamento Comunale per la tutela\ndall'inquinamento acustico",
+              "refreshOnChange": false,
+              "key": "inquinamento_acustico_header",
+              "conditional": {
+                "eq": "true"
+              },
+              "type": "htmlelement",
+              "tableView": false,
+              "input": false
+            },
+            {
+              "key": "inquinamento_acustico.content",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "<strong>Documentazione di IMPATTO ACUSTICO: </strong><br/>per opere, infrastrutture o insediamenti indicati dalla L.447/95, art. 8, commi 1, 2 e 4 e L.R. 52/2000, art. 10",
+                  "labelPosition": "left-left",
+                  "optionsLabelPosition": "right",
+                  "inline": true,
+                  "tableView": false,
+                  "defaultValue": "true",
+                  "values": [
+                    {
+                      "label": "SI",
+                      "value": "true",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "NO",
+                      "value": "false",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "boolean",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "impatto_acustico.applicabile",
+                  "type": "radio",
+                  "labelWidth": 80,
+                  "input": true
+                },
+                {
+                  "key": "impatto_acustico.content",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.impatto_acustico.applicabile",
+                    "eq": "true"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "gli interventi di progetto <strong> rientrano </strong> nel relativo campo di applicazione",
+                      "optionsLabelPosition": "right",
+                      "inline": false,
+                      "tableView": false,
+                      "defaultValue": "allega_documentazione",
+                      "values": [
+                        {
+                          "label": "in quanto riguardano gli interventi indicati in premessa, tra cui le attività non elencate all'allegato \"B\" D.P.R. 19 ottobre 2011 n. 227 ovvero le attività (ristoranti, pizzerie, trattorie, bar, mense, attività ricreative, agroturistiche, culturali e di spettacolo, sale da gioco, palestre, ecc.) che utilizzano diffusione sonora ovvero svolgono manifestazioni ed eventi con diffusione sonora o utilizzo di strumenti musicali; pertanto si allega documentazione di Impatto Acustico, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6, redatta sulla base dei criteri stabiliti ai sensi dell'articolo 4, comma 1, lettera l) della L.447/95;",
+                          "value": "allega_documentazione",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "per le attività le cui emissioni di rumore non siano superiori ai limiti stabiliti in ambiente esterno ed abitativo dal documento di classificazione acustica del territorio comunale di riferimento, si allega dichiarazione sostitutiva di atto di notorietà ai sensi dell`art. 8 comma 5 L.447/95 con cui l`intestatario dichiara il possesso di documentazione di Impatto Acustico, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6; tale documentazione deve essere redatta sulla base dei criteri stabiliti ai sensi dell'articolo 4, comma 1, lettera l) della L.447/95;",
+                          "value": "allega_dichiarazione_sostitutiva",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "si dichiara che, ai sensi del Â§6 della D.G.R. 2 febbraio 2004, n. 9-11616, non essendo definita preventivamente la destinazione d`uso degli immobili e/o la tipologia dell`attività che in essi sarà svolta, verrà presentata valutazione di Impatto Acustico, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6, in fase di richiesta o presentazione dei successivi titoli autorizzativi.",
+                          "value": "presentazione_valutazione_impatto",
+                          "shortcut": ""
+                        }
+                      ],
+                      "key": "impatto_acustico.interventi.tipo",
+                      "type": "radio",
+                      "input": true
+                    },
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "Si evidenzia che la documentazione di Impatto Acustico puù essere motivatamente semplificata (D.G.R. 2 febbraio 2004, n. 9-11616,\nÂ§ 5)",
+                      "refreshOnChange": false,
+                      "key": "html",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                },
+                {
+                  "key": "impatto_acustico.non_applicabile",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.impatto_acustico.applicabile",
+                    "eq": "false"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "gli interventi in progetto <strong> non rientrano </strong>nel relativo campo di applicazione",
+                      "optionsLabelPosition": "right",
+                      "inline": false,
+                      "tableView": false,
+                      "values": [
+                        {
+                          "label": "in quanto riguardano le attività a bassa rumorosità di cui all'allegato \"B\" D.P.R. 19 ottobre 2011 n. 227, le cui emissioni di rumore non sono superiori ai limiti stabiliti dal documento di classificazione acustica del territorio comunale di riferimento e pertanto si allega dichiarazione, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6, che le emissioni di rumore non sono superiori ai limiti stabiliti in ambiente esterno ed abitativo dal documento di classificazione acustica del territorio comunale;",
+                          "value": "attivita_bassa_rumorosita",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "in quanto riguardano le attività escluse dalla D.G.R. 2 febbraio 2004, n. 9-11616, Â§ 3;",
+                          "value": "attivita_escluse",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "in quanto non riguardano interventi indicati in premessa.",
+                          "value": "non_riguardano_interventi_indicati",
+                          "shortcut": ""
+                        }
+                      ],
+                      "key": "impatto_acustico.esclusioni.tipo",
+                      "type": "radio",
+                      "input": true,
+                      "defaultValue": "attivita_bassa_rumorosita"
+                    },
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "Si evidenzia che pur in presenza di attività non soggette alla predisposizione della documentazione di impatto acustico, queste sono\ncomunque tenute al rispetto delle norme in materia di inquinamento acustico in ambiente esterno ed abitativo. (D.G.R. 2 febbraio 2004,\nn. 9-11616, Â§ 3).",
+                      "refreshOnChange": false,
+                      "key": "html1",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                },
+                {
+                  "label": "<strong>Documentazione di CLIMA ACUSTICO: </strong><br/>per nuovi insediamenti indicati dalla L.447/95, art. 8, comma 3 e L.R. 52/2000, art. 11, ovvero in caso di mutamento di destinazione d'uso di immobili esistenti qualora da ciù derivi l'inserimento dell'immobile in una delle stesse tipologie (D.G.R. 14 febbraio 2005, n. 46-14762, Â§ 3)",
+                  "labelPosition": "left-left",
+                  "optionsLabelPosition": "right",
+                  "inline": true,
+                  "tableView": false,
+                  "defaultValue": "true",
+                  "values": [
+                    {
+                      "label": "SI",
+                      "value": "true",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "NO",
+                      "value": "false",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "boolean",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "clima_acustico.applicabile",
+                  "type": "radio",
+                  "labelWidth": 80,
+                  "input": true
+                },
+                {
+                  "key": "clima_acustico.conent",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.clima_acustico.applicabile",
+                    "eq": "true"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "gli interventi di progetto <strong> rientrano </strong> nel relativo campo di applicazione",
+                      "optionsLabelPosition": "right",
+                      "inline": false,
+                      "tableView": false,
+                      "defaultValue": "allega_documentzione",
+                      "values": [
+                        {
+                          "label": "si allega documentazione di Clima Acustico, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6. Ai sensi della L.447/95, art. 8, comma 5, tale documentazione deve essere redatta sulla base dei criteri stabiliti ai sensi dell'articolo 4, comma 1, lettera l) della L.447/95;",
+                          "value": "allega_documentzione",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "per gli interventi per cui è previsto il rispetto dei limiti di rumore stabiliti in ambiente esterno ed abitativo dal documento di classificazione acustica del territorio comunale di riferimento, si allega dichiarazione sostitutiva di atto di notorietà ai sensi dell`art. 8 comma 5 L.447/95, con cui l`intestatario dichiara il possesso di documentazione di Clima Acustico, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6; ai sensi della L.447/95, art. 8, comma 5, tale documentazione deve essere redatta sulla base dei criteri stabiliti ai sensi dell'articolo 4, comma 1, lettera l) della L.447/95.",
+                          "value": "allega_dichiarazione_sostitutiva",
+                          "shortcut": ""
+                        }
+                      ],
+                      "key": "clima_acustico.tipo",
+                      "type": "radio",
+                      "input": true
+                    },
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "Si evidenzia che la documentazione di Clima Acustico puù essere motivatamente semplificata (D.G.R. 14 febbraio 2005, n. 46-14762, Â§\n6)",
+                      "refreshOnChange": false,
+                      "key": "html2",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                },
+                {
+                  "key": "clima_acustico.not_applicable",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.clima_acustico.applicabile",
+                    "eq": "false"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "gli interventi in progetto <b>non rientrano</b> nel relativo campo di applicazione.",
+                      "refreshOnChange": false,
+                      "key": "html3",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                },
+                {
+                  "label": "<strong>Documentazione di RISPETTO DEI REQUISITI ACUSTICI: </strong><br/>delle sorgenti sonore interne agli edifici e dei loro componenti in opera, di cui al D.P.C.M. 5/12/1997, eventualmente prevista dai Regolamenti Comunali, modificati o emanati ai sensi dell'art.6, comma 1, e) della L.447/95 e art.5 comma 5 L.R. 52/2000:",
+                  "labelPosition": "left-left",
+                  "optionsLabelPosition": "right",
+                  "inline": true,
+                  "tableView": false,
+                  "defaultValue": true,
+                  "values": [
+                    {
+                      "label": "SI",
+                      "value": "true",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "NO",
+                      "value": "false",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "boolean",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "rispetto_requisiti_acustici.applicabile",
+                  "type": "radio",
+                  "labelWidth": 80,
+                  "input": true
+                },
+                {
+                  "key": "rispetto_requisiti_acustici.content",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.rispetto_requisiti_acustici.applicabile",
+                    "eq": "true"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "gli interventi di progetto rientrano nel relativo campo di applicazione e pertanto si allega documentazione previsionale di Rispetto dei\nRequisiti Acustici, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6, così come prevista dai Regolamenti Comunali.",
+                      "refreshOnChange": false,
+                      "key": "html4",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                },
+                {
+                  "key": "rispetto_requisiti_acustici.not_applicable",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.t.rispetto_requisiti_acustici.applicabile",
+                    "eq": "false"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "tableView": false,
+                  "input": false,
+                  "components": [
+                    {
+                      "label": "gli interventi in progetto <strong> non rientrano </strong>nel relativo campo di applicazione",
+                      "optionsLabelPosition": "right",
+                      "inline": false,
+                      "tableView": false,
+                      "defaultValue": "categorie_differenti_dpcm",
+                      "values": [
+                        {
+                          "label": "in quanto non riguardano le categorie di cui alla Tabella A del D.P.C.M. 5/12/1997;",
+                          "value": "categorie_differenti_dpcm",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "in quanto riguardano interventi realizzati prima dell'entrata in vigore del D.P.C.M. 5/12/1997 (20/02/1998);",
+                          "value": "interventi_precedenti_dpcm",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "in quanto limitati ad interventi sugli impianti tecnologici per i quali è esclusa la trasmissione del rumore al di fuori dell`unità immobiliare in cui il rumore si origina e pertanto si allega dichiarazione, a firma di tecnico competente ai sensi della L.447/95, art. 2 comma 6, che le emissioni di rumore non si trasmettono al di fuori dell`unità immobiliare in cui il rumore si origina;",
+                          "value": "dichiarazione_basse_emissioni",
+                          "shortcut": ""
+                        },
+                        {
+                          "label": "in quanto riguardano interventi esclusi dai Regolamenti Comunali. I nuovi impianti devono comunque rispettare le norme in materia di inquinamento acustico",
+                          "value": "interventi_esclusi_regolamenti_comunali",
+                          "shortcut": ""
+                        }
+                      ],
+                      "key": "rispetto_requisiti_acustici.esclusioni.tipo",
+                      "type": "radio",
+                      "input": true
+                    },
+                    {
+                      "label": "HTML",
+                      "attrs": [
+                        {
+                          "attr": "",
+                          "value": ""
+                        }
+                      ],
+                      "content": "Si evidenzia che pur in presenza di interventi non soggetti alla predisposizione della documentazione di rispetto dei requisiti acustici, se\ngli interventi riguardano sorgenti sonore interne e requisiti acustici passivi ricadenti nel campo di applicazione del D.P.C.M. 5/12/1997, i\nrelativi valori limite devono comunque essere rispettati in opera.",
+                      "refreshOnChange": false,
+                      "key": "html5",
+                      "type": "htmlelement",
+                      "input": false,
+                      "tableView": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "html": "<p>gli interventi in progetto <strong>non rientrano</strong> nel relativo campo di applicazione.</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "key": "t.content.non_rientrano",
+              "conditional": {
+                "show": true,
+                "when": "asseverazioni.t.applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "tableView": false,
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>E) Produzione di materiali di risulta </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.e",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "materiali_risulta.header",
+              "tag": "P",
+              "attrs": [
+                {
+                  "attr": "",
+                  "value": ""
+                }
+              ],
+              "content": "che con riferimento alla normativa relativa alle terre e rocce da scavo (d.P.R. n. 120/2017)",
+              "refreshOnChange": false,
+              "key": "e.materiali_risulta",
+              "type": "htmlelement",
+              "tableView": false,
+              "input": false
+            },
+            {
+              "key": "materiali_risulta.content",
+              "conditional": {
+                "show": true,
+                "when": "asseverazioni.e.applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "le opere comportano la produzione di terre e rocce da scavo qualificate sottoprodotto ai sensi dell'art. 1 comma 1, lettera a) del d.P.R. n. 120/2017. L'autodichiarazione di cui all'art. 21 del d.P.R. n. 120/2017 verrà inviata al Comune del luogo di produzione e all'Arpa almeno 15 giorni prima dell'inizio dei lavori di scavo (utilizzare il modello di cui all'Allegato 6 al d.P.R. n. 120/2017)",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "autodichiarazione_art21_dpr_120_2017",
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "le opere comportano la produzione di materiali da scavo per un volume superiore a 6000 mc e sono soggette a VIA o AIA e pertanto, ai sensi dell`art. 8 del d.P.R. n. 120/2017, si prevede la realizzazione del Piano di Utilizzo (Capo II del d.P.R. n. 120/2017)",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "soggette_via_piano_utilizzo",
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "label": "si comunicano gli estremi del provvedimento di VIA o AIA",
+                  "tableView": false,
+                  "defaultValue": false,
+                  "key": "via.comunicata",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.e.soggette_via_piano_utilizzo",
+                    "eq": "true"
+                  },
+                  "type": "checkbox",
+                  "input": true
+                },
+                {
+                  "key": "via.content",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.e.via.comunicata",
+                    "eq": "true"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "input": false,
+                  "tableView": false,
+                  "components": [
+                    {
+                      "label": "rilasciato da",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "via.rilasciato_da",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "prot/estremi",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "via.estremi",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "in data",
+                      "labelPosition": "left-left",
+                      "widget": {
+                        "type": "calendar",
+                        "altInput": true,
+                        "allowInput": true,
+                        "clickOpens": true,
+                        "enableDate": true,
+                        "enableTime": true,
+                        "mode": "single",
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd hh:mm a",
+                        "dateFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                        "useLocaleSettings": false,
+                        "hourIncrement": 1,
+                        "minuteIncrement": 5,
+                        "time_24hr": false,
+                        "saveAs": "date"
+                      },
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "via.data_rilascio",
+                      "type": "textfield",
+                      "input": true
+                    }
+                  ]
+                },
+                {
+                  "label": "le opere comportano la produzione di terre e rocce da scavo, escluse dalla disciplina dei rifiuti, che saranno riutilizzate nello stesso luogo di produzione (art. 24 del d.P.R. n. 120/2017)",
+                  "tableView": false,
+                  "key": "terre_e_rocce_riutilizzate",
+                  "type": "checkbox",
+                  "input": true,
+                  "defaultValue": false
+                },
+                {
+                  "label": "le opere riguardano interventi di demolizione di edifici o altri manufatti preesistenti e producono rifiuti la cui gestione è disciplinata ai sensi della parte quarta del d.lgs 152/ 2006",
+                  "tableView": false,
+                  "key": "rifiuti_disciplinati_dlgs_152_2006",
+                  "type": "checkbox",
+                  "input": true,
+                  "defaultValue": false
+                },
+                {
+                  "label": "le opere comportano la produzione di materiali da scavo che saranno gestiti dall'interessato come rifiuti",
+                  "tableView": false,
+                  "key": "materiali_da_scavo_rifiuti",
+                  "type": "checkbox",
+                  "input": true,
+                  "defaultValue": false
+                }
+              ]
+            },
+            {
+              "html": "<p>l'intervento <strong>NON prevede</strong> la produzione di terre e rocce da scavo;</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "key": "e.non_applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "tableView": false,
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>F) Amianto </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.f",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "key": "amianto.content",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "che sono previsti interventi su parti di edifici contenenti fibre di amianto e che è stato predisposto, ai sensi dei commi 2 e 5 dell'art. 256 del D.Lgs. 81/2008, il Piano di Lavoro di demolizione o rimozione dell'amianto:",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "tableView": false,
+                  "defaultValue": "allegato",
+                  "values": [
+                    {
+                      "label": "si allega il Piano di Lavoro",
+                      "value": "allegato",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "il Piano di lavoro è stato presentato conme alle norme tecniche di prevenzione incendi e pertanto",
+                      "value": "presentato",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "piano_lavoro.tipo",
+                  "type": "radio",
+                  "input": true
+                },
+                {
+                  "key": "f.content.fieldset",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.f.piano_lavoro.tipo",
+                    "eq": "presentato"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "input": false,
+                  "tableView": false,
+                  "components": [
+                    {
+                      "label": "prot/estremi",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "piano_lavoro.estremi",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "in data",
+                      "labelPosition": "left-left",
+                      "widget": {
+                        "type": "calendar",
+                        "altInput": true,
+                        "allowInput": true,
+                        "clickOpens": true,
+                        "enableDate": true,
+                        "enableTime": true,
+                        "mode": "single",
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd hh:mm a",
+                        "dateFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                        "useLocaleSettings": false,
+                        "hourIncrement": 1,
+                        "minuteIncrement": 5,
+                        "time_24hr": false,
+                        "saveAs": "date"
+                      },
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "piano_lavoro.data_presentazione",
+                      "type": "textfield",
+                      "input": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "html": "<p>che non sono previsti interventi su parti di edifici contenenti fibre di amianto</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "key": "f.content.non_applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "tableView": false,
+              "input": false
+            }
+          ]
+        },
+        {
+          "label": "<strong>V) Documentazione Piano del Colore (del Decoro Urbano, dell'Arredo Urbano) </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.v",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "key": "piano_colore.content",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "verbale_rilasciato_label",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "defaultValue": "richiesta_verbale",
+                  "values": [
+                    {
+                      "label": "l'intervento è normato dal Piano del Colore: si richiede Verbale Colore o analogo atto di assenso e si allega la documentazione prevista dallo specifico Regolamento Comunale",
+                      "value": "richiesta_verbale",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "l'intervento è normato dal Piano del Colore: il Verbale Colore o analogo atto di assenso è già stato rilasciato con",
+                      "value": "verbale_rilasciato",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "piano_colore.tipo",
+                  "type": "radio",
+                  "input": true
+                },
+                {
+                  "key": "piano_colore.verbale_rilasciato.fieldset",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.v.piano_colore.tipo",
+                    "eq": "verbale_rilasciato"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "input": false,
+                  "tableView": false,
+                  "components": [
+                    {
+                      "label": "prot/estremi",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "piano_colore.verbale_rilasciato.estremi",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "in data",
+                      "labelPosition": "left-left",
+                      "widget": {
+                        "type": "calendar",
+                        "altInput": true,
+                        "allowInput": true,
+                        "clickOpens": true,
+                        "enableDate": true,
+                        "enableTime": true,
+                        "mode": "single",
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd hh:mm a",
+                        "dateFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                        "useLocaleSettings": false,
+                        "hourIncrement": 1,
+                        "minuteIncrement": 5,
+                        "time_24hr": false,
+                        "saveAs": "date"
+                      },
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "piano_colore.verbale_rilasciato.data_rilascio",
+                      "type": "textfield",
+                      "input": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "html": "<p>Il Comune<strong> non ha adottato il Piano del Colore</strong> oppure l'intervento non prevede il Verbale Colore o analogo atto di assenso</p>",
+              "label": "Content",
+              "refreshOnChange": false,
+              "key": "v.content.non_applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "content",
+              "tableView": false,
+              "input": false
+            }
+          ],
+          "keyModified": true
+        },
+        {
+          "label": "<strong>AP) Misure per la prevenzione delle cadute dall'alto - Elaborato tecnico di copertura</strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.ap",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "key": "elaborato_tecnico_copertura.applicable",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "elaborato_tecnico_copertura_label",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "values": [
+                    {
+                      "label": "che sono previsti interventi in copertura ai sensi del D.P.G.R. 23 maggio 2016, n. 6/R \"Regolamento di attuazione dell'articolo 15 comma 7 della L.R. n. 20/2009\" articolo 3 comma 1 lettere c) e d) nell'ambito dei quali ci si avvale della facoltà di predisporre l'Elaborato Tecnico di Copertura (ETC) ai sensi dell'articolo 5 comma 7 e con i contenuti dell'art. 6 del Regolamento: <br/> - la conformità delle opere previste in progetto alle misure di sicurezza richieste dal Regolamento è attestata, ai sensi dell'articolo 5 commi 1 e 2 del Regolamento, dalla predisposizione dell'elaborato progettuale Allegato 1 - Parte A - Relazione Tecnica corredato da Tavole esplicative preliminari come previsto dall'articolo 6 comma 2 lettera a), trasmesso contestualmente alla presente comunicazione; - l'ETC completo di tutta la documentazione di cui all'articolo 6 comma 2 (Allegato 1 parte A - Relazione tecnica eventualmente aggiornato e Allegato 1 parte B - elaborati progettuali; relativa relazione di calcolo; documentazione del fabbricante; dichiarazione di conformità dell'installatore di cui Allegato 1 parte C; manuali d'uso; registro di ispezione e manutenzione di cui Allegato 1 parte D) dovrà essere consegnato al soggetto legittimato a riceverlo secondo le modalità previste dall'articolo 6 comma 5 del Regolamento;",
+                      "value": "contestuale",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "che sono previsti interventi in copertura ai sensi del D.P.G.R. 23 maggio 2016, n. 6/R \"Regolamento di attuazione dell'articolo 15 comma 7 della L.R. n. 20/2009\" articolo 3 comma 1 lettere c) e d) nell'ambito dei quali ci si avvale della facoltà di predisporre l'Elaborato Tecnico di Copertura (ETC) ai sensi dell'articolo 5 comma 7 e con i contenuti dell'art. 6 del Regolamento; preso atto che:<br/>- è stato precedentemente redatto un ETC relativo all'opera oggetto di intervento consegnato<br/>- analizzata la documentazione relativa si trasmette, con la presente istanza, per la conformità delle opere previste in progetto alle specifiche misure di sicurezza, ai sensi dell'articolo 5 commi 1 e 2, l'elaborato progettuale Allegato 1 - Parte A - Relazione Tecnica eventualmente aggiornato, corredato da Tavole esplicative preliminari come previsto dall'articolo 6 comma 2 lettera a); - l'ETC completo di tutta la documentazione di cui all'articolo 6 comma 2 (Allegato 1 parte A - Relazione tecnica eventualmente aggiornato e Allegato 1 parte B - elaborati progettuali; relativa relazione di calcolo; documentazione del fabbricante; dichiarazione di conformità dell'installatore di cui Allegato 1 parte C; manuali d'uso; registro di ispezione e manutenzione di cui Allegato 1 parte D) dovrà essere consegnato al soggetto legittimato a riceverlo secondo le modalità previste dall'articolo 6 comma 5 del Regolamento.",
+                      "value": "consegnato",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "elaborato_tecnico_copertura.tipo",
+                  "type": "radio",
+                  "input": true,
+                  "defaultValue": "contestuale"
+                },
+                {
+                  "key": "elaborato_tecnico_copertura.etc_consegnato.fieldset",
+                  "conditional": {
+                    "show": true,
+                    "when": "asseverazioni.ap.elaborato_tecnico_copertura.tipo",
+                    "eq": "consegnato"
+                  },
+                  "type": "fieldset",
+                  "label": "",
+                  "input": false,
+                  "tableView": false,
+                  "components": [
+                    {
+                      "label": "prot/estremi",
+                      "labelPosition": "left-left",
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "elaborato_tecnico_copertura.estremi",
+                      "type": "textfield",
+                      "input": true
+                    },
+                    {
+                      "label": "in data",
+                      "labelPosition": "left-left",
+                      "widget": {
+                        "type": "calendar",
+                        "altInput": true,
+                        "allowInput": true,
+                        "clickOpens": true,
+                        "enableDate": true,
+                        "enableTime": true,
+                        "mode": "single",
+                        "noCalendar": false,
+                        "format": "yyyy-MM-dd hh:mm a",
+                        "dateFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                        "useLocaleSettings": false,
+                        "hourIncrement": 1,
+                        "minuteIncrement": 5,
+                        "time_24hr": false,
+                        "saveAs": "date"
+                      },
+                      "tableView": true,
+                      "case": "uppercase",
+                      "validateOn": "blur",
+                      "validate": {
+                        "required": true
+                      },
+                      "key": "elaborato_tecnico_copertura.data_rilascio",
+                      "type": "textfield",
+                      "input": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "elaborato_tecnico_copertura.escluso",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "elaborato_tecnico_copertura_label",
+                  "optionsLabelPosition": "right",
+                  "inline": false,
+                  "hideLabel": true,
+                  "tableView": false,
+                  "defaultValue": "intervento_escluso",
+                  "values": [
+                    {
+                      "label": "che gli interventi oggetto di istanza non interessano la copertura ovvero rientrano nei casi di esclusione previsti dall'articolo 3 comma 2 lettere a), c) e d) (coperture con altezza inferiore o uguale ai 3 metri, coperture già dotate di disposizioni di protezione, coperture di opere temporanee);",
+                      "value": "intervento_escluso",
+                      "shortcut": ""
+                    },
+                    {
+                      "label": "che sono previsti interventi in copertura ai sensi del D.P.G.R. 23 maggio 2016, n. 6/R \"Regolamento di attuazione dell'articolo 15 comma 7 della L.R. n. 20/2009\" articolo 3 comma 1 lettere c) e d) nell'ambito dei quali è stato compilato e sottoscritto dal committente/intestatario e dall'esecutore l'Allegato 2 - Buone pratiche ai sensi dell'articolo 11 del Regolamento, trasmesso contestualmente alla presente comunicazione.",
+                      "value": "allegato_buone_pratiche",
+                      "shortcut": ""
+                    }
+                  ],
+                  "dataType": "string",
+                  "validate": {
+                    "onlyAvailableItems": false
+                  },
+                  "key": "elaborato_tecnico_copertura.escluso.tipo",
+                  "type": "radio",
+                  "input": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "<strong>AA) Illuminazione </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.aa",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "label": "che, in riferimento alla L.R. 31 del 24/03/2000 e alle prescrizioni del Piano Regolatore dell`Illuminazione Comunale, ove presente, approvato con deliberazione del C.C. del",
+              "labelPosition": "left-left",
+              "widget": {
+                "type": "calendar",
+                "altInput": true,
+                "allowInput": true,
+                "clickOpens": true,
+                "enableDate": true,
+                "enableTime": true,
+                "mode": "single",
+                "noCalendar": false,
+                "format": "yyyy-MM-dd hh:mm a",
+                "dateFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                "useLocaleSettings": false,
+                "hourIncrement": 1,
+                "minuteIncrement": 5,
+                "time_24hr": false,
+                "saveAs": "date"
+              },
+              "tableView": true,
+              "key": "data_delibera",
+              "type": "textfield",
+              "input": true,
+              "labelWidth": 80
+            },
+            {
+              "key": "illuminazione.applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "HTML",
+                  "attrs": [
+                    {
+                      "attr": "",
+                      "value": ""
+                    }
+                  ],
+                  "content": "gli interventi in progetto comprendono l`illuminazione delle aree private esterne ai fabbricati (cortili, parcheggi, aree verdi) e sono\r\nconformi alle prescrizioni contenute nel PRIC.",
+                  "refreshOnChange": false,
+                  "key": "html",
+                  "type": "htmlelement",
+                  "input": false,
+                  "tableView": false
+                }
+              ]
+            },
+            {
+              "key": "illuminazione.non_applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "HTML",
+                  "attrs": [
+                    {
+                      "attr": "",
+                      "value": ""
+                    }
+                  ],
+                  "content": "gli interventi in progetto <b>non rientrano</b> nel relativo campo di applicazione.",
+                  "refreshOnChange": false,
+                  "key": "html",
+                  "type": "htmlelement",
+                  "input": false,
+                  "tableView": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "<strong>U) Documentazione (es. autorizzazioni, altro) </strong>",
+          "hideLabel": false,
+          "tableView": false,
+          "key": "asseverazioni.u",
+          "type": "container",
+          "input": true,
+          "components": [
+            {
+              "label": "Si applica ?",
+              "labelPosition": "left-left",
+              "optionsLabelPosition": "right",
+              "inline": true,
+              "tableView": false,
+              "defaultValue": true,
+              "values": [
+                {
+                  "label": "si",
+                  "value": "true",
+                  "shortcut": ""
+                },
+                {
+                  "label": "no",
+                  "value": "false",
+                  "shortcut": ""
+                }
+              ],
+              "dataType": "boolean",
+              "key": "applicabile",
+              "type": "radio",
+              "labelWidth": 30,
+              "input": true
+            },
+            {
+              "key": "documentazione.applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "true"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "che l'intervento in progetto necessita della seguente documentazione obbligatoria ai sensi delle normative di settore:",
+                  "autoExpand": false,
+                  "tableView": true,
+                  "validateOn": "blur",
+                  "validate": {
+                    "required": true
+                  },
+                  "key": "documentazione",
+                  "type": "textarea",
+                  "input": true
+                }
+              ]
+            },
+            {
+              "key": "documentazione.non_applicabile",
+              "conditional": {
+                "show": true,
+                "when": "applicabile",
+                "eq": "false"
+              },
+              "type": "fieldset",
+              "label": "",
+              "tableView": false,
+              "input": false,
+              "components": [
+                {
+                  "label": "HTML",
+                  "attrs": [
+                    {
+                      "attr": "",
+                      "value": ""
+                    }
+                  ],
+                  "content": "che l'intervento in progetto <b>non necessita di ulteriore documentazione</b> ai sensi delle normative di settore",
+                  "refreshOnChange": false,
+                  "key": "html",
+                  "type": "htmlelement",
+                  "input": false,
+                  "tableView": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "label": "Salva",
+      "key": "submit",
+      "disableOnInvalid": true,
+      "input": true,
+      "tableView": false
+    }
+  ]
+};
+
+const data = {};
+
+const config = {
+    autore: {
+        "nome": "Paolo"
+    }
+}
+
+const istanza = {
+    soggetto: {
+        "cognome": "Loddo"
+    }
+}
+
+Formio.icons = 'fontawesome';
+template.config = config;
+template.istanza = istanza;
+
+Formio.createForm(document.getElementById('formio'), template ).then(function(form) {
+
+    var submission = { data: data };
+    form.submission = submission;
+
+    form.on('submit', function(submission) {
+        console.log(submission);
+        console.log(JSON.stringify(submission, null, 4));
+    });
+});
+
+
+</script>
+</body>
+</html>

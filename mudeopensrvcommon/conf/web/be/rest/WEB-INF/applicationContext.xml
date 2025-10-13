@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	   http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/util 
+	   http://www.springframework.org/schema/util/spring-util.xsd">
+	
+    <!-- Registra i file di property -->
+	<context:property-placeholder location="classpath:application.properties" />
+	
+	<bean class="it.csi.mudeopen.mudeopensrvcommon.business.SpringApplicationContextHelper"></bean>
+	<import resource="dao-beans.xml"/>	
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="${datasource_jndi}" />
+        <property name="proxyInterface" value="javax.sql.DataSource" />
+    </bean>
+    
+
+<!-- 
+	<bean id="pingApiServiceHelper"
+		class="it.csi.mudeopen.mudeopensrvcommon.business.be.web.impl.PingApiServiceHelper">
+		<constructor-arg index="0" value="@mudeopensrvcommon.hostname@" />
+		<constructor-arg index="1" value="@mudeopensrvcommon.endpoint_base@" />
+	</bean>
+
+	<bean id="indexServiceHelper"
+		  class="it.csi.mudeopen.mudeopensrvcommon.business.be.helper.index.MudeIndexServiceHelper">
+		<constructor-arg index="0" value="@index.endpoint@" />
+		<constructor-arg index="1" value="@index.serviceUrl@" />
+		<constructor-arg index="2" value="@index.consumerKey@" />
+		<constructor-arg index="3" value="@index.consumerSecret@" />
+		<constructor-arg index="4" value="@index.tenant@" />
+		<constructor-arg index="5" value="@index.username@" />
+		<constructor-arg index="6" value="@index.password@" />
+		<constructor-arg index="7" value="@index.repository@" />
+	</bean>
+
+    <bean id="svistaService"
+		  class="it.csi.mudeopen.mudeopensrvcommon.business.be.helper.mudeopensrvcommon.SvistaServiceHelper">
+		<constructor-arg index="0" value="@svista.consumerKey@" />
+		<constructor-arg index="1" value="@svista.consumerSecret@" />		  
+		<constructor-arg index="2" value="@svista.urlToken@" />
+		<constructor-arg index="3" value="@svista.urlWsdl@" />
+	</bean>
+ 
+	<bean id="geecoServiceHelper"
+	  class="it.csi.mudeopen.mudeopensrvcommon.business.be.helper.mudeopensrvcommon.GeecoServiceHelper">
+		<constructor-arg index="0" value="@geeco.configurationUrl@" />
+		<constructor-arg index="1" value="@geeco.quitUrl@" />
+		<constructor-arg index="2" value="@geeco.uuid@" />
+		<constructor-arg index="3" value="@geeco.env@" />
+	</bean>
+		
+	<bean id="pdfRuleServiceHelper"
+	  class="it.csi.mudeopen.mudeopensrvcommon.business.be.helper.rules.RulePdfServiceHelper">
+	</bean>		
+		
+	<bean id="pdfaServiceHelper" class="it.csi.mudeopen.mudeopensrvcommon.business.be.helper.pdfa.PdfaConvertHelper">
+		<constructor-arg index="0" value="@pdfa.color@" />
+		<constructor-arg index="1" value="@pdfa.xmp@" />
+		<constructor-arg index="2" value="@pfda.fontname@" />			  
+	</bean>	
+-->
+
+	<context:component-scan base-package="it.csi.mudeopen.mudeopensrvcommon" />
+	<context:component-scan base-package="it.csi.mudeopen.mudeopensrvcommon.business.be.web.impl" />
+	
+	<import resource="spring-data-context.xml"/>
+	<import resource="mail.xml" />
+	
+ 	<bean id="loggingAspect" class="it.csi.mudeopen.mudeopensrvcommon.aspect.LoggingAspect"></bean>
+	<aop:config>
+		<aop:aspect id="logging" ref="loggingAspect">@logs.aspect.common@</aop:aspect>
+	</aop:config>
+ 	
+</beans>

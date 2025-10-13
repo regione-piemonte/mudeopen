@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rsm:TaxInvoice_CrossIndustryInvoice 
+xmlns:rsm="urn:etda:uncefact:data:standard:TaxInvoice_CrossIndustryInvoice:2" 
+xmlns:ram="urn:etda:uncefact:data:standard:TaxInvoice_ReusableAggregateBusinessInformationEntity:2" 
+xmlns:ns3="http://www.w3.org/2000/09/xmldsig#">
+    <rsm:ExchangedDocumentContext>
+        <ram:GuidelineSpecifiedDocumentContextParameter>
+            <ram:ID schemeAgencyID="ETDA" schemeVersionID="v2.0">ER3-2560</ram:ID>
+        </ram:GuidelineSpecifiedDocumentContextParameter>
+    </rsm:ExchangedDocumentContext>
+
+    <rsm:ExchangedDocument>
+	
+        <ram:ID>TIV000012</ram:ID>
+        <ram:Name>AAAA</ram:Name>
+        <ram:TypeCode>388</ram:TypeCode>
+        <ram:IssueDateTime>1473-06-05T17:00:00.000Z</ram:IssueDateTime>
+        <ram:Purpose>BBBB</ram:Purpose>
+        <ram:CreationDateTime>1473-06-06T06:59:30.000Z</ram:CreationDateTime>
+        <ram:IncludedNote>
+            <ram:Subject>CCCC</ram:Subject>
+            <ram:Content>A2BcyVpQ</ram:Content>
+        </ram:IncludedNote>
+		
+		<ram:Title></ram:Title>
+		<ram:Author></ram:Author>
+		<ram:CreationDate>17/02/2022, 17:59:12</ram:CreationDate>
+		<ram:Creator></ram:Creator>
+		<ram:ModDate>17/02/2022, 17:59:12</ram:ModDate>
+		<ram:Producer>iText 2.1.7 by 1T3XT</ram:Producer>
+		<ram:Subject></ram:Subject>
+		
+    </rsm:ExchangedDocument>
+</rsm:TaxInvoice_CrossIndustryInvoice>

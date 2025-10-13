@@ -1,0 +1,56 @@
+/*
+ *  SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+ *  SPDX-License-Identifier: EUPL-1.2
+ */
+package it.csi.mudeopen.mudeopensrvcommon.vo.enumeration;
+
+import java.util.Arrays;
+
+public enum FunzioniAbilitazioniEnum {
+    CREA_IST("CREA_IST"),
+    COMP_TIT("COMP_TIT"),
+    COMP_SOGG_COINV("COMP_SOGG_COINV"),
+    IND_PM("IND_PM"),
+    IND_COLLAB_PM("IND_COLLAB_PM"),
+    COMP_ASSEV("COMP_ASSEV"),
+    NOMINA_PROF_SPEC("NOMINA_PROF_SPEC"),
+    NOMINA_CONSULT("NOMINA_CONSULT"),
+    UPLOAD_ALLEG("UPLOAD_ALLEG"),
+    CONSULTA_ALLEG("CONSULTA_ALLEG"),
+    ELIMINA_ALLEG("ELIMINA_ALLEG"),
+    ELIMINA_IST("ELIMINA_IST"),
+    DOWN_PDF_IST("DOWN_PDF_IST"),
+    FIRMA_IST("FIRMA_IST"),
+    UPL_IST("UPL_IST"),
+    INVIA_IST("INVIA_IST"),
+    CONSULTA_IST("CONSULTA_IST"),
+    ELENCO_IST_FASCIC("ELENCO_IST_FASCIC"),
+    CREA_FASCIC("CREA_FASCIC"),
+    CONS_IST_ALL_FASCIC("CONS_IST_ALL_FASCIC"),
+    ABILITA_CREA_IST("ABILITA_CREA_IST"),
+    TRASF_PROPR_FASCIC("TRASF_PROPR_FASCIC"),
+    MODIFICA_DATI_FASCIC("MODIFICA_DATI_FASCIC"),
+    CHIUDI_FASCIC("CHIUDI_FASCIC"),
+    ELIMINA_FASCIC("ELIMINA_FASCIC"),
+	
+	RIPORTA_IN_BOZZA("RIPORTA_IN_BOZZA"),
+	CANCELLA_ISTANZA("CANCELLA_ISTANZA"),
+	CONSOLIDA_ISTANZA("CONSOLIDA_ISTANZA"),
+	ELIMINA_FASCICOLO("ELIMINA_FASCICOLO"),
+	BE_NUOVA_NOTIFICA("BE_NUOVA_NOTIFICA")
+	;
+
+    private final String description;
+
+    FunzioniAbilitazioniEnum(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public static FunzioniAbilitazioniEnum findByDescription(final String descrizione) {
+        return Arrays.stream(values()).filter(value -> value.getDescription().equals(descrizione)).findFirst().orElse(null);
+    }
+}
