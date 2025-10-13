@@ -1,0 +1,90 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="d-flex flex-wrap pt-3">
+  <div class="title-box">
+    <title-bar [breadcrumb]="breadcrumb" title="GESTIONE ISTANZA" extraClass="pt-0"></title-bar>
+    <div>{{descrTipologiaIstanza}}</div>
+    <div *ngIf="formsService.istanza.keywords" class="tagsDiv">Parole chiave: <strong>{{formsService.istanza.keywords}}</strong></div>
+  </div>
+  <div *ngIf="infoQuadroBox.enabled" class="ml-auto align-self-start gestione-collaborativa-toolbox">
+          <table class="mb-2" aria-hidden="true">
+            <tr>
+              <td class="infox-label">Stato quadro:</td>
+              <td class="infox-data pl-2" [innerHTML]="infoQuadroBox.status"></td>
+            </tr>
+            <tr *ngIf="infoQuadroBox.last_modify_time">
+              <td class="infox-label">Ultima modifica:</td>
+              <td class="infox-data pl-2" [innerHTML]="infoQuadroBox.last_modify_time"></td>
+            </tr>
+            <tr *ngIf="infoQuadroBox.modify_by_user">
+              <td class="infox-label">Modificato da:</td>
+              <td class="infox-data pl-2">{{infoQuadroBox.modify_by_user}}</td>
+            </tr>
+            <tr *ngIf="infoQuadroBox.remaining_time">
+              <td class="infox-label">Bloccato per:</td>
+              <td class="infox-data pl-2">{{infoQuadroBox.remaining_time}}</td>
+            </tr>
+            <tr>
+              <td class="linked infox-label"><span (click)="onOpenListaStati()" data-toggle="tooltip" title="Mostra lista dei cambi stato">Stato istanza <em class="fa fa-info-circle"></em>: </span></td>
+              <td class="infox-data pl-2" [innerHTML]="statoIstanza"></td>
+            </tr>
+          </table>
+          <div *ngIf="infoQuadroBox.isAdmin" class="">
+            <em class="infox-icon fa-button-icon fa fa-user-o mr-2"></em>&nbsp;<span class="mt-2 linked" (click)="onOpenUsersProviledgeManagment()">GESTIONE ABILITAZIONI</span>
+          </div>
+  </div>
+</div>
+
+<div class="title title-bold pt-2 pb-2 mb-2">
+  <div>
+    Numero istanza: {{formsService.istanza.codice_istanza}}
+    <span *ngIf="canOpenToolbox()">
+      &nbsp;<em (click)="openDebugInfo()" class="fa fa-book" title="Apri MUDE toolbox window"></em>
+      &nbsp;<em (click)="openDocxTester()" class="fa fa-file-pdf-o" title="Apri .docx tester tool"></em>
+    </span>
+  </div>
+  <div class="subtitle">
+    Numero fascicolo: {{formsService.fascicolo?.codice_fascicolo}}
+  </div>
+</div>
+
+<!--
+<div class="my-3" *ngIf="!isTemplateActive">
+  <alert-box type="INFO" boldMessage="BACKOFFICE: modalità anteprima `{{codTemplate}}` ({{templateType}} versione: {{templateVersion}})"></alert-box>
+</div>
+-->
+
+<div class="via-container" id="viaContainer">
+  <ng-container *ngIf="stepperReady">
+    <app-stepper  #stepper [stepList]="stepManagerService.steps" 
+                          (currentStepClicked)="currentStepClicked($event)"
+                          (selectionChange)="stepSelectionChange($event)"
+                          [locked]="stepManagerService.stepsLocked"
+                          (stepChangeLocked)="stepManagerService.stepsLockedMessage = true">
+      <ng-container *ngFor="let step of stepManagerService.steps; index as i">
+        <cdk-step *ngIf="!step.disabled"
+              [label]="step.json_configura_quadro.label" 
+              [completed]="step.editable"
+              [editable]="step.editable">
+          <div class="my-3" *ngIf="stepManagerService.stepsLockedMessage">
+            <alert-box type="WARNING" message="Sono state fatte delle modifiche. E' necessario salvare prima di spostarsi in un'altra sezione." timeout="10001" (fadeaway)="stepManagerService.stepsLockedMessage = false"></alert-box>
+          </div>
+          <div class="my-3" *ngIf="isNewTemplate">
+            <alert-box type="WARNING" message="La versione della procedura è stata aggiornata. Sarà necessario validare i dati eventualmente inseriti in precedenza."></alert-box>
+          </div>
+          <div *ngIf="step.message" class="mb-4 py-0 px-0">
+            <alert-box [type]="step.message.type || 'INFO'" [message]="step.message.msg" [esito]="step.message.title"></alert-box>
+          </div>
+                              
+          <ng-container
+            *ngComponentOutlet="componentsForStepper[step.json_configura_quadro.componentName]; injector: stepInjectors[i]">
+          </ng-container>
+        </cdk-step>
+      </ng-container>
+    </app-stepper>
+  </ng-container>
+</div>
+  

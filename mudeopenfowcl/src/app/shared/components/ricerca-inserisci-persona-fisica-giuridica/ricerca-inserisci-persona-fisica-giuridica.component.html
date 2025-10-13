@@ -1,0 +1,64 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="!isNewInsert">
+    <div *ngIf="!notitle">
+        <div class="containerDiv py-3 pl-4 pr-3">
+            <span class="title-col1">{{title}}</span>
+            <span class="close-col2" ><em class="fa fa-times" (click)="onClose()"></em></span>
+        </div>
+        <div class="px-4 py-2">{{titleDescription}}</div>
+    </div>
+
+    <div class="">
+        <mude-tabs (changed)="onChangeTab($event)">
+            <!--
+              tabPersona fisica
+            -->
+            <mude-tab *ngIf="mode == 'ALL' || mode == 'PF' " tabTitle="Persona fisica">
+                <div *ngIf="subjectSelectMethod == 'PF'">
+                    <ricerca-persona-fisica [selectionType]="selectionType" 
+                        [excludeIDs]="excludeIDs"
+                        [userSelectionType]="userSelectionType"
+                        (complete)="onComplete()"
+                        (selected)="onItemSelectedPF($event)">
+                    </ricerca-persona-fisica>
+                </div>
+            </mude-tab>
+    
+            <!--
+              tabPersona giuridica
+            -->
+            <mude-tab *ngIf="mode == 'ALL' || mode == 'PG' " tabTitle="Persona giuridica">
+                <div *ngIf="subjectSelectMethod == 'PG'">
+                    <ricerca-persona-giuridica [selectionType]="selectionType"
+                        [excludeIDs]="excludeIDs"
+                        (complete)="onComplete()"
+                        (selected)="onItemSelectedPG($event)">
+                    </ricerca-persona-giuridica>
+                </div>
+            </mude-tab>
+        </mude-tabs>
+        <div *ngIf="(''+insertChildTitle) != 'false'" class="d-flex pt-3">
+            <div class="ml-auto linkedText linkDiv" (click)="insertNewSubject()"><img alt=""  src="assets/images/plus.png" class="plusIcon"/>INSERISCI NUOVO SOGGETTO</div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="isNewInsert">
+    <div *ngIf="subjectSelectMethod == 'PF'">
+        <inserisci-persona-fisica [noclose]="notitle"
+            (closeEvent)="onClose()"
+            (subjectCreated)="onItemSelectedPF($event)">
+        </inserisci-persona-fisica>
+    </div>
+    <div *ngIf="subjectSelectMethod == 'PG'">
+        <inserisci-persona-giuridica [noclose]="notitle"
+            (closeEvent)="onClose()"
+            (subjectCreated)="onItemSelectedPG($event)">
+        </inserisci-persona-giuridica>
+    </div>
+</div>

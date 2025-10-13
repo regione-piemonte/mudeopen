@@ -1,0 +1,18 @@
+.importo-div {
+    background-color: #f6f4f4;
+}
+
+.importo-div-pagato {
+    background-color: #f4ffe9;
+}
+
+.euroDiv {
+    text-align: end;
+    margin-top: 35px;
+    font-weight: bold;
+}
+
+.debugSelect {
+    font-size: 11px;
+    width: 20px;
+}

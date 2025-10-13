@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="google" value="notranslate">
+<title>MUDE Toolbox</title>
+<style>
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #dbeef7;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #eee;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #89e3ff;
+  border-bottom: 3px solid #006cb4;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+.tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.jdataArea {
+	width: 100%; 
+	height: calc(100vh - 120px);
+}
+
+.jdataHalfArea {
+	width: 100%; 
+	height: calc(49vh - 105px);
+}
+
+.expressionArea {
+	width: 100%; 
+	height: calc(100vh - 200px);
+}
+
+SELECT {
+	width: 100%; 
+}
+
+#ExpressionResult {
+font-size: 23px;
+}
+.jdataAreaH {
+	height: 1px;
+	width: calc(100vw - 50px);
+}
+</style>
+<script type="text/javascript">
+!function(e,n){"object"==typeof exports&&"object"==typeof module?module.exports=n():"function"==typeof define&&define.amd?define([],n):"object"==typeof exports?exports.jsonview=n():e.jsonview=n()}(self,(function(){return(()=>{"use strict";var e={767:(e,n,t)=>{t.d(n,{Z:()=>s});var r=t(81),o=t.n(r),i=t(645),a=t.n(i)()(o());a.push([e.id,'.json-container{font-family:"Open Sans";font-size:16px;background-color:#fff;color:gray;box-sizing:border-box}.json-container .line{margin:4px 0;display:flex;justify-content:flex-start}.json-container .caret-icon{width:18px;text-align:center;cursor:pointer}.json-container .empty-icon{width:18px}.json-container .json-type{margin-right:4px;margin-left:4px}.json-container .json-key{color:#444;margin-right:4px;margin-left:4px}.json-container .json-index{margin-right:4px;margin-left:4px}.json-container .json-value{margin-left:8px}.json-container .json-number{color:#f9ae58}.json-container .json-boolean{color:#ec5f66}.json-container .json-string{color:#86b25c}.json-container .json-size{margin-right:4px;margin-left:4px}.json-container .hidden{display:none}.json-container .fas{display:inline-block;border-style:solid;width:0;height:0}.json-container .fa-caret-down{border-width:6px 5px 0 5px;border-color:gray transparent}.json-container .fa-caret-right{border-width:5px 0 5px 6px;border-color:transparent transparent transparent gray}',""]);const s=a},645:e=>{e.exports=function(e){var n=[];return n.toString=function(){return this.map((function(n){var t="",r=void 0!==n[5];return n[4]&&(t+="@supports (".concat(n[4],") {")),n[2]&&(t+="@media ".concat(n[2]," {")),r&&(t+="@layer".concat(n[5].length>0?" ".concat(n[5]):""," {")),t+=e(n),r&&(t+="}"),n[2]&&(t+="}"),n[4]&&(t+="}"),t})).join("")},n.i=function(e,t,r,o,i){"string"==typeof e&&(e=[[null,e,void 0]]);var a={};if(r)for(var s=0;s<this.length;s++){var c=this[s][0];null!=c&&(a[c]=!0)}for(var l=0;l<e.length;l++){var d=[].concat(e[l]);r&&a[d[0]]||(void 0!==i&&(void 0===d[5]||(d[1]="@layer".concat(d[5].length>0?" ".concat(d[5]):""," {").concat(d[1],"}")),d[5]=i),t&&(d[2]?(d[1]="@media ".concat(d[2]," {").concat(d[1],"}"),d[2]=t):d[2]=t),o&&(d[4]?(d[1]="@supports (".concat(d[4],") {").concat(d[1],"}"),d[4]=o):d[4]="".concat(o)),n.push(d))}},n}},81:e=>{e.exports=function(e){return e[1]}},379:e=>{var n=[];function t(e){for(var t=-1,r=0;r<n.length;r++)if(n[r].identifier===e){t=r;break}return t}function r(e,r){for(var i={},a=[],s=0;s<e.length;s++){var c=e[s],l=r.base?c[0]+r.base:c[0],d=i[l]||0,p="".concat(l," ").concat(d);i[l]=d+1;var u=t(p),f={css:c[1],media:c[2],sourceMap:c[3],supports:c[4],layer:c[5]};if(-1!==u)n[u].references++,n[u].updater(f);else{var v=o(f,r);r.byIndex=s,n.splice(s,0,{identifier:p,updater:v,references:1})}a.push(p)}return a}function o(e,n){var t=n.domAPI(n);return t.update(e),function(n){if(n){if(n.css===e.css&&n.media===e.media&&n.sourceMap===e.sourceMap&&n.supports===e.supports&&n.layer===e.layer)return;t.update(e=n)}else t.remove()}}e.exports=function(e,o){var i=r(e=e||[],o=o||{});return function(e){e=e||[];for(var a=0;a<i.length;a++){var s=t(i[a]);n[s].references--}for(var c=r(e,o),l=0;l<i.length;l++){var d=t(i[l]);0===n[d].references&&(n[d].updater(),n.splice(d,1))}i=c}}},569:e=>{var n={};e.exports=function(e,t){var r=function(e){if(void 0===n[e]){var t=document.querySelector(e);if(window.HTMLIFrameElement&&t instanceof window.HTMLIFrameElement)try{t=t.contentDocument.head}catch(e){t=null}n[e]=t}return n[e]}(e);if(!r)throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");r.appendChild(t)}},216:e=>{e.exports=function(e){var n=document.createElement("style");return e.setAttributes(n,e.attributes),e.insert(n,e.options),n}},565:(e,n,t)=>{e.exports=function(e){var n=t.nc;n&&e.setAttribute("nonce",n)}},795:e=>{e.exports=function(e){var n=e.insertStyleElement(e);return{update:function(t){!function(e,n,t){var r="";t.supports&&(r+="@supports (".concat(t.supports,") {")),t.media&&(r+="@media ".concat(t.media," {"));var o=void 0!==t.layer;o&&(r+="@layer".concat(t.layer.length>0?" ".concat(t.layer):""," {")),r+=t.css,o&&(r+="}"),t.media&&(r+="}"),t.supports&&(r+="}");var i=t.sourceMap;i&&"undefined"!=typeof btoa&&(r+="\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(i))))," */")),n.styleTagTransform(r,e,n.options)}(n,e,t)},remove:function(){!function(e){if(null===e.parentNode)return!1;e.parentNode.removeChild(e)}(n)}}}},589:e=>{e.exports=function(e,n){if(n.styleSheet)n.styleSheet.cssText=e;else{for(;n.firstChild;)n.removeChild(n.firstChild);n.appendChild(document.createTextNode(e))}}}},n={};function t(r){var o=n[r];if(void 0!==o)return o.exports;var i=n[r]={id:r,exports:{}};return e[r](i,i.exports,t),i.exports}t.n=e=>{var n=e&&e.__esModule?()=>e.default:()=>e;return t.d(n,{a:n}),n},t.d=(e,n)=>{for(var r in n)t.o(n,r)&&!t.o(e,r)&&Object.defineProperty(e,r,{enumerable:!0,get:n[r]})},t.o=(e,n)=>Object.prototype.hasOwnProperty.call(e,n),t.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var r={};return(()=>{t.r(r),t.d(r,{collapse:()=>$,create:()=>O,default:()=>I,destroy:()=>z,expand:()=>P,render:()=>A,renderJSON:()=>N});var e=t(379),n=t.n(e),o=t(795),i=t.n(o),a=t(569),s=t.n(a),c=t(565),l=t.n(c),d=t(216),p=t.n(d),u=t(589),f=t.n(u),v=t(767),y={};function h(e){return Array.isArray(e)?"array":null===e?"null":typeof e}function m(e){return document.createElement(e)}y.styleTagTransform=f(),y.setAttributes=l(),y.insert=s().bind(null,"head"),y.domAPI=i(),y.insertStyleElement=p(),n()(v.Z,y),v.Z&&v.Z.locals&&v.Z.locals;const x="hidden",g="fa-caret-right",j="fa-caret-down";function b(e){e.children.forEach((e=>{e.el.classList.add(x),e.isExpanded&&b(e)}))}function E(e){e.children.forEach((e=>{e.el.classList.remove(x),e.isExpanded&&E(e)}))}function S(e){if(e.children.length>0){const n=e.el.querySelector(".fas");n&&n.classList.replace(g,j)}}function k(e){if(e.children.length>0){const n=e.el.querySelector(".fas");n&&n.classList.replace(j,g)}}function w(e){e.isExpanded?(e.isExpanded=!1,k(e),b(e)):(e.isExpanded=!0,S(e),E(e))}function L(e,n){n(e),e.children.length>0&&e.children.forEach((e=>{L(e,n)}))}function T(e={}){return{key:e.key||null,parent:e.parent||null,value:e.hasOwnProperty("value")?e.value:null,isExpanded:e.isExpanded||!1,type:e.type||null,children:e.children||[],el:e.el||null,depth:e.depth||0,dispose:null}}function M(e,n){if("object"==typeof e)for(let t in e){const r=T({value:e[t],key:t,depth:n.depth+1,type:h(e[t]),parent:n});n.children.push(r),M(e[t],r)}}function C(e){return"string"==typeof e?JSON.parse(e):e}function O(e){const n=C(e),t=T({value:n,key:h(n),type:h(n)});return M(n,t),t}function N(e,n){const t=C(e),r=createTree(t);return A(r,n),r}function A(e,n){const t=function(){const e=m("div");return e.className="json-container",e}();L(e,(function(e){e.el=function(e){let n=m("div");const t=e=>{const n=e.children.length;return"array"===e.type?`[${n}]`:"object"===e.type?`{${n}}`:null};if(e.children.length>0){n.innerHTML=function(e={}){const{key:n,size:t}=e;return`\n    <div class="line">\n      <div class="caret-icon"><i class="fas fa-caret-right"></i></div>\n      <div class="json-key">${n}</div>\n      <div class="json-size">${t}</div>\n    </div>\n  `}({key:e.key,size:t(e)});const r=n.querySelector(".caret-icon");e.dispose=function(e,n,t){return e.addEventListener(n,t),()=>e.removeEventListener(n,t)}(r,"click",(()=>w(e)))}else n.innerHTML=function(e={}){const{key:n,value:t,type:r}=e;return`\n    <div class="line">\n      <div class="empty-icon"></div>\n      <div class="json-key">${n}</div>\n      <div class="json-separator">:</div>\n      <div class="json-value json-${r}">${t}</div>\n    </div>\n  `}({key:e.key,value:e.value,type:typeof e.value});const r=n.children[0];return null!==e.parent&&r.classList.add(x),r.style="margin-left: "+18*e.depth+"px;",r}(e),t.appendChild(e.el)})),n.appendChild(t)}function P(e){L(e,(function(e){e.el.classList.remove(x),e.isExpanded=!0,S(e)}))}function $(e){L(e,(function(n){n.isExpanded=!1,n.depth>e.depth&&n.el.classList.add(x),k(n)}))}function z(e){var n;L(e,(e=>{e.dispose&&e.dispose()})),(n=e.el.parentNode).parentNode.removeChild(n)}const I={render:A,create:O,renderJSON:N,expand:P,collapse:$,traverse:L,destroy:z}})(),r})()}));
+
+function renderJsonInDiv(divClsName, json) {
+  //console.log("renderJsonInDiv " + divClsName)
+  document.querySelector('.'+divClsName).innerHTML = '';
+  const tree = jsonview.create(json);
+  jsonview.render(tree, document.querySelector('.'+divClsName));
+  jsonview.expand(tree);
+  document.querySelector('.'+divClsName).querySelector('.json-key').innerHTML = '';
+}
+</script>
+</head>
+
+<script>
+var tabs = [
+	'JData'
+  , 'JFascicolo'
+  , 'JIstanza'
+  , 'FormIO'
+  , 'Quadro'
+  , 'SottoQuadro'
+  , 'SottoQuadroSubmission'
+  , 'Chiave'
+  , 'JEspr'
+  , 'Logs'
+];
+
+function openTab(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+var jdata = null;
+var except = null;
+function checkExpr() {
+	try {
+		jdata = JSON.parse(document.getElementById('JData').value);
+		jdata.ex_FASCICOLO = JSON.parse(document.getElementById('JFascicolo').value);
+		jdata.ex_ISTANZA = JSON.parse(document.getElementById('JIstanza').value);
+		
+		var expr = document.getElementById('JEspr').value;
+		if(!jdata || !expr) {
+			return;}
+
+		var resEl = document.getElementById('ExpressionResult');
+		
+		except = null;
+		var res = evalExpression(expr);
+		if(res === undefined) {
+			resEl.innerHTML = '<span style="color: red"> ' + except + '</span>' }
+		else {
+			resEl.innerHTML = '<span style="color: green"> ' + res + '</span>' }
+	}
+	catch(e) {}
+}
+
+function evalExpression(expression, scoped_data = null) {
+	var _expr = ''+expression;
+	var stringsArr = [];
+	for(var i=0; i<expression.length; i++) {
+		if(expression.charAt(i) == "'" || expression.charAt(i) == '"') {
+		  var stopIndex = expression.indexOf(expression.charAt(i), i+1);
+		  if(stopIndex == -1) break; // no end quote found, the quit!
+
+		  stringsArr.push(expression.substring(i, stopIndex+1));
+		  expression = expression.substring(0, i)+'§'+(stringsArr.length-1)+'§'+expression.substring(stopIndex+1);
+		}
+	}
+
+	// removes from 'expression' all the dangerous stuff
+	var expr = (' '+expression+' ').replace(/ new /g, ' { OPERATOR "new" NOT ALLOWED! } ')
+					.replace(/ delete /g, ' { OPERATOR "delete" NOT ALLOWED! } ')
+					.replace(/[^a-zA-Z0-9.]window[.]/g, ' { object "{ OPERATOR "window" NOT ALLOWED! }" NOT ALLOWED! } ')
+					.replace(/[^a-zA-Z0-9.]document[.]/g, ' { object "document" NOT ALLOWED! } ')
+					.replace(/[^=!]=[^=>]/g, ' { OPERATOR "=" NOT ALLOWED! } ')
+					.replace(/[ ]/g, '  ')
+					// pre-handle functions
+					.replace(/([^a-zA-Z._])([a-zA-Z][a-zA-Z.]*\()/g, '$1_$2')
+					// pre-handle 'true'
+					.replace(/([^a-zA-Z0-9._])(true|false|return)([^a-zA-Z0-9._])/g, '$1_$2_$3')
+					// binds "JSON." to current tab key
+					.replace(/([^a-zA-Z0-9._])JSONDATA[.]/g, '$1\_.')
+					// binds "JSON_QUADRO." to current tab key
+					.replace(/([^a-zA-Z0-9._])JSONQUADRO[.]/g, '$1\$.')
+					// binds "this." to map keys
+					.replace(/this[.]/g, '')
+					.replace(/\b(this)\b/g, '£')
+					.replace(/([^a-zA-Z0-9._'"])([a-zA-Z])/g, '$1this.$2')
+					// post-handle 'true/false'
+					.replace(/([^a-zA-Z0-9._])_(true|false|return)_([^a-zA-Z0-9._])/g, '$1$2$3')
+					// post-handle functions
+					.replace(/_([a-zA-Z][a-zA-Z.]*\()/g, '$1')
+					//.replace(/([^a-zA-Z0-9._'"])@([a-zA-Z])/g, '$1this.WAPI$2')
+					.replace(/£/g, 'this');
+
+	stringsArr.forEach((x, index) => {
+		expr = expr.replace('§'+index+'§', x);
+	});
+
+	console.log(_expr + ' ====> ' + expr);
+	let result = undefined;
+	try {
+		result = (new Function('$', '_', 'try { return ('+ expr + ') } catch(ex) { return "exprException: " + ex; }'))
+			.bind(scoped_data?scoped_data:jdata)(jdata, jdata);
+	}catch(ex) { }
+
+	if(result && (''+result).startsWith('exprException:')) {
+		except = 'JDATA check exception: "' + expr + '" raised ' + result;
+
+		addLog('JDATA expression EXCEPTION: <font color="green">' + _expr + '</font><br>====> <font color="red">' + expr + '</font><br>====> raised ' + result + '. Using data: ');
+		console.log('JDATA check exception: "' + expr + '" raised ' + result + '. Using data: ');
+		console.log(jdata)
+		
+		return undefined;
+	}
+
+	addLog('JDATA expression: <font color="green">' + _expr + '</font><br>====> <font color="blue">' + expr + '</font>  == ' + result);
+	console.log('JDATA check ok: "' + expr + '" raised ' + result);
+
+	return result;
+}			
+
+function switchPanelTo(submission) {
+	var expr = document.getElementById('SottoQuadroLBL').style.display = submission?'none' : '';
+	var expr = document.getElementById('SottoQuadroSubmissionLBL').style.display = submission?'' : 'none';
+
+	var expr = document.getElementById('SottoQuadroDiv').style.display = submission?'none' : '';
+	var expr = document.getElementById('SottoQuadroSubmissionDiv').style.display = submission?'' : 'none';
+}
+
+function copyToClipboard(containerid) {
+  if (document.selection) {
+  console.log('selection: '+containerid)
+    var range = document.body.createTextRange();
+    range.moveToElementText(document.getElementById(containerid));
+    range.select().createTextRange();
+    document.execCommand("copy");
+  } else if (window.getSelection) {
+	console.log('getSelection: '+containerid)
+	var range = document.createRange();
+	range.selectNode(document.getElementById(containerid));
+	window.getSelection().removeAllRanges(); // clear current selection
+	window.getSelection().addRange(range); // to select text
+	document.execCommand("copy");
+	window.getSelection().removeAllRanges();// to deselect
+  }
+}
+</script>
+
+<body style="margin: 0; overflow-y: hidden">
+
+	<!-- Tab links -->
+	<div class="tab">
+		<button class="tablinks" onclick="openTab(event, 'tabJData')" id="tab0">JData</button>
+		<button class="tablinks" onclick="openTab(event, 'tabExFascicolo')" id="tab0">Fascicolo</button>
+		<button class="tablinks" onclick="openTab(event, 'tabExIstanza')" id="tab0">Istanza</button>
+		<button class="tablinks" onclick="openTab(event, 'tabFormIO')" id="tab0">FormIO</button>
+		<button class="tablinks" onclick="openTab(event, 'tabQuadro')" id="tab1">Quadro</button>
+		<button class="tablinks" onclick="openTab(event, 'tabEspress')" id="tab3">Expressione</button>
+		<button class="tablinks" onclick="openTab(event, 'tabLogs')" id="tab4">Logs</button>
+	</div>
+
+	<div id="tabJData" class="tabcontent">
+	  <h3>Dati di tutti i quadri inseriti nel JData <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('JData')">&nbsp;&nbsp;&nbsp;&nbsp;(copy)</span></h3>
+	  <div class="JData jdataArea" style="overflow-y: scroll"></div>
+	  <textarea id="JData" class="jdataAreaH"></textarea>
+	</div>
+
+	<div id="tabExFascicolo" class="tabcontent">
+		<h3>Dati Fascicolo corrente <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('JFascicolo')">&nbsp;&nbsp;&nbsp;&nbsp;(copy)</span></h3>
+		<div style="font-size:10px; color: gray;">(usato da js con chiave "ex_FASCICOLO" e da formIO con chiave: "data.ex_FASCICOLO")</div>
+		<div class="JFascicolo jdataArea" style="overflow-y: scroll"></div>
+		<textarea id="JFascicolo" class="jdataAreaH"></textarea>
+	</div>
+  
+	<div id="tabExIstanza" class="tabcontent">
+		<h3>Dati Istanza corrente <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('JIstanza')">&nbsp;&nbsp;&nbsp;&nbsp;(copy)</span></h3>
+		<div style="font-size:10px; color: gray;">(usato da js con chiave "ex_ISTANZA" e da formIO con chiave: "data.ex_ISTANZA")</div>
+		<div class="JIstanza jdataArea" style="overflow-y: scroll"></div>
+		<textarea id="JIstanza" class="jdataAreaH"></textarea>
+	</div>
+
+	<div id="tabFormIO" class="tabcontent">
+		<h3>Configurazione quadro FORMIO <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('FormIO')">&nbsp;&nbsp;&nbsp;&nbsp;(copy)</span></h3>
+		<div class="FormIO jdataArea" style="overflow-y: scroll"></div>
+		<textarea id="FormIO" class="jdataAreaH"></textarea>
+	</div>
+  
+	<div id="tabQuadro" class="tabcontent">
+	  <h3 style="color: brown;">Dati specifici dello step selezionato <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('Quadro')">copy</span>: <span id="QuadroPAR"></span></h3>
+	  <div class="Quadro jdataHalfArea" style="overflow-y: scroll"></div>
+
+	  <div id="SottoQuadroGroup">
+		<div>
+			<h3>
+				<span id="SottoQuadroLBL"
+						onclick="switchPanelTo('Submission')"
+						style="cursor: pointer; text-decoration: underline; color: brown;"
+						title="fai click per passare alla visualizzazione dei dati submission, realmente inviati al sottoquadro">
+					Dati specifici del sotto-quadro visualizzato  
+				</span>
+				<span id="SottoQuadroSubmissionLBL" 
+							onclick="switchPanelTo('')"
+							style="display: none; cursor: pointer; text-decoration: underline; color: blue;"
+							title="fai click per passare alla visualizzazione dei dati submission, realmente inviati al sottoquadro">
+					Dati inviati al FomrIO
+				</span>
+				<span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('SottoQuadro')">(copy)</span>:
+				<span id="SottoQuadroPAR"></span>
+			</h3>
+			<div id="SottoQuadroDiv" class="SottoQuadro jdataHalfArea" style="overflow-y: scroll"></div>
+			<div id="SottoQuadroSubmissionDiv" class="SottoQuadroSubmission jdataHalfArea" style="display: none; overflow-y: scroll"></div>
+		</div>
+		
+		<textarea id="Chiave" style="width: 100%; height: 50px">nessun valore modificato</textarea>
+		
+	  </div>
+	  <textarea id="Quadro" class="jdataAreaH"></textarea>
+	  <textarea id="SottoQuadro" class="jdataAreaH"></textarea>
+	  <textarea id="SottoQuadroSubmission" class="jdataAreaH"></textarea>
+  </div>
+
+	<div id="tabEspress" class="tabcontent">
+	  <h3>Tester espressioni in relazione al JData <span style="font-size: 12px; color: gray; cursor: pointer" onclick="copyToClipboard('JEspr')">&nbsp;&nbsp;&nbsp;&nbsp;(copy)</span></h3>
+	  <select size="1" id="JEsprList" onchange="changeEpression()">
+		<option value=""></option>
+	  </select>
+	  <textarea id="JEspr" class="expressionArea" oninput="checkExprDelayed()"></textarea>
+	  <h3>Risultato: <span id="ExpressionResult"></span></h3>
+	  
+	</div>
+
+	<div id="tabLogs" class="tabcontent">
+	  <h3>Log eventi legati al quadro</h3>
+	  <pre id="Logs" class="jdataArea" style="overflow-y: scroll">Nessuna informazione da visualizzare</pre>
+	</div>
+
+	<script>
+		document.getElementById("tab0").click();
+		function setTabContent(tab, data, par = null) {
+			if(tab == 'JEspr') {
+				setJExpr(data, par); }
+			else
+				console.log('TAB[' + tab +', ' + par +']: '+ data);
+
+			if(data && (tab == 'JData' || tab == 'FormIO' || tab == 'JFascicolo' || tab == 'JIstanza' || tab == 'Quadro' || tab == 'SottoQuadro' || tab == 'SottoQuadroSubmission')) {
+				renderJsonInDiv(tab, data || {});
+				data = JSON.stringify(data, null, 4); 
+			}
+			
+			if(tab != 'JEspr' || data) {
+				document.getElementById(tab).value = data || ''; }
+			
+			if(document.getElementById(tab + 'PAR')) {
+				document.getElementById(tab + 'PAR').innerHTML = par || ''; }
+				
+			if(tab == 'JData') {checkExpr();}
+			if(tab == 'Quadro') {
+				setTabContent('SottoQuadro', null);
+				setTabContent('SottoQuadroSubmission', null);
+				setJExpr(null, null);
+			}
+			if(tab == 'SottoQuadro') {
+				document.getElementById('SottoQuadroGroup').style.visibility = !data?'hidden':'visible';
+				setTabContent('Chiave', null);
+			}
+		}
+		function setTabContents(datas, pars) {
+			tabs.forEach(tab => { setTabContent(tab, datas[tab], pars[tab]) });
+		}
+		function setJExpr(_nop, data) {
+			var exprList = document.getElementById('JEsprList');
+		
+			if(!data) {
+				for(i=exprList.options.length - 1; i>0; i--)
+					exprList.remove(i); }
+			else {
+				for(i=0; i<exprList.options.length;i++) {
+					if(exprList.options[i].value == data) {
+						break; }
+				}
+				
+				if(i == exprList.options.length) {
+					var opt = document.createElement('option');
+					opt.value = data;
+					opt.innerHTML = data;
+					exprList.appendChild(opt);
+				}
+			}
+		}
+
+		function changeEpression() {
+			var exprList = document.getElementById('JEsprList');
+			if(exprList.selectedIndex) {
+				document.getElementById('JEspr').value = exprList.options[exprList.selectedIndex].value; }
+			checkExpr();
+		}
+
+		var _lastWriteEvent = null;
+		function checkExprDelayed() {
+			if(_lastWriteEvent) {
+				clearTimeout(_lastWriteEvent);
+			}
+				
+			_lastWriteEvent = setTimeout(_ => {
+				checkExpr();
+			}, 1000);
+		}
+
+		var _logs = {};
+		function addLog(str) {
+			_logs[new Date().toLocaleString()] = str;
+			showLogs();
+		}
+
+		function showLogs() {
+			var logs = '';
+			Object.keys(_logs).forEach(date => {
+				logs += '<p>' + date + ': ' + _logs[date] + '</p>';
+			});
+			document.getElementById('Logs').innerHTML = logs;
+		}
+	</script>
+	
+</body>
+</html>

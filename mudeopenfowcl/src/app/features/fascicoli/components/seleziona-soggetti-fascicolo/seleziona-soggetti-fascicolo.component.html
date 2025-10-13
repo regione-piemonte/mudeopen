@@ -1,0 +1,34 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+<div *ngIf="roles" class="mb-4 mx-2">
+  <div class="my-2">
+    Da questa lista è possibile recuperare i ruoli o i soggetti usati nelle altre istanze di questo fascicolo
+  </div>
+
+  <ng-container *ngFor="let role of roles">
+    <!-- role list-->
+    <div class="row mb-1 pl-3">
+      <div class="custom-control mude-custom-checkbox">
+        <div *ngIf="role.static" class="font-weight-bold checkbox-label-normal">{{ role.value }}</div>
+        <div *ngIf="!(role.static)">
+          <input [id]="'role'+role.id" class="custom-control-input" type="checkbox" [value]="role.checked" [checked]="role.checked ? 'checked' : null" (click)="roleCheck(role)">
+          <label class="custom-control-label checkbox-label-normal font-weight-bold" [for]="'role'+role.id">{{ role.value }}</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- subject list-->
+    <div *ngFor="let subject of role.subjects" class="row pl-3 ml-4">
+      <div class="custom-control mude-custom-checkbox">
+        <div *ngIf="subject.end || subject.static" class="checkbox-label-normal" [innerHTML]="getSubjectDetails(subject)"></div>
+        <div *ngIf="!(subject.end || subject.static)">
+          <input [id]="'subject'+role.id+subject.id" class="custom-control-input" type="checkbox" [value]="subject.checked" [checked]="subject.checked ? 'checked' : null" (click)="subjectCheck(role, subject)">
+          <label class="custom-control-label checkbox-label-normal" [for]="'subject'+role.id+subject.id" [innerHTML]="getSubjectDetails(subject)"></label>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

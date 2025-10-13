@@ -1,0 +1,246 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="navigationEndUrl && (navigationEndUrl.indexOf('geeco-callback') > -1 || navigationEndUrl.indexOf('ppayCallback') > -1 || navigationEndUrl.indexOf('loccsi') > -1);then goCallback else mainApplication"></div>    
+
+<ng-template #goCallback>
+  <body class="m-0">
+    <main id="main" class="p-0">
+      <router-outlet></router-outlet>
+    </main>
+  </body>
+</ng-template>
+
+
+<!--
+MAIN PAGE STRUCTURE
+-->
+
+<ng-template #mainApplication>
+  <body *ngIf="navigationEndUrl" class="fixed-sn light-blue-skin" (click)="closePopups()">
+    <!--Top Navigation-->
+    <header>
+      <!--Navbar-->
+      <nav class="navbar navbar-expand bg-primary navbar-dark" [class.backoffice]="authService.isBackOffice">
+        <div class="container-fluid">
+          <!-- Toggler/collapsibe Button -->
+          <button *ngIf="selected !== 'home'"
+                  type="button"
+                  class="btn menu-button"
+                  (click)="toggleOpen()">
+            <em class="fa fa-bars" aria-hidden="true"></em>
+          </button>
+
+          <a class="navbar-brand" href="javascript:;">
+            Edilizia<!-- {{authService.isBackOffice?'backoffice':''}} -->
+          </a>
+
+          <!-- Navbar links -->
+          <div class="nav-button-group">
+            <span>
+              <img alt=""  src="assets/icon-navbar-info.svg" width="21px" />
+            </span>
+            <span>
+              <img alt=""  src="assets/icon-navbar-campanella.svg" height="26px" />
+            </span>
+            <span class="user-circle" (click)="showLogout()">
+                {{getUserNameInitials()}}
+            </span>
+            <div class="logOutDiv" [ngStyle]="{ visibility: this.logoutPopup?'visible':'hidden'}">
+              <div class="logOutDivAbs">
+                <div class="usernameDiv">
+                  {{authService.getUserName()}}<br/>
+                  <span class="usernameCF">({{authService.getUserCF()}})</span>
+                </div>
+                <div class="logOutExit">
+                  <span (click)="doLogout()">
+                    <img alt=""  src="assets/icons/exit.png" width="21px" />&nbsp;Esci
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </nav>
+    </header>
+    <div *ngIf="selected === 'home'" class="row homeHeader">
+      <div class="col align-self-center headHomeTitle container-fluid">
+        <img alt=""  class="headImage" src="assets/images/headtitle.png"/>
+        <svg class="open-logo" xmlns="http://www.w3.org/2000/svg" width="108" height="60" viewBox="0 0 108 60">
+          <text id="Open" transform="translate(0 47)" fill="#fff" font-size="67" font-family="SignPainter-HouseScriptSemibold, SignPainter" font-weight="600" opacity="0.5"><tspan x="0" y="0">Open</tspan></text>
+        </svg>        
+        <div class="pt-2">
+          Modello unico digitale per l'edilizia
+        </div>
+      </div>
+    </div>
+    <!--/Top Navigation-->
+
+    
+    <!-- Side Navbar -->
+    <div class="container-fluid page-content">
+      <ng-sidebar-container>
+        <ng-sidebar
+          [(opened)]="selected !== 'home' && opened"
+          [mode]="sidebarMode"
+          [position]="sidebarPosition"
+          [closeOnClickOutside]="closeOnClickOutside"
+          [closeOnClickBackdrop]="closeOnClickBackdrop"
+          [showBackdrop]="showBackdrop"
+          [animate]="animate"
+          [trapFocus]="trapFocus"
+          [autoFocus]="autoFocus"
+          [autoCollapseHeight]="autoCollapseHeight"
+          [autoCollapseWidth]="autoCollapseWidth"
+          [ariaLabel]="ariaLabel"
+          [keyClose]="false"
+          [dock]="dock"
+          [dockedSize]="'60px'"
+        >
+          <div
+            class="card"
+            [ngClass]="{ docked: dock, 'mobile-bar': sidebarMode === 'over' }"
+          >
+            <div
+              *ngIf="sidebarMode !== 'over'"
+              class="sidebar-item"
+              style="margin-left: auto"
+              (click)="toggleExpansion()"
+            >
+              <span *ngIf="!dock" class="sidebar-icon">
+                <img alt=""  src="assets/icon-sidebar-riduci.svg" />
+              </span>
+              <span *ngIf="dock" class="sidebar-icon">
+                <img alt=""  src="assets/icon-sidebar-espandi.svg" />
+              </span>
+            </div>
+
+        <div *ngIf="authService.isBackOffice;then backofficemenu else usermenu"></div>    
+
+  <!--
+      xxxxxxxxxxxxxxxxxxxx BACK OFFICE USER MENUs    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  -->
+
+        <ng-template #backofficemenu>
+          <div  class="sidebar-item"
+              [ngClass]="{ selected: selected === 'tipi' }"
+              (click)="selectItem('/backoffice/quadri/tipi')">
+            <span class="sidebar-icon"><img alt=""  src="assets/images/drw_rubricasoggetti.png" /></span>
+            <span *ngIf="!dock">Gestione tipi quadro</span>
+          </div>
+
+          <div  class="sidebar-item"
+              [ngClass]="{ selected: selected === 'gestione' }"
+              (click)="selectItem('/backoffice/quadri/gestione')">
+            <span class="sidebar-icon"><img alt=""  src="assets/images/drw_nuovofacicolo.png" /></span>
+            <span *ngIf="!dock">Lista quadri</span>
+          </div>
+
+          <div  class="sidebar-item"
+              [ngClass]="{ selected: selected === 'templates' }"
+              (click)="selectItem('/backoffice/quadri/templates')">
+            <span class="sidebar-icon"><img alt=""  src="assets/images/drw_scadenzari.png" /></span>
+            <span *ngIf="!dock">Template istanze</span>
+          </div>
+        </ng-template>        
+        
+  <!--
+      xxxxxxxxxxxxxxxxxxxx FRONT OFFICE USER MENUs    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  -->
+        <ng-template #usermenu>
+            <div    class="sidebar-item"
+                  [ngClass]="{ selected: 'home' === selected }"
+                  (click)="selectItem('home')">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_home.png" /></span>
+              <span *ngIf="!dock">Home</span>
+            </div>
+
+            <div  class="sidebar-item"
+                  [ngClass]="{ selected: 'accreditamento' === selected }"
+                  (click)="selectItem('accreditamento')">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_datipersonali.png" /></span>
+              <span *ngIf="!dock">Dati personali</span>
+            </div>
+
+            <div  class="sidebar-item"
+                  [ngClass]="{ selected: 'visualizza' === selected }"
+                  (click)="selectItem('/rubrica-soggetti/visualizza')">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_rubricasoggetti.png" /></span>
+              <span *ngIf="!dock">Rubrica soggetti</span>
+            </div>
+
+            <div  class="sidebar-item"
+                  [ngClass]="{ selected: 'fascicolo' === selected || 'istanza' === selected }"
+                  (click)="selectItem('/fascicolo')">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_nuovofacicolo.png" /></span>
+              <span *ngIf="!dock">Nuovo fascicolo</span>
+            </div>
+
+            <div  class="sidebar-item"
+                  [ngClass]="{ selected: 'ricerca' === selected || 'dettagli-fascicolo' === selected }"
+                  (click)="selectItem('/fascicolo/ricerca', { options: 'newSearch' })">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_ricercafascicoli.png" /></span>
+              <span *ngIf="!dock">Gestione fascicoli, istanze, pratiche</span>
+            </div>
+
+            <div  class="sidebar-item"
+                  [ngClass]="{ selected: 'notifiche' === selected }"
+                  (click)="selectItem('/fascicolo/notifiche')">
+              <span class="sidebar-icon"><img alt=""  src="assets/images/drw_notifiche.png" /></span>
+              <span *ngIf="!dock">Notifiche</span>
+            </div>
+
+    </ng-template>          
+
+
+          </div>
+        </ng-sidebar>
+
+      
+        <div ng-sidebar-content class="sidebarContent">
+            <!--Main layout-->
+          <main id="main" 
+              class="mainContext"
+              [ngClass]="'home' === selected? 'mainNormalHome' : 'mainNormal'">
+            <router-outlet></router-outlet>
+          </main>
+          <!--/Main layout-->
+        </div>
+      </ng-sidebar-container>
+      <!-- /Side Navbar -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary" [class.backoffice]="authService.isBackOffice">
+      <div class="container-fluid">
+        <div class="row footer-logo">
+          <div class="col-4">
+            <img alt=""  src="assets/icon-footer-regione.svg" class="logo-left" />
+          </div>
+          <div class="col-4 text-center">
+            <img alt=""  src="assets/icon-footer-europa-2x.png" class="logo-center" />
+          </div>
+          <div class="col-4 text-right">
+            <img alt=""  src="assets/icon-footer-piemonte-ccc.png" class="logo-right" />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <footer class="bg-second-blue" [class.backoffice]="authService.isBackOffice">
+      <div class="container-fluid">
+        <div class="row footer-link-group">
+          <div class="col-xs-4">Accessibilità</div>
+          <div class="col-xs-4">Note legali e privacy</div>
+          <div class="col-xs-4">Cookie policy</div>
+        </div>
+      </div>
+    </footer>
+    <!-- /Footer -->
+  </body>
+</ng-template>
+
+<ngx-spinner></ngx-spinner>

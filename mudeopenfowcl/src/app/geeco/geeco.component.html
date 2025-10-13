@@ -1,0 +1,59 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="isSuccess">
+    <alert-box type="SUCCESS" message="Informazioni registrate con successo."></alert-box>
+
+    <div class="px-4 py-3">
+        <div class="d-flex pt-3">
+            <button class="btn btn-link ml-auto mr-auto" type="button" (click)="quit()">CHIUDI</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!isSuccess">
+    <div *ngIf="listIndirizzi?.length" class="px-4 py-3">
+        <alert-box type="INFO">Seleziona dalla lista uno o più indirizzi</alert-box>
+        <ngx-datatable  class="material expandable striped"  [selectionType]="selectionType.multiClick"
+                [rows]="listIndirizzi"
+                [limit]="datatableIndirizzi.limit"
+                [headerHeight]="50" 
+                [columns]="headersIndirizzi"
+                [footerHeight]="40"
+                [columnMode]="'force'"
+                [offset]="datatableIndirizzi.offset"
+                [rowHeight]="'auto'"
+                [count]="datatableIndirizzi.count"
+                [messages]="datatableIndirizzi.messages"
+                [scrollbarH]="'auto'"
+                [selected]="datatableIndirizzi.selected">
+        </ngx-datatable>
+    </div>
+
+    <div *ngIf="listCatasto?.length" class="px-4 py-3">
+        <alert-box type="INFO">Seleziona dalla lista una o più particelle</alert-box>
+        <ngx-datatable class="material expandable striped"  [selectionType]="selectionType.multiClick"
+                [rows]="listCatasto"
+                [limit]="datatableCatasto.limit"
+                [headerHeight]="50" 
+                [columns]="headersCatasto"
+                [footerHeight]="40"
+                [columnMode]="'force'"
+                [offset]="datatableCatasto.offset"
+                [rowHeight]="'auto'"
+                [count]="datatableCatasto.count"
+                [messages]="datatableCatasto.messages"
+                [scrollbarH]="'auto'"
+                [selected]="datatableCatasto.selected">
+        </ngx-datatable>
+    </div>
+
+    <div class="px-4 py-3">
+        <div class="d-flex pt-3">
+            <button class="btn btn-link" type="button" (click)="quit()">ANNULLA</button>
+            <button [disabled]="!(!this.listIndirizzi?.length || this.datatableIndirizzi?.selected?.length) || !(!this.listCatasto?.length || this.datatableCatasto?.selected?.length)" class="ml-auto btn btn-success" type="button" (click)="addAddress()">AGGIUNGI</button>
+        </div>
+    </div>
+</div>

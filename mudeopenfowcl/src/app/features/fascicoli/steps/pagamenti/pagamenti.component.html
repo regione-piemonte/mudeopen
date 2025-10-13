@@ -1,0 +1,122 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+
+<div *ngIf="!formsService.istanza.pagamento_attivo">
+  <alert-box type="SUCCESS">Non è previsto nessun pagamento in base alle selezioni effettuate. E' possibile proseguire al passo successivo.</alert-box>
+</div>
+
+<div *ngIf="formsService.istanza.pagamento_attivo && !noPpay.checked">
+  <div *ngIf="stepQuadroData.importi?.length && importiFormArray?.controls.length" class="card-box mb-4 pt-4">
+    <alert-box type="INFO" esito="Dettagli del pagamento" message="Elenco delle voci di pagamento relative a questa istanza"></alert-box>
+
+      <form [formGroup]="mainContactForm" [ngStyle]="{width: '100%'}">
+          <ng-container *ngTemplateOutlet="importiSectionBlock"></ng-container>
+      </form>
+      
+      <ng-container *ngIf="!isStepInReadOnlyMode && isLeftSomeToPay">
+        <div class="pt-3">
+          <alert-box type="WARNING"><strong>Attenzione:</strong> una volta conclusa la procedura di pagamento su Piemonte Pay è necessario selezionare il pulsante <strong>"CHIUDI"</strong>, presente nella pagina di conferma operazione, per ritornare su MUDEOPEN. Nel caso in cui non venga eseguita questa operazione correttamente  (ad esempio chiudendo la finestra di conferma dalla X o selezionando "ANNULLA") il sistema MUDEOPEN non riceverà conferma del pagamento effettuato e  non sarà quindi possibile procedere con il deposito dell'istanza.</alert-box>
+        </div>
+        <div class="d-flex mt-4 mx-4">
+          <div *ngIf="!isPaymentStarted" class="my-2">
+            <select *ngIf="isDebugOn" (change)="changeDebugMode($event)" class="debugSelect">
+              <option value="">Effettua il pagamento con piemonte pay</option>
+              <option value="simulate-succeed">Simula pagamento con successo</option>
+              <option value="skip-ppay,simulate-succeed">Simula pagamento con successo (senza ppay)</option>
+              <option value="simulate-failure">Simula pagamento con errore</option>
+              <option value="skip-ppay,simulate-failure">Simula pagamento con errore (senza ppay)</option>
+            </select>
+          </div>
+          <div *ngIf="isPaymentStarted" class="my-2">
+            Pagamento avviato. In attesa che venga completato il pagamento nella finestra pop-up.<br>
+            Terminata con successo la procedura di pagamento cliccare il pulsante aggiorna.<br>
+            Se la finestra di pop-up è stata chiusa o nella stessa è stato cliccato il pulsante "Annulla", cliccare il pulsante "ANNULLA PAGAMENTO" per effettuare una nuova procedura di pagamento.
+          </div>
+          <div *ngIf="isPaymentStarted" class="ml-auto my-2 mr-2">
+            <button type="button" class="btn btn-primary" (click)="onStepUpdate()">AGGIORNA</button>
+            &nbsp;
+            <button type="button" class="btn btn-primary" (click)="onAbortPayment()">ANNULLA PAGAMENTO</button>
+          </div>
+            <div *ngIf="!isPaymentStarted" class="ml-auto my-2 mr-2">
+              <button type="button" class="btn btn-primary" (click)="onStartPayment()">EFFETTUA IL PAGAMENTO</button>
+            </div>
+        </div>
+      </ng-container>
+      
+  </div>
+
+  <ng-template #importiSectionBlock>
+    <form [formGroup]="mainContactForm" [ngStyle]="{width: '100%'}">
+        <div formArrayName="importi">
+            <div class="pr-2 pl-2 importo-div" *ngFor="let amountItem of stepQuadroData.importi; let i=index">
+              <div class="row my-2 mx-2 p-2" [ngClass]="amountItem._statoPagamento != 'completato'?'importo-div' : 'importo-div-pagato'">
+                  <div class="col-8">
+                    <div-html [innerHTML]="amountItem.descrizione"></div-html>
+                  </div>
+                  <div class="col-1 px-0 mx-0 euroDiv">
+                    &euro;
+                  </div>
+                  <div class="col-3" [formGroupName]="i">
+                      <it-input controlName="importo" placeholder="euro"
+                          [disabled]="isStepInReadOnlyMode || isPaymentStarted || amountItem.tipo_importo == 'bloccato'"
+                          [parentFormGroup]="importiFormArray.controls[i]"
+                          [label]="getStatoIstanza() !== 'BZZ'? 'Importo' : amountItem._statoPagamento != 'completato'? 'Da pagare' : ('Pagamento: ' + amountItem._statoPagamento)">
+                      </it-input>
+                  </div>
+              </div>
+              <div class="row mx-2">
+                <div class="col-12">
+                  <alert-box *ngIf="amountItem.isLower" (fadeaway)="amountItem.isLower = false" timeout="10000" type="ERROR" message="Il valore inserito deve essere maggiore di {{amountItem.importo}}"></alert-box>
+                  <alert-box *ngIf="amountItem.isGreater" (fadeaway)="amountItem.isGreater = false" timeout="10000" type="ERROR" message="Il valore inserito deve essere minore di {{amountItem.importo}}"></alert-box>
+                </div>
+              </div>
+            </div>
+        </div>
+    </form>
+  </ng-template>
+</div>
+
+<div class="form-group mx-2 mt-2" [ngStyle]="{ visibility: isPaySkipPrecari ? 'hidden' : 'visible' } ">
+  <div class="custom-control mude-custom-checkbox">
+    <input #noPpay id="checkAutorizza" 
+          class="custom-control-input" 
+          type="checkbox" 
+          [checked]="isPaySkipChecked"
+          [disabled]="!isLeftSomeToPay || stepQuadroData.pagamento_avviato || istanzaReadOnlyMode " 
+          (click)="noPPayNecessary($event.target.checked, $event.target.value)"
+          [value]="true">
+    <label class="custom-control-label checkbox-label-normal" for="checkAutorizza">ho già effettuato il pagamento e allego relativa ricevuta nell'allegato "Pagamento"</label>
+  </div>
+</div>
+
+
+<div *ngIf="attach && (!isLeftSomeToPay || isPaySkipChecked)" class="card-box mb-4 py-4"> <!--  || paymentReceipts?.length || stepQuadroData.pagamento_avviato -->
+  <alert-box *ngIf="!isStepInReadOnlyMode" [noSanitization]="true" type="INFO" esito="Ricevuta di pagamento" [message]="introMessage"></alert-box>
+  <upload-file
+    [readOnly]="isStepInReadOnlyMode || !attach.uploadable"
+
+    [accept]="filesAccepted"
+    [maxsizeMB]="maxUploadFileSizeMB"
+    (discarded)="handleDiscardedUploads($event)"
+
+    [maxfiles]="howManyAttachsAllowed(attach)"
+    (delete)="delete($event)"
+    (upload)="uploadPaymentReceipt($event)"
+    (download)="download($event)"
+    [files]="paymentReceipts">
+  </upload-file>
+</div>
+
+<!--
+  
+-->
+<app-stepper-footer
+                [showNext]="isStepValidationOK"
+                [showPrevious]="showButtonPrevious"
+                (avanti)="onStepForward()"
+                (indietro)="onStepBack()">
+</app-stepper-footer>

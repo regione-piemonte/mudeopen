@@ -1,0 +1,9 @@
+.activeInfo {
+    color: gray;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.altLine {
+    background-color: #eeeeee;
+}

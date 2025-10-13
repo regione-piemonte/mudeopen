@@ -1,0 +1,7 @@
+ {
+    "/rest/": {
+        "target": "http://tst-mudeopen-fo-rp.nivolapiemonte.it/mudeopen/srvcommon",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

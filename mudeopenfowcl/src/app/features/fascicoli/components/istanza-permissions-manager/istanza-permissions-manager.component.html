@@ -1,0 +1,91 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Abilitazioni {{mode}}</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="mb-4 mx-3">
+  <div class="my-2">
+    <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+  </div>
+
+  <div class="my-2">
+      <title-section subtitle="Lista utenti abilitati"></title-section>
+      <div class="mt-2 mb-4"></div>
+      <ng-container *ngTemplateOutlet="usersList"></ng-container>
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+        <div class="ml-auto my-4">
+          <button #hiddenFocus class="btn btn-link" (click)="onExit()">CHIUDI</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- 
+  LISTA UTENTI
+-->
+<ng-template #usersList>
+    <ngx-datatable #table
+      class="material expandable"
+      [rows]="users"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [columnMode]="'flex'"
+      [rowHeight]="'auto'"
+      [messages]="datatable.messages"
+      [externalSorting]="true"
+      [count]="datatable.count"
+      [offset]="datatable.offset"
+      [limit]="datatable.limit"
+
+      [selected]="datatable.selected">
+      
+    <!-- Column 1: Nome -->
+    <ngx-datatable-column [flexGrow]="0.05" name="Nome" prop="user.contatto.anagrafica.nome"></ngx-datatable-column>
+    <ngx-datatable-column [flexGrow]="0.05" name="Cognome" prop="user.contatto.anagrafica.cognome"></ngx-datatable-column>
+    <ngx-datatable-column [flexGrow]="0.05" name="Codice fiscale" prop="user.contatto.anagrafica.codiceFiscale"></ngx-datatable-column>
+
+    <!-- Row Panel Template -->
+    <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <div class="detailbox p-2 px-5">
+          <div *ngFor="let perm of row.abilitazioniEx; let i = index">
+            <div class="detail-action">
+              <!-- delete -->
+              <em *ngIf="!isReadonly && isDeleteAllowed(row.user, perm) " class="fa-button-icon fa fa-trash-o mr-1" title="elimina" (click)="userDelete(row, perm)"></em>
+              <!-- modify -->
+              <div class="modify-div">
+                <em *ngIf="!isReadonly && isModifyAllowed(row.user, perm)" class="fa-button-icon fa fa-pencil mr-1" title="modifica" (click)="userModify(row, perm)"></em>
+              </div>
+            </div>
+            <div class="detail-descr">
+              <em class="fa fa-check-square-o" aria-hidden="true"></em>&nbsp;{{perm.abilitazione.desc_abilitazione}}
+            </div>
+          </div>
+          <div *ngIf="!isReadonly && canAddPermissionToUser(row)" class="linkDiv d-flex">
+            <span (click)="addNewPermission(row)" class="ml-auto">
+              <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI ABILITAZIONE</span>
+            </span>
+          </div>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
+  </ngx-datatable>    
+
+  <div *ngIf="canAddPermissions" class="linkDiv my-2 d-flex">
+    <span (click)="addNewUser()">
+      <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">ABILITA NUOVO SOGGETTO</span>
+    </span>    
+  </div>
+
+</ng-template>
+

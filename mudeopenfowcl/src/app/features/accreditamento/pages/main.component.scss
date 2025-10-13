@@ -1,0 +1,33 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+
+.card {
+  padding: 30px;
+  margin: 8px 0;
+  overflow-x: auto;
+  box-shadow: 3px 3px 8px 0 #00000048;
+
+
+}
+
+div.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.form-control.ng-touched.ng-invalid:not(form) {
+  border: 2px solid #a94442;
+}
+
+
+.agree-checkbox {
+  background-color: #eeeeee;
+  padding: 10px;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: scroll;
+}

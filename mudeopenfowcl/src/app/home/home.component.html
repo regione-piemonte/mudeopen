@@ -1,0 +1,101 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="authService.isBackOffice;then backofficemenu else usermenu"></div>    
+
+      
+<!--
+    xxxxxxxxxxxxxxxxxxxx FRONT OFFICE USER MENUs    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-->
+<ng-template #usermenu>
+    <!-- d-flex flex-wrap -->
+    <div class="row cardsDiv">
+        <div class="col p0">
+            <card-home
+                cardTitle="Dati personali"
+                imagePath="assets/icons/dati_personali.svg"
+                routerLink="/accreditamento">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Rubrica"
+                imagePath="assets/icons/rubrica.svg"
+                routerLink="/rubrica-soggetti/visualizza">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Nuovo fascicolo"
+                imagePath="assets/icons/nuovo_fascicolo.svg"
+                routerLink="/fascicolo">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Gestione fascicoli, istanze, pratiche"
+                imagePath="assets/icons/ricerca.svg"
+                routerLink="/fascicolo/ricerca" [state]="{ options: 'newSearch' }">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Notifiche"
+                imagePath="assets/icons/notifiche.svg"
+                routerLink="/fascicolo/notifiche">
+            </card-home>
+        </div>
+
+<div class="col p0">
+</div>
+<div class="col p0">
+</div>
+<div class="col p0">
+</div>
+<div class="col p0">
+</div>
+<div class="col p0">
+</div>
+<div class="col p0">
+</div>
+
+    </div>
+</ng-template>        
+
+<!--
+    xxxxxxxxxxxxxxxxxxxx BACK OFFICE USER MENUs    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-->
+<ng-template #backofficemenu>
+    <div class="row">
+        <div class="col p0">
+            <card-home
+                cardTitle="Gestione tipi quadro"
+                imagePath="assets/images/drw_rubricasoggetti.png"
+                routerLink="/backoffice/quadri/tipi">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Lista completa quadri"
+                imagePath="assets/images/drw_nuovofacicolo.png"
+                routerLink="/backoffice/quadri/gestione">
+            </card-home>
+        </div>
+
+        <div class="col p0">
+            <card-home
+                cardTitle="Gestione template istanze"
+                imagePath="assets/images/drw_scadenzari.png"
+                routerLink="/backoffice/quadri/templates">
+            </card-home>
+        </div>
+    </div>
+</ng-template>        
+

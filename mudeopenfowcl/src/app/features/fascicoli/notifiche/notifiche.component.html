@@ -1,0 +1,138 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="popupmode" class="dialogTitle py-3 pl-4 pr-3 mb-3">
+  <span class="title-col1">Notifiche istanza</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+
+
+<div *ngIf="!popupmode">
+
+  <title-bar breadcrumb="NOTIFICHE" title="Lista notifiche ricevute"></title-bar>
+  <div class="mt-5">&nbsp;</div>
+
+  <div class="narrowed-box mb-5">
+    <mude-tabs>
+
+      <!-- Ricerca fascicoli -->
+      <mude-tab tabTitle="Ricerca">
+        <div class="card-box">
+          <ng-container *ngTemplateOutlet="ricercaFascicoloIstanzaFields; context: {formgroup: ricercaForm}"></ng-container>
+        </div>
+      </mude-tab>
+
+    </mude-tabs>
+  </div>
+
+  <ng-template #ricercaFascicoloIstanzaFields let-type="type" let-formgroup="formgroup">
+  <form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+      <div class="row">
+      
+        <!-- first col -->
+        <div class="form-group col px-4">
+
+          <title-section subtitle="Intestatario <small>(Nome, cognome o CF)"></title-section>
+          <div class="searchCol pb-3">
+            <input type="search" class="form-control" formControlName="intestatario" placeholder="">
+          </div>
+
+        </div>
+
+        <!-- second col -->
+        <div class="form-group col">
+
+          <title-section subtitle="Comune"></title-section>
+          <div class="searchCol pb-3">
+            <input type="search" class="form-control" formControlName="comune" placeholder="">
+          </div>
+          
+        </div>
+
+        <!-- third col -->
+        <div class="form-group col">
+
+          <title-section subtitle="Codice istanza"></title-section>
+          <div class="searchCol pb-3">
+            <input type="search" class="form-control" formControlName="codIstanza" placeholder="">
+          </div>
+
+        </div>
+
+      </div>
+
+      <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+    </form>
+  </ng-template>
+
+
+  <ng-template #formToolbar let-formgroup="formgroup">
+    <div class="d-flex mt-4 mb-4 mx-2">
+      <div class="">
+        <button class="btn btn-outline-fixed-slim">CERCA</button>
+      </div>
+      <div class="ml-auto">
+        <button type="reset" class="linkedText">NUOVA RICERCA</button>
+      </div>
+    </div>
+  </ng-template>
+
+  
+
+</div>
+
+
+
+
+
+<div class="datatable-container customdatatable mb-5" [ngClass]="{ 'mx-2': popupmode }">
+  <ngx-datatable #table
+      class="material expandable striped  datatable-style"
+      [rows]="rows"
+      [headerHeight]="'auto'"
+      [footerHeight]="50"
+      [columnMode]="'force'"
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [messages]="datatable.messages"
+
+      [count]="datatable.count"
+      [offset]="datatable.offset"
+      [limit]="datatable.limit"
+      [externalPaging]="true"
+      (page)="onSearch($event)"
+
+      [selected]="datatable.selected">
+
+      <ngx-datatable-column *ngIf="!popupmode" name="Azioni" maxWidth="80" width="30" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <div class="d-flex">
+            <div class="pr-2 mt-1"><em class="fa-button-icon fa mr-2 fa-envelope-open" title="Dettagli notifica" (click)="openDetails(row)"></em></div>
+            <div *ngIf="showVisualizzaButton(row.istanza)" class="mt-1 linkDivPanel" (click)="formsService.editIstanza(row.istanza)" title="Visulizza istanza"><img alt="" src="assets/images/doc.png" class="plusIcon"/></div>
+            <div *ngIf="!showVisualizzaButton(row.istanza)" class="pr-2 linkDivPanel size20" (click)="downloadPDF(row.istanza)" title="Scarica PDF istanza"><em class="fa fa-file-pdf-o" aria-hidden="true"></em></div>
+          </div>
+          </ng-template>
+      </ngx-datatable-column>
+    
+      <ngx-datatable-column name="Letto" maxWidth="50" width="50" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <em *ngIf="row.letto" class="fa-button-icon fa mr-2 fa-check-square-o" title=""></em>
+        </ng-template>
+      </ngx-datatable-column>
+    
+        <ngx-datatable-column *ngFor="let col of columns" [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+        [name]="col.name" [prop]="col.prop">
+    </ngx-datatable-column>
+
+  </ngx-datatable>    
+</div>
+
+
+<div *ngIf="popupmode" class="d-flex">
+  <div class="ml-auto">
+    <button class="btn btn-link mr-3 m-2 blue" (click)="onExit()">CHIUDI</button>
+  </div>
+</div>
+

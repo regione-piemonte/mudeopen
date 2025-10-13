@@ -1,0 +1,73 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="stepLoadingCompled" class="card-box mb-4 py-0 px-0">
+  <ng-container *ngIf="!displayModeWithoutTabs">
+    <scrollable-tabs
+            [tabs]="tabsMain" 
+            [locked]="stepManagerService.stepsLocked"
+            format="normal"
+            (isOptionalTab)="isOptional($event)"
+            (canActivateTab)="canActivateMainTab($event)"
+            (beforeChange)="beforeSelectedTab($event)"
+            (change)="selectedMainTab($event)">
+    </scrollable-tabs>
+
+    <div *ngIf="tabsSub && tabsSub.length" class="py-4 px-3">
+      <scrollable-tabs 
+            [tabs]="tabsSub" 
+            [locked]="stepManagerService.stepsLocked"
+            format="small" 
+            (isOptionalTab)="isOptional($event)"
+            (canActivateTab)="canActivateSubTab($event)"
+            (beforeChange)="beforeSelectedTab($event)"
+            (change)="selectedSubTab($event)"></scrollable-tabs>
+    </div>
+
+    <div class="pb-4 mx-2">
+      <title-section [subtitle]="tabSelection"></title-section>
+    </div>
+  </ng-container>
+  <div *ngIf="displayModeWithoutTabs" class="pb-4 mx-2">
+    <title-section [subtitle]="tabsMain[tabMainIndexSelected]?.label"></title-section>
+  </div>
+
+  <div class="m-3">
+    <alert-box *ngIf="validationMessage" [message]="validationMessage" [type]="validationMessageType" timeout="10001" (fadeaway)="validationMessage = null"></alert-box>
+    <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+
+    <alert-box *ngIf="!!dependencyMessageSUCCESS" [message]="dependencyMessageSUCCESS" type="SUCCESS"></alert-box>
+    <alert-box *ngIf="!!dependencyMessageINFO" [message]="dependencyMessageINFO" type="INFO"></alert-box>
+    <alert-box *ngIf="!!dependencyMessageWARNING" [message]="dependencyMessageWARNING" type="WARNING"></alert-box>
+    <alert-box *ngIf="!!dependencyMessageERROR" [message]="dependencyMessageERROR" type="ERROR"></alert-box>
+  </div>
+
+  <div id="formIOContainer" *ngIf="customForm" class="pb-4 mx-3">
+    <formio id="form" #mainFormio
+      [form]="customForm"
+      [submission]="submission"
+      
+      (customEvent)="onCustomEvent($event)"
+      (change)="onFormIOChange($event)"
+      (submit)="onFormIOSubmit($event)"
+      (ready)="onFormIOReady($event)"
+      [success]="successEmitter"
+      [options]="formioOptions"
+      [renderOptions]="renderOptions"
+      [readOnly]="_isStepInReadOnlyMode"
+      [viewOnly]="false"
+      [refresh]="refreshFormIO"
+    ></formio>
+    
+  </div>
+
+</div>
+
+<app-stepper-footer
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onStepForward()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>

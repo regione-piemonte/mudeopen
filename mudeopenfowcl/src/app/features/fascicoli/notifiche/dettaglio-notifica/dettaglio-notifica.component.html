@@ -1,0 +1,188 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Dettaglio notifica</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+
+<div class="mt-3 mx-3">
+  <div class="mt-2">
+    <alert-box type="INFO" [esito]="notifica.oggetto_notifica" [message]="notifica.testo_notifica"></alert-box>
+  </div>
+</div>
+
+<div class="mt-4 card-box mx-3">
+  <div class="row ml-2">
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Data
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.dt_ins }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Numero istanza
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.istanza?.codice_istanza }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Intestatario
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica._intestatario }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Tipo istanza
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.istanza?.tipologia_istanza.value }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Comune
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.istanza?.comune?.value + ' (' + notifica?.istanza.provincia?.value + ')'}}</label>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="mt-4 card-box mx-3">
+  <div class="row ml-2">
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Mittente
+      </div>
+      <div class="pb-3">
+        <label>
+          {{ notifica?._mittente }}<br>
+          {{ notifica.ente_mittente?.descrizione }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Tipo Ente
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.ente_mittente?.tipo_ente?.descrizione_estesa }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Comune Ente
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.ente_mittente?.comune?.value }} {{ !notifica.ente_mittente?.cap_ente?'' : '('+notifica.ente_mittente?.cap_ente+')'}}</label>
+      </div>
+    </div>
+    
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Indirizzo
+      </div>
+      <div class="pb-3">
+        <label>
+          {{ notifica.ente_mittente?.indirizzo_ente }}</label>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="my-2 font-weight-bold">
+        Responsabile
+      </div>
+      <div class="pb-3">
+        <label>{{ notifica.ente_mittente?.responsabile_ente }}</label>
+      </div>
+    </div>
+  
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+
+
+  <div class="mt-4 card-box mx-3" *ngIf="notifica.istanza.numero_pratica || notifica.istanza.numero_protocollo_comune">
+    <div class="row ml-2">
+      <div class="col-4">
+        <div class="my-2 font-weight-bold">
+          Numero protocollo
+        </div>
+        <div class="pb-3">
+          <label>
+            {{ notifica.istanza.numero_pratica }}<br>
+            <em *ngIf="notifica.istanza.data_pratica">(del: {{ notifica.istanza.data_pratica }})</em>
+          </label>
+        </div>
+      </div>
+  
+      <div class="col-4">
+        <div class="my-2 font-weight-bold">
+          Numero pratica
+        </div>
+        <div class="pb-3">
+          {{ notifica.istanza.numero_protocollo_comune }}<br>
+        <em *ngIf="notifica.istanza.data_protocollo_comune">(del: {{ notifica.istanza.data_protocollo_comune }})</em>
+        </div>
+      </div>
+  
+      </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div *ngIf="documents.length" class="mt-4 card-box mx-3">
+    <div class="ml-2">
+      <title-section subtitle="Documenti della PA"></title-section>
+
+      <div *ngFor="let document of documents; let i = index" class="pb-3 px-3">
+        <em>{{ i+1 }}.</em>&nbsp;<span (click)="downloadDocument(document)" class="btn-link mr-3 m-2 blue">{{ getFilename(document) }}</span>
+      </div>
+    </div>
+  </div>  
+  
+
+
+
+  <div class="d-flex">
+    <div class="ml-auto">
+      <button class="btn btn-link mr-3 m-2 blue" (click)="onExit()">CHIUDI</button>
+    </div>
+  </div>

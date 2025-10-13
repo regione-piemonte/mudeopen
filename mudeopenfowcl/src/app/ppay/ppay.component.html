@@ -1,0 +1,10 @@
+<div class="px-4 py-3">
+    <alert-box *ngIf="succeed" type="SUCCESS" esito="Informazioni sulla transazione" message="Il pagamento è stato completato consuccesso. Chiudi questa pagina e torna all'istanza. Potrai allegare la ricevuta del pagamento, quando ti verrà inviata la notifica del pagamento via mail."></alert-box>
+    <alert-box *ngIf="error" type="ERROR" esito="Informazioni sulla transazione" message="Il pagamento non è stato completato. Chiudi questa pagina ed eventualmente riprova con una nuova transazione."></alert-box>
+</div>
+
+<div *ngIf="showButton" class="d-flex my-2 mx-4">
+    <div class="ml-auto mr-auto mt-0 mb-5">
+        <button type="button" class="btn btn-primary" (click)="onEndPayment()">CHIUDI</button>
+    </div>
+</div>

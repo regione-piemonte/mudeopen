@@ -1,0 +1,583 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="mb-5">
+  <title-bar breadcrumb="RICERCHE" title="Gestione fascicoli, istanze, pratiche"></title-bar>
+</div>
+
+<div class="narrowed-box">
+  <mude-tabs (changed)="selectForm($event)">
+
+    <!-- Ricerca fascicoli -->
+    <mude-tab tabTitle="Ricerca fascicoli" [active]="searchSelected == 0">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="ricercaFascicoloIstanzaFields; context: {type:'fascicoli', formgroup: ricercaFascicoliForm}"></ng-container>
+      </div>
+    </mude-tab>
+
+    <!-- Ricerca istanze -->
+    <mude-tab tabTitle="Ricerca istanze" [active]="searchSelected == 1">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="ricercaFascicoloIstanzaFields; context: {type:'istanze', formgroup: ricercaIstanzeForm}"></ng-container>
+      </div>
+    </mude-tab>
+
+    <!-- Ricerca pratiche -->
+    <mude-tab tabTitle="Ricerca pratiche" [active]="searchSelected == 2">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="ricercaPraticheFields; context: {formgroup: ricercaPraticheForm}"></ng-container>
+      </div>
+    </mude-tab>
+
+  </mude-tabs>
+</div>
+
+<ng-template #ricercaFascicoloIstanzaFields let-type="type" let-formgroup="formgroup">
+<form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+    <div class="row">
+    
+      <!-- first col -->
+      <div class="form-group col px-4">
+
+        <title-section subtitle="Intestatario"></title-section>
+        <div class="mb-2 ml-2">
+          <div class="">Nome, cognome o CF </div>
+        </div>
+        <div class="searchCol pb-3">
+          <input type="search" id="id_intestatario_pf" class="form-control" formControlName="id_intestatario_pf" placeholder="">
+        </div>
+
+        <div class="my-2 ml-2">
+          <div class="">Ragione sociale o P.IVA</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input type="search" id="id_intestatario_pg" class="form-control" formControlName="id_intestatario_pg" placeholder="">
+        </div>
+
+      </div>
+
+      <!-- second col -->
+      <div class="form-group col">
+        <title-section subtitle="Ubicazione"></title-section>
+        <div class="searchCol" formGroupName="id_provincia">
+          <it-select [emptyOption]=" '' " controlName="id" [parentFormGroup]="formgroup" (valueChangedEvent)="onChangeProvincia($event)"
+                      label="Provincia" [data]="provincePiemonte">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2 comuni-column" formGroupName="id_comune">
+          <it-select [emptyOption]=" '' " label="Comune" [parentFormGroup]="formgroup"
+            [data]="comuni" controlName="id">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2">
+          <div class="row">
+            <div class="col-4 pr-0 mr-0 dug-column" formGroupName="id_dug">
+              <it-select [emptyOption]=" '' " [data]="dug" [parentFormGroup]="formgroup"
+                label="Indirizzo" controlName="id">
+              </it-select>
+            </div>
+            <div class="col-8  ml-0 pl-1 duf-column">
+              <it-input label="&nbsp;" [parentFormGroup]="formgroup" controlName="duf" placeholder=""></it-input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- third col -->
+      <div class="form-group col">
+        <title-section subtitle="Periodo temporale"></title-section>
+        <div class="maxColWidth row mb-0">
+          <div class="col ml-2">Da</div>
+          <div class="col mr-2">A</div>
+        </div>
+        <div class="dates-margins-left d-flex pb-3">
+          <div class="">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_creazione_from" label="" small="true"></it-datepicker>
+          </div>
+          <div class="ml-2">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_creazione_to" label="" small="true"></it-datepicker>
+          </div>
+        </div>
+
+        <title-section subtitle="Stato"></title-section>
+        <div class="searchCol" formGroupName="stato">
+            <it-select [emptyOption]=" '' "
+              [parentFormGroup]="formgroup"
+              controlName="id"
+              [data]="getSearchStates(type)"
+              label="">
+            </it-select>
+        </div>
+
+        <div *ngIf="type == 'istanze'" formGroupName="id_tipo_istanza">
+          <title-section subtitle="Tipo istanza"></title-section>
+          <div class="searchCol">
+            <it-select [emptyOption]=" '' "
+              [parentFormGroup]="formgroup"
+              controlName="id"
+              [data]="tipologieIstanza"
+              label="">
+            </it-select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row ml-2 mr-0">
+      <div class="col-md-6 mb-5 px-2">
+        <title-section subtitle=""><strong>Ricerca per {{type == 'istanze'? 'codice istanza' : 'codice fascicolo'}}</strong></title-section>
+        <it-input
+              [parentFormGroup]="formgroup"
+              [controlName]="type == 'istanze'? 'codice_istanza' : 'codice_fascicolo' "
+              (keyup)="checkCRKeyForSearch($event)"
+              label=""
+              placeholder="">
+          </it-input>
+      </div>
+      <div *ngIf="type == 'istanze'" class="col-md-6 mb-5 px-2">
+        <title-section subtitle="Parole chiave"></title-section>
+        <it-input
+              [parentFormGroup]="formgroup"
+              controlName="keywords"
+              (keyup)="checkCRKeyForSearch($event)"
+              label=""
+              placeholder="">
+          </it-input>
+      </div>
+    </div>
+
+    <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+  </form>
+</ng-template>
+
+<ng-template #formToolbar let-formgroup="formgroup">
+<div class="d-flex mt-4 mb-4 mx-2">
+  <div class="">
+    <button class="btn btn-outline-fixed-slim">CERCA</button>
+  </div>
+  <div class="ml-auto">
+    <button type="reset" class="linkedText">NUOVA RICERCA</button>
+  </div>
+</div>
+</ng-template>
+
+<ng-template #ricercaPraticheFields let-formgroup="formgroup">
+<form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+    <div class="row">
+    
+      <!-- first col -->
+      <div class="form-group col px-4">
+        
+        <title-section subtitle="Intestatario"></title-section>
+        <div class="mb-2 ml-2">
+          <div class="">Nome, cognome o CF </div>
+        </div>
+        <div class="searchCol pb-3">
+          <input type="search" id="id_intestatario_pf" class="form-control" formControlName="id_intestatario_pf" placeholder="">
+        </div>
+
+        <div class="my-2 ml-2">
+          <div class="">Ragione sociale o P.IVA</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input type="search" id="id_intestatario_pg" class="form-control" formControlName="id_intestatario_pg" placeholder="">
+        </div>
+        <title-section subtitle="Numero pratica"></title-section>
+        <div class="searchCol pb-3">
+          <input type="search" id="num_pratica" class="form-control" formControlName="num_pratica" placeholder="">
+        </div>
+        <title-section subtitle="Anno pratica"></title-section>
+        <div class="searchCol pb-3">
+          <input type="search" id="anno" class="form-control" formControlName="anno" placeholder="">
+        </div>
+      </div>
+
+      <!-- second col -->
+      <div class="form-group col">
+        <title-section subtitle="Ubicazione"></title-section>
+        <div class="searchCol" formGroupName="id_provincia">
+          <it-select [emptyOption]=" '' "
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            (valueChangedEvent)="onChangeProvincia($event)"
+            [data]="provincePiemonte"
+            label="Provincia">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2" formGroupName="id_comune">
+          <it-select [emptyOption]=" '' "
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            [data]="comuni"
+            label="Comune">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2">
+          <div class="row">
+            <div class="col-4 mr-0 pr-0" formGroupName="id_dug">
+              <it-select [emptyOption]=" '' "
+                [parentFormGroup]="formgroup"
+                controlName="id"
+                [data]="dug"
+                label="Indirizzo">
+              </it-select>
+            </div>
+            <div class="col-8  ml-0 pl-1">
+              <it-input
+                  [parentFormGroup]="formgroup"
+                  controlName="duf"
+                  label="&nbsp;"
+                  placeholder="">
+              </it-input>
+            </div>
+          </div>
+        </div>
+
+        <title-section subtitle="Tipo istanza"></title-section>
+        <div class="searchCol" formGroupName="id_tipo_istanza">
+          <it-select [emptyOption]=" '' "
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            [data]="tipologieIstanza"
+            label="">
+          </it-select>
+        </div>
+
+      </div>
+
+      <!-- third col -->
+      <div class="form-group col">
+        <title-section subtitle="Data protocollo"></title-section>
+        <div class="maxColWidth row mb-0">
+          <div class="col ml-2">Da</div>
+          <div class="col mr-2">A</div>
+        </div>
+        <div class="dates-margins-left d-flex mb-2">
+          <div class="">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_protocollo_from" label="" small="true"></it-datepicker>
+          </div>
+          <div class="ml-2">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_protocollo_to" label="" small="true"></it-datepicker>
+          </div>
+        </div>
+
+        <title-section subtitle="Data di registrazione"></title-section>
+        <div class="dates-margins-left ml-2 d-flex pb-3">
+          <div class="">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_registrazione_from" label="" small="true"></it-datepicker>
+          </div>
+          <div class="ml-2">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_registrazione_to" label="" small="true"></it-datepicker>
+          </div>
+        </div>
+        
+        <title-section subtitle="Numero protocollo"></title-section>
+        <div class="searchCol pb-3">
+          <input type="search" id="numero_protocollo" class="form-control" formControlName="numero_protocollo" placeholder="">
+        </div>
+
+        <title-section subtitle="Ente"></title-section>
+        <div class="searchCol pb-3">
+          <input type="search" id="ente" class="form-control" formControlName="ente" placeholder="">
+        </div>
+      </div>
+
+    </div>
+
+  <title-section subtitle="Ricerca per codice istanza"></title-section>
+  <div class="col-md-6 mb-5 px-2">
+    <it-input
+        [parentFormGroup]="formgroup"
+        controlName="codice_istanza"
+        (keyup)="checkCRKeyForSearch($event)"
+        label=""
+        placeholder="">
+    </it-input>
+  </div>
+  <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+</form>
+</ng-template>
+
+<div class="my-3">
+<alert-box *ngIf="wrongDateInterval" type="WARNING" message="L'Intervallo di date specificato non è corretto" timeout="5000"></alert-box>
+</div>
+
+
+<!--
+
+RISULTATI RICERCA FASCICOLI
+
+-->
+
+<div *ngIf="searchSelected == 0 && displayedRowsFascicoli" class="my-5">
+<div class="d-flex py-3">
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonFascicoli == ''    }" (click)="onSearch(0)">Tutti ({{filteredRowsFascicoli[0] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonFascicoli == 'OPN' }" (click)="onSearch(0, 'OPN')">Aperti ({{filteredRowsFascicoli[1] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonFascicoli == 'CLS' }" (click)="onSearch(0, 'CLS')">Chiusi ({{filteredRowsFascicoli[2] }})</button>
+</div>
+
+<div class="py-3">
+  <title-section subtitle="{{datatableFascicoli.count}} Risultati di ricerca"></title-section>
+</div>
+
+<div class="datatable-container scrollablecustomdatatable">
+  <ngx-datatable #fascicoliTable
+      class="material expandable striped  datatable-style"
+      [rows]="displayedRowsFascicoli"
+      [headerHeight]="'auto'"
+      [footerHeight]="50"
+      [columnMode]="'force'"
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [messages]="datatableFascicoli.messages"
+
+      [count]="datatableFascicoli.count"
+      [offset]="datatableFascicoli.offset"
+      [limit]="datatableFascicoli.limit"
+
+      [externalPaging]="true"
+      (page)="onSearch($event, stateButtonFascicoli)"
+
+      [selected]="datatableFascicoli.selected">
+
+    <!-- actions toolbar-->
+    <ngx-datatable-column name="Azioni" minWidth="88" width="88" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div class="d-flex">
+          <div class="linkedText linkDiv top2" [ngStyle]="{ visibility: row.visualizza?'visible':'hidden' }" (click)="formsService.viewFascicolo(row)" title="Dettagli fascicolo"><img alt=""  src="assets/images/doc.png" class=""/></div>
+          <div *ngIf="row.assegna_abilitazioni" class="pl-3 linkDivPanel" (click)="displayFolderPermissionsManagerPopup(row.id_fascicolo)" title="Pannello gestione abilitazioni">
+            <em class="fa fa-user" aria-hidden="true"></em>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="linkedText linkDiv top2" [ngStyle]="{ visibility: row.modifica?'visible':'hidden' }" (click)="formsService.editFascicolo(row)" title="Modifica fascicolo"><img alt=""  src="assets/images/pen.png" class="plusIcon"/></div>
+          <div class="mr-auto linkedText linkDiv del" [ngStyle]="{ visibility: row.elimina?'visible':'hidden' }" (click)="deleteFascicolo(row)" title="Elimina fascicolo"><img alt=""  src="assets/images/bin.png" class="plusIcon"/></div>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- expand column-->
+    <ngx-datatable-column name="Elenco istanze" maxWidth="98" [canAutoResize]="false">
+      <ng-template ngx-datatable-cell-template let-row="row" let-expanded="expanded">
+        <div class="d-flex">
+          <div class="mx-auto linkedText linkDiv" (click)="toggleExpandRowIstanzeFascicolo(row, expanded)" title="Visualizza istanze"><img alt=""  src="assets/images/dots.png" class="plusIcon"/></div>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+    
+    <!-- columns -->
+    <ngx-datatable-column *ngFor="let col of columnsFascicoli" 
+        [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+        [name]="col.name" [prop]="col.prop">
+    </ngx-datatable-column>
+
+    <!-- Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="'auto'">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <ng-container *ngTemplateOutlet="listaIstanze; context: {istanze: row._istanzeFascicoloList, expanded: expanded }"></ng-container>
+        <div *ngIf="row.nuova_istanza" class="tbl-width mt-2">
+          <button class="btn btn-outline-fixed-slim" (click)="formsService.addIstanzaInFascicolo(row)">AGGIUNGI ISTANZA</button>
+        </div>
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+  </ngx-datatable>    
+</div>
+
+</div>
+
+
+<ng-template #listaIstanze let-istanze="istanze" let-expanded="expanded">
+<table *ngIf="istanze.length"  class="tbl-width table-istanza" summary="just rawQuadriTable table8 !">
+    <tr>
+      <th scope="col" class="dr-col5 detail-row-cell">Azioni</th>
+      <th scope="col" class="dr-col1 detail-row-cell">Codice istanza</th>
+      <th scope="col" class="dr-col2 detail-row-cell">Comune</th>
+      <th scope="col" class="dr-col3 detail-row-cell">Tipo istanza</th>
+      <th scope="col" class="dr-col4 detail-row-cell">Stato</th>
+    </tr>
+    <ng-container *ngFor="let istanza of istanze; let i=index">
+      <ng-container *ngTemplateOutlet="istanzaRow; context: {istanza: istanza, i: i}"></ng-container>
+    </ng-container>
+
+    <ng-template #istanzaRow let-istanza="istanza" let-i="i">
+      <tr class="istanza-fascicolo-row{{i % 2}}">
+        <td class="dr-col5 detail-row-cell pb-3 pl-2">
+          <!-- instances actions toolbar  -->
+          <div class="d-flex mt-2">
+            <div *ngIf="istanza.id_istanza_riferimento"><img alt="" class="hierarchy-angle" [ngStyle]="getIndentation(istanza)" src="assets/images/hierarchy.png"/></div>
+            <div *ngIf="formsService.canDisplayDetails(istanza, 'FO')" class="linkedText linkDiv" (click)="formsService.viewIstanza(istanza)" title="Dettagli istanza"><img alt=""  src="assets/images/doc.png" class="plusIcon"/></div>
+            <div *ngIf="formsService.showNonMudeDetails(istanza, 'FO')" class="pr-2 linkDivPanel" (click)="downloadPDF(istanza)" title="Scarica PDF istanza"><em class="fa fa-file-pdf-o" aria-hidden="true"></em></div>
+            <div *ngIf="formsService.showNonMudeDetails(istanza, 'FO')" class="pr-2 linkDivPanel" (click)="openAttachmentsList(istanza)" title="Visualizza allegati"><em class="fa fa-files-o" aria-hidden="true"></em></div>
+            <div *ngIf="formsService.isThereIdfFile(istanza)" class="pl-2 linkDivPanel size20" (click)="downloadIdfFile(istanza)" title="Scarica autorizzazione richiesta per vincolo idrogeologico"><em class="fa fa-file-image-o" aria-hidden="true"></em></div>
+
+            <div *ngIf="istanza.assegna_abilitazioni" class="pr-2 linkDivPanel" (click)="displayInstancePermissionsManagerPopup(istanza.id_istanza, istanza.id_template)" title="Pannello gestione abilitazioni"><em class="fa fa-user" aria-hidden="true"></em></div>
+            <div *ngIf="istanza?.fonte != 'AEOS' && formsService.checkStatus(istanza, 'APA')" class="pl-1 linkDivPanel size20" (click)="downloadReceiptPDF(istanza)" title="Scarica ricevuta"><em class="fa fa-wpforms" aria-hidden="true"></em></div>
+            <div class="linkedText linkDiv" [ngStyle]="{ visibility: istanza.modifica?'visible':'hidden' }" (click)="formsService.editIstanza(istanza)" title="Modifica istanza"><img alt="" src="assets/images/pen.png" class="plusIcon"/></div>
+            <div class="linkedText linkDiv bin" [ngStyle]="{ visibility: istanza.elimina?'visible':'hidden' }" (click)="deleteIstanza(istanza)" title="Elimina istanza"><img alt=""  src="assets/images/bin.png" class="plusIcon"/></div>
+            <!-- back to BZZ -->
+            <div *ngIf="formsService.canBackInstanceToBzz(istanza)" class="linkDivPanel top2" (click)="backToBzz(istanza)" title="Sblocca istanza per rimetterla in stato BOZZA">
+              <em class="fa fa-unlock-alt " aria-hidden="true"></em>
+            </div>
+          </div>
+        </td>
+        <!-- instances sub columns -->
+        <td class="dr-col1 detail-row-cell">{{istanza.codice_istanza}}</td>
+        <td class="dr-col2 detail-row-cell">{{istanza.comune.value}}</td>
+        <td class="dr-col3 detail-row-cell">{{istanza.tipologia_istanza.value}}</td>
+        <td class="dr-col4 detail-row-cell">{{istanza.stato_istanza.value}}</td>
+      </tr>
+      <ng-container *ngFor="let figlia of istanza._istanzeFiglie; let i=index">
+        <ng-container *ngTemplateOutlet="istanzaRow; context: {istanza: figlia, i: i}"></ng-container>
+      </ng-container>
+    </ng-template>
+  </table>
+</ng-template>
+
+<!--
+
+RISULTATI RICERCA ISTANZE
+
+-->
+
+<div *ngIf="searchSelected == 1 && displayedRowsIstanze" class="my-5">
+<div class="d-flex py-3">
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanze == ''    }" (click)="onSearch(0, '')">Tutte ({{filteredRowsIstanze[0] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanze == 'BZZ' }" (click)="onSearch(0, 'BZZ')">Bozze ({{filteredRowsIstanze[1] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanze == 'DFR' }" (click)="onSearch(0, 'DFR')">Istanza da firmare ({{filteredRowsIstanze[2] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanze == 'FRM' }" (click)="onSearch(0, 'FRM')">Istanza firmata ({{filteredRowsIstanze[3] }})</button>
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanze == 'DPS' }" (click)="onSearch(0, 'DPS')">Istanza inoltrata ({{filteredRowsIstanze[4] }})</button>
+</div>
+
+<div class="py-3">
+  <title-section subtitle="{{datatableIstanze.count}} Risultati di ricerca"></title-section>
+</div>
+<div class="datatable-container scrollablecustomdatatable">
+  <ngx-datatable #table
+      class="material expandable striped  datatable-style"
+      [rows]="displayedRowsIstanze"
+      [headerHeight]="'auto'"
+      [footerHeight]="50"
+      [columnMode]="'force'"
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [messages]="datatableIstanze.messages"
+      [count]="datatableIstanze.count"
+      [offset]="datatableIstanze.offset"
+      [limit]="datatableIstanze.limit"
+
+      [externalPaging]="true"
+      (page)="onSearch($event, stateButtonIstanze)"
+
+      [selected]="datatableIstanze.selected">
+
+    <ngx-datatable-column name="Azioni" minWidth="88" width="88" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <div class="d-flex">
+          <div *ngIf="formsService.canDisplayDetails(row, 'FO')" class="linkedText linkDiv" (click)="formsService.viewIstanza(row)" title="Dettagli istanza"><img alt=""  src="assets/images/doc.png" class=""/></div>
+          <div *ngIf="formsService.showNonMudeDetails(row, 'FO')" class="pr-2 linkDivPanel" (click)="downloadPDF(row)" title="Scarica PDF istanza"><em class="fa fa-file-pdf-o" aria-hidden="true"></em></div>
+          <div *ngIf="formsService.showNonMudeDetails(row, 'FO')" class="pr-2 linkDivPanel" (click)="openAttachmentsList(row)" title="Visualizza allegati"><em class="fa fa-files-o" aria-hidden="true"></em></div>
+          <div *ngIf="formsService.isThereIdfFile(row)" class="pl-2 linkDivPanel size20" (click)="downloadIdfFile(row)" title="Scarica autorizzazione richiesta per vincolo idrogeologico"><em class="fa fa-file-image-o" aria-hidden="true"></em></div>
+          
+          <div *ngIf="formsService.checkStatus(row, 'APA')" class="pl-2 linkDivPanel size20" (click)="downloadReceiptPDF(row)" title="Scarica ricevuta"><em class="fa fa-wpforms" aria-hidden="true"></em></div>
+          <div class="pl-2 linkedText linkDiv" [ngStyle]="{ visibility: row.modifica?'visible':'hidden' }" (click)="formsService.editIstanza(row)" title="Modifica istanza"><img alt=""  src="assets/images/pen.png" class="plusIcon"/></div>
+          <div class="linkedText linkDiv bin" [ngStyle]="{ visibility: row.elimina?'visible':'hidden' }" (click)="deleteIstanza(row)" title="Elimina istanza"><img alt=""  src="assets/images/bin.png" class="plusIcon"/></div>
+        </div>
+        <div class="d-flex">
+          <div *ngIf="row.assegna_abilitazioni" class="linkDivPanel" (click)="displayInstancePermissionsManagerPopup(row.id_istanza, row.id_template)" title="Pannello gestione abilitazioni">
+            <em class="fa fa-user" aria-hidden="true"></em>
+          </div>
+
+          <!-- back to BZZ -->
+          <div *ngIf="formsService.canBackInstanceToBzz(row)" class="linkDivPanel top2 pl-2" (click)="backToBzz(row)" title="Sblocca istanza per rimetterla in stato BOZZA">
+            <em class="fa fa-unlock-alt " aria-hidden="true"></em>
+          </div>
+          <div class="linkedText pl-2 linkDiv" [ngStyle]="{ visibility: row._isSentState?'visible':'hidden' }" (click)="openNotifiche(row.id_istanza)" title="Notifiche istanza"><em class="fa-button-icon fa mr-2 fa-envelope-open" title="Dettagli notifica"></em></div>
+
+        </div>
+
+      </ng-template>
+    </ngx-datatable-column>
+  
+    <ngx-datatable-column *ngFor="let col of columnsIstanze" 
+        [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+        [name]="col.name" [prop]="col.prop">
+    </ngx-datatable-column>
+
+
+  </ngx-datatable>    
+</div>
+
+</div>
+
+
+<!--
+
+RISULTATI RICERCA PRATICHE
+
+-->
+
+
+<div *ngIf="searchSelected == 2 && displayedRowsPratiche" class="my-5">
+<div class="d-flex py-3">
+  <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonPratiche == ''    }" (click)="onSearch(0)">Tutti ({{ datatablePratiche.count }})</button>
+</div>
+<div class="py-3">
+  <title-section subtitle="{{datatablePratiche.count}} Risultati di ricerca"></title-section>
+</div>
+
+<div class="datatable-container scrollablecustomdatatable">
+  <ngx-datatable #praticheTable
+      class="material expandable striped  datatable-style"
+      [rows]="displayedRowsPratiche"
+      [headerHeight]="'auto'"
+      [footerHeight]="50"
+      [columnMode]="'force'"
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [messages]="datatablePratiche.messages"
+
+      [count]="datatablePratiche.count"
+      [offset]="datatablePratiche.offset"
+      [limit]="datatablePratiche.limit"
+
+      [externalPaging]="true"
+      (page)="onSearch($event, stateButtonPratiche)"
+
+      [selected]="datatablePratiche.selected">
+
+    <!-- actions toolbar-->
+    <ngx-datatable-column name="" maxWidth="50" width="50" [cellClass]="'ng-custom-action-cell-small'" [sortable]="false">
+      <ng-template ngx-datatable-cell-template let-row="row">
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- expand column-->
+    <ngx-datatable-column name="Elenco istanze" maxWidth="98" [canAutoResize]="false">
+      <ng-template ngx-datatable-cell-template let-row="row" let-expanded="expanded">
+        <div class="d-flex">
+          <div class="mx-auto linkedText linkDiv" (click)="toggleExpandRowIstanzePratica(row, expanded)" title="Visualizza istanze"><img alt=""  src="assets/images/dots.png" class="plusIcon"/></div>
+        </div>
+      </ng-template>
+    </ngx-datatable-column>
+    
+    <!-- columns -->
+    <ngx-datatable-column *ngFor="let col of columnsPratiche" 
+        [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+        [name]="col.name" [prop]="col.prop">
+    </ngx-datatable-column>
+
+    <!-- Row Detail Template -->
+    <ngx-datatable-row-detail [rowHeight]="'auto'">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+        <ng-container *ngTemplateOutlet="listaIstanze; context: {istanze: row._istanzePraticaList, expanded: expanded }"></ng-container>
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+  </ngx-datatable>    
+</div>
+
+</div>

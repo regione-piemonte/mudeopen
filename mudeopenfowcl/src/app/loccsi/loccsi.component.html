@@ -1,0 +1,43 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="px-4 py-3">
+    <alert-box type="INFO">Ricerca nel database regionale un indirizzo da aggiungere</alert-box>
+    <alert-box *ngIf="nodata" type="WARNING" esito="Informazioni sulla transazione" message="Non sono stati trovati indirizzi dalla ricerca."></alert-box>
+
+    <div class="pb-4">
+        <div class="d-flex">
+            <input #searchBoxField type="text" class="form-control mr-3" [(ngModel)]="searchBox" placeholder="digita per iniziare la ricerca"
+            (keyup)="onSearchChange($event)">
+            <button class="btn btn-outline-fixed-slim ml-auto" (click)="onSearch()">CERCA</button>
+        </div>
+
+    </div>
+
+    <ngx-datatable class="material expandable striped"  selectionType="single"
+            [rows]="addresses"
+            [limit]="datatable.limit"
+            [headerHeight]="50" 
+            [columns]="headers"
+            [footerHeight]="40"
+            [columnMode]="'force'"
+            [offset]="datatable.offset"
+            [rowHeight]="'auto'"
+            [count]="datatable.count"
+            [messages]="datatable.messages"
+            [scrollbarH]="'auto'"
+            [selected]="datatable.selected">
+    </ngx-datatable>
+
+    <div class="d-flex pt-3">
+        <button class="btn btn-link" type="button" (click)="annulla()">ANNULLA</button>
+        <button *ngIf="datatable.selected?.length" class="ml-auto btn btn-success" type="button" (click)="addAddress()">AGGIUNGI</button>
+    </div>
+    
+    
+</div>
+
+
+

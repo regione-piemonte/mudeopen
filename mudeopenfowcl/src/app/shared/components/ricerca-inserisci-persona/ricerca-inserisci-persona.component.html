@@ -1,0 +1,57 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div>
+    <div *ngIf="!notitle">
+        <div class="containerDiv py-3 pl-4 pr-3">
+            <span class="title-col1">{{title}}</span>
+            <span *ngIf="!noclose" class="close-col2" ><em class="fa fa-times" (click)="onClose()"></em></span>
+        </div>
+        
+        <div class="px-4 py-2" [innerHTML]="label"></div>
+    </div>
+
+    <div class="px-4 py-4">
+        <div *ngIf="type == 'PG'">
+            <ricerca-persona-giuridica [selectionType]="selectionType"
+                    [excludeIDs]="excludeIDs"
+                    (selected)="onItemSelected($event)">
+            </ricerca-persona-giuridica>
+        </div>
+        <div *ngIf="type == 'PF'">
+            <ricerca-persona-fisica [selectionType]="selectionType"
+                    [excludeIDs]="excludeIDs"
+                    [userSelectionType]="userSelectionType"
+                    (selected)="onItemSelected($event)">
+            </ricerca-persona-fisica>
+        </div>
+
+        <div *ngIf="askForReplace" class="pt-1 custom-control mude-custom-checkbox">
+            <input id="searchVersione" name="searchVersione" [(ngModel)]="askForReplaceChk" type="checkbox" [value]="true" class="custom-control-input">
+            <label for="searchVersione" class="custom-control-label checkbox-label-normal">Sostituisci il soggetto a livello di fascicolo, una volta che l'istanza passa nello stato di registrata</label>
+        </div>
+    
+        <div class="d-flex pt-3">
+            <div class="ml-auto linkedText linkDiv" (click)="insertNewSubject()"><img alt=""  src="assets/images/plus.png" class="plusIcon"/>INSERISCI NUOVO SOGGETTO</div>
+        </div>
+    </div>
+
+</div>
+
+<!--
+<div *ngIf="isNewInsert && type == 'PG'">
+    <inserisci-persona-giuridica [noclose]="noclose"
+        (closeEvent)="onClose()"
+        (subjectCreated)="onItemSelected($event)">
+    </inserisci-persona-giuridica>
+</div>
+
+<div *ngIf="isNewInsert && type == 'PF'">
+    <inserisci-persona-fisica [noclose]="noclose"
+        (closeEvent)="onClose()"
+        (subjectCreated)="onItemSelected($event)">
+    </inserisci-persona-fisica>
+</div>
+-->

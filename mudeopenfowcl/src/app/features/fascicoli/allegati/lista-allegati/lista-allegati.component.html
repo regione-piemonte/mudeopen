@@ -1,0 +1,42 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3 mb-3">
+  <span class="title-col1">Allegati istanza</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+
+
+<div class="datatable-container customdatatable mb-5 mx-2">
+
+  <div class="mx-2">
+    <alert-box *ngIf="isLoading" message="Carcamento allegati in corso..." type="WARNING" esito=""></alert-box>
+    <alert-box *ngIf="noAttches" message="Non sono stati trovati allegati associati all'istanza" type="WARNING"></alert-box>
+  </div>
+
+  <div *ngFor="let category of attachemnts | keyvalue" class="category">
+
+    <div class="mx-2 mb-3">
+      <title-section [subtitle]="category.key"></title-section>
+      <div *ngFor="let attach of category.value" class="attach mx-4 mt-2 d-flex" (click)="downloadAttach(attach)">
+        <div>
+          <div class="mr-4" title="Scarica PDF istanza">
+            <em class="fa fa-file-pdf-o" aria-hidden="true"></em>
+          </div>
+        </div>
+        <div>
+          {{ attachName(attach) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex">
+  <div class="ml-auto">
+    <button class="btn btn-link mr-3 m-2 blue" (click)="onExit()">CHIUDI</button>
+  </div>
+</div>
+
