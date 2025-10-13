@@ -1,0 +1,52 @@
+.editarea {
+    width: 100%;
+}
+
+.searchDiv {
+    align-content: stretch;
+    flex: 999 999 auto;
+}
+
+.filterDiv {
+    background-color: #ffffd2;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    display: flex;
+}
+.filterDiv div {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.filterDiv div input, .filterDiv div select {
+    width: 100%;
+}
+
+.actionDiv {
+    width: 100px;
+}
+
+
+::ng-deep .editing-row {
+    background-color: #fdf9e5;
+}
+
+.rawQuadriTable {
+    width: 75%;
+    margin-left: 100px;
+}
+
+thead .quadro-head {
+    font-size: 12px !important;
+    color: rgb(185, 88, 88) !important;
+}
+
+tbody .quadro-td {
+    font-size: 12px !important;
+}
+
+
+.quadri-action-div {
+    width: 90px;
+}
+

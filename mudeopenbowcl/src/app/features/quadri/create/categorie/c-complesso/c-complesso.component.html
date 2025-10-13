@@ -1,0 +1,309 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Quadro Tabellare  <div class="darkTitle">({{messageAction}})</div></span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="mb-4">
+  <form [formGroup]="mainForm">
+    <div class="p-4">
+
+      <title-section subtitle="Visualizzazione" faicon="fa-id-card-o"></title-section>
+      <div class="mt-3 mb-5">
+          <it-input
+              [parentFormGroup]="mainForm"
+              controlName="label"
+              label="Etichetta (da mostrare nel wizard)"
+              placeholder="Inserisci il nome del quadro">
+          </it-input>
+      </div>
+
+      <!--
+      <title-section subtitle="Impostazioni" faicon="fa-gear"></title-section>
+      <div class="form-group col">
+        <div class="custom-control mude-custom-checkbox agree-checkbox">
+          <input id="attivo" 
+                class="custom-control-input" 
+                type="checkbox" 
+                [checked]="data.flg_attivo !== 0"
+                [value]="1">
+          <label class="custom-control-label checkbox-label-normal" for="attivo">Quadro attivo</label>
+        </div>
+      </div>
+      -->
+
+      <div class="my-5">
+        <title-section subtitle="Lista dei TAB" faicon="fa-folder-o"></title-section>
+        <div class="mt-2 mb-4">In questa lista potete aggiungere TAB, ed eventualmente i sotto TAB, nel quale inserire i quadri informativi di tipo FormIO. </div>
+        <ng-container *ngTemplateOutlet="tabList"></ng-container>
+      </div>
+
+      <div class="my-5">
+        <title-section subtitle="Lista dei controlli" faicon="fa-check-square-o"></title-section>
+        <div class="mt-2 mb-4">Eventuali controlli di validazione del quadro, con i relativi messaggi, possono essere indicati in questa lista</div>
+        <ng-container *ngTemplateOutlet="stepValidationsList"></ng-container>
+      </div>
+
+      <title-section subtitle="Template stampa (.docx)" faicon="fa-file-word-o"></title-section>
+      <div class="my-4">
+        <upload-file
+            [maxfiles]="1"
+            [accept]="'.docx'"
+            (delete)="removeDocx(data, $event)"
+            (upload)="selectDocx(data, $event)"
+            (download)="downloadDocx(data, $event, 'modello_documentale')"
+            label="Trascina il file oppure fai click per selezionarlo"
+            [readOnly]="isReadonly"
+            [files]="docxFileList">
+        </upload-file>
+      </div>
+
+    </div>
+
+    <div class="mx-4 my-3" *ngIf="invalidTabStructure">
+      <alert-box type="WARNING" message="Si deve inserire almeno un tab, o eventuale sotto tab." timeout="5000" (fadeaway)="invalidTabStructure = false"></alert-box>
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+        <div *ngIf="!isReadonly" class="my-4 px-2">
+          <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+        </div>
+        <div class="ml-auto my-4">
+          <button type="submit" class="btn btn-color-slim blue" (click)="onSubmit(true)">{{isReadonly?'CHIUDI':'SALVA QUADRO'}}</button>
+        </div>
+    </div>
+
+    <!--<input type="hidden" [value]="!isInitialization || hiddenFocus.focus()">-->
+  </form>
+</div>
+
+
+<!-- 
+  LISTA TAB 
+-->
+<ng-template #tabList>
+    <ngx-datatable #tabsTable
+      class="material expandable striped"
+      [rows]="tabs"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [columnMode]="'flex'"
+      [rowHeight]="'auto'"
+      [messages]="datatable.messages"
+      [externalSorting]="true"
+      [count]="datatable.count"
+      [offset]="datatable.offset"
+      [limit]="datatable.limit"
+
+      [selected]="datatable.selected">
+      
+    <!-- Column: Editing Mode-->
+    <ngx-datatable-column name="Azione" minWidth="90" width="90" [cellClass]="'ng-custom-action-cell'">
+      <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+        <em class="fa-button-icon fa mr-2" [ngClass]="{ 'fa-pencil': !isReadonly, 'fa-eye': isReadonly}" title="dettagli" (click)="editTab(row, rowIndex)"></em>
+        <em *ngIf="!isReadonly" class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="deleteTab(row, rowIndex)"></em>
+        <!-- moveup -->
+        <em *ngIf="!isReadonly && rowIndex > 0" class="fa-button-icon fa fa-level-up" title="sposta il sotto quadro in alto" (click)="tabMoveup(row, rowIndex)"></em>
+      </ng-template>
+    </ngx-datatable-column>
+  
+    <!-- Column: Open Panel-->
+    <ngx-datatable-column [flexGrow]="0.1" [width]="90" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+        <a class="table-icons" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" title="apri / chiudi sezione" (click)="toggleExpandRow(row, expanded)"></a>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Column 1: Identificativo -->
+    <ngx-datatable-column [flexGrow]="0.05" name="Identificativo TAB">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <strong>{{row.label + ' ' + (row.tag?row.tag:'')}}</strong>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Column 2: FormIO -->
+    <ngx-datatable-column [flexGrow]="0.05" maxWidth="200" name="FormIO">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <strong [innerHTML]="getFomrio(row.id_quadro)"></strong>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Columns 2: Descrizione -->
+    <ngx-datatable-column [flexGrow]="0.1" name="Descrizione">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        {{row.title}}
+      </ng-template>
+    </ngx-datatable-column>
+  
+    <!-- Row Panel Template -->
+    <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+
+        <!-- no subtabs -->
+        <div *ngIf="!row.subtabs" class="rawQuadriTable">
+          <div class="row">
+            <div class="col-6">
+              <div>Etichetta</div>
+              <div class="tabvalue"><strong>{{row.label}}&nbsp;</strong></div>
+            </div>
+            <div class="col-6">
+              <div>Descr. breve</div>
+              <div class="tabvalue"><strong>{{row.tag}}&nbsp;</strong></div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <div>Descrizione estesa</div>
+            <div class="tabvalue"><strong>{{row.title}}&nbsp;</strong></div>
+          </div>
+          <div class="mt-2">
+            <div>Validazione TAB</div>
+            <div class="tabvalue"><strong>{{getJS(row.formValidation)}}&nbsp;</strong></div>
+          </div>
+          <div class="mt-2">
+            <div>Check attivazione TAB</div>
+            <div class="tabvalue"><strong>{{row.activationCheck}}&nbsp;</strong></div>
+          </div>
+          <div class="mt-2">
+            <div>Messaggio condizionale TAB</div>
+            <div class="tabvalue"><strong>{{getJS(row.dependencyCheck)}}&nbsp;</strong></div>
+          </div>
+        </div>
+
+        <!-- with subtabs -->
+        <table *ngIf="row.subtabs"  class="table rawQuadriTable" summary="just table rawQuadriTable table!">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col" class="quadro-head">Sotto TAB</th>
+              <th scope="col" class="quadro-head">FormIO</th>
+              <th scope="col" class="quadro-head mx30">Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let subtab of row.subtabs; let i = index">
+              <td class="ng-custom-action-cell">
+                <!-- visualizza -->
+                <em class="fa-button-icon fa mr-2" [ngClass]="{ 'fa-pencil': !isReadonly, 'fa-eye': isReadonly}" title="dettagli di questa versione" (click)="subtabModify(row, subtab)"></em>
+                <!-- delete -->
+                <em *ngIf="!isReadonly" class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="subtabDelete(row, subtab)"></em>
+                <!-- moveup -->
+                <em *ngIf="!isReadonly && i > 0" class="fa-button-icon fa fa-level-up" title="elimina" (click)="subtabMoveup(row, subtab)"></em>
+              </td>
+              <td class="quadro-td" [innerHTML]="subtab.label + '<br>' + (subtab.tag?subtab.tag:'')"></td>
+              <td class="quadro-td" [innerHTML]="getFomrio(subtab.id_quadro)"></td>
+              <td class="quadro-td mx30">{{subtab.title}}</td>
+            </tr>
+            <tr>
+              <td colspan="4" *ngIf="!isReadonly">
+                <div class="linkDiv my-2 d-flex">
+                  <span class="ml-auto " (click)="addNewSubtab(row)"><img alt="" src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI NUOVO SOTTO TAB</span></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>          
+      </ng-template>
+    </ngx-datatable-row-detail>
+
+    <ngx-datatable-footer>
+      <ng-template 
+        ngx-datatable-footer-template 
+        let-rowCount="rowCount"
+        let-pageSize="pageSize"
+        let-selectedCount="selectedCount"
+        let-curPage="curPage"
+        let-offset="offset">
+        <div style="padding: 5px 10px">
+          <div>
+            TAB mostrati da {{(offset * pageSize)+1}} a {{(rowCount> 
+              (curPage*pageSize))?(curPage*pageSize):(rowCount)}} di
+              {{(rowCount)}}
+          </div>
+        </div>
+        <datatable-pager
+        [pagerLeftArrowIcon]="'datatable-icon-left'"
+        [pagerRightArrowIcon]="'datatable-icon-right'"
+        [pagerPreviousIcon]="'datatable-icon-prev'"
+        [pagerNextIcon]="'datatable-icon-skip'"
+        [page]="curPage"
+        [size]="pageSize"
+        [count]="rowCount"
+        [hidden]="!((rowCount / pageSize) > 1)"> <!-- add this to handle page change: (change)="table.onFooterPage($event)" -->
+         </datatable-pager>
+      </ng-template>
+    </ngx-datatable-footer>    
+  </ngx-datatable>    
+
+  <div *ngIf="!isReadonly" class="linkDiv my-2 d-flex">
+    <span (click)="addNewTab()">
+      <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI NUOVO TAB</span>
+    </span>    
+  </div>
+
+</ng-template>
+
+
+<!-- 
+  LISTA VALIDAZIONI
+-->
+<ng-template #stepValidationsList>
+  <ngx-datatable
+    class="material expandable striped"
+    [rows]="stepValidations"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    [columnMode]="'flex'"
+    [externalSorting]="true"
+    [rowHeight]="'auto'"
+    [messages]="{ 'emptyMessage': 'Non ci sono controlli definite per questo quadro' }"
+    [count]="stepValidations.length"
+    [offset]="0"
+    [limit]="1000">
+    
+  <!-- Column: action -->
+  <ngx-datatable-column name="Azione" minWidth="90" width="90" [cellClass]="'ng-custom-action-cell'">
+    <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+      <em class="fa-button-icon fa mr-2" [ngClass]="{ 'fa-pencil': !isReadonly, 'fa-eye': isReadonly}" title="dettagli" (click)="editValidation(row)"></em>
+      <em *ngIf="!isReadonly" class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="deleteValidation(row)"></em>
+      <!-- moveup -->
+      <em *ngIf="!isReadonly && rowIndex > 0" class="fa-button-icon fa fa-level-up" title="sposta il quadro in alto" (click)="validationMoveup(row)"></em>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!-- Columns 1 -->
+  <ngx-datatable-column [flexGrow]="0.1" maxWidth="420" name="Controllo">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      <strong>{{getLimitedText(row.check)}}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!-- Columns 2 -->
+  <ngx-datatable-column [flexGrow]="0.02" maxWidth="200" name="Tipologia">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      {{row.type}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <!-- Columns 2 -->
+  <ngx-datatable-column [flexGrow]="0.1" name="Messaggio">
+    <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+      {{getLimitedText(row.message)}}
+    </ng-template>
+  </ngx-datatable-column>
+
+</ngx-datatable>    
+
+<div *ngIf="!isReadonly" class="linkDiv my-2 d-flex">
+  <span (click)="editValidation()">
+    <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI CONTROLLO</span>
+  </span>  
+</div>
+
+</ng-template>

@@ -1,0 +1,7 @@
+ {
+    "/rest/": {
+        "target": "http://dev-srv-mudeopen.nivolapiemonte.it/mudeopen/srvcommon",
+        "secure": false,
+        "changeOrigin": true
+    }
+}

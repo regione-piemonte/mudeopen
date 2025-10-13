@@ -1,0 +1,89 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class='row'>
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.MANAGE_QUADRI'>
+    <card-home
+      cardTitle='Gestione tipi quadro'
+      imagePath='assets/images/drw_rubricasoggetti.png'
+      routerLink='/backoffice/quadri/tipi'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.VIEW_QUADRI'>
+    <card-home
+      cardTitle='Lista completa quadri'
+      imagePath='assets/images/drw_nuovofacicolo.png'
+      routerLink='/backoffice/quadri/gestione'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.EDIT_TEMPLATE'>
+    <card-home
+      cardTitle='Gestione template istanze'
+      imagePath='assets/images/drw_scadenzari.png'
+      routerLink='/backoffice/quadri/templates'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.VIEW_SCRIVANIA'>
+    <card-home
+      cardTitle='Scrivania istanze'
+      imagePath='assets/images/drw_imieifascicoli.png'
+      routerLink='/backoffice/scrivania'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.SEARCH_ISTANZA'>
+    <card-home
+      cardTitle='Ricerca istanze'
+      imagePath='assets/images/home_ricercafascicoli.png'
+      routerLink='/backoffice//lista-istanze'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.SEARCH_FASCICOLO'>
+    <card-home
+      cardTitle='Ricerca fascicoli'
+      imagePath='assets/images/home_ricercafascicoli.png'
+      routerLink='/backoffice//lista-fascicoli'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.SEARCH_PRATICA'>
+    <card-home
+      cardTitle='Ricerca pratiche'
+      imagePath='assets/images/home_ricercafascicoli.png'
+      routerLink='/backoffice//lista-pratiche'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.BO_DS_ISTANZE'>
+    <card-home
+      cardTitle='Controllo a campione'
+      imagePath='assets/images/drw_imieifascicoli.png'
+      routerLink='/backoffice/scrivania-ds'>
+    </card-home>
+  </div>
+
+  <div class='col p0'
+       *appNgHasPermissions='Permissions.BO_DS_PRATICHE'>
+    <card-home
+      cardTitle='Ricerca denunce sismiche regionali'
+      imagePath='assets/images/drw_ricercafascicoli.png'
+      routerLink='/backoffice/pratiche-ds'>
+    </card-home>
+  </div>
+
+
+</div>

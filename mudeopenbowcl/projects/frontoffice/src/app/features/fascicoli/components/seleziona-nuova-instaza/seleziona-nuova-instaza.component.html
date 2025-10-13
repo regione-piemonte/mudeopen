@@ -1,0 +1,96 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Scelta del tipo di istanza da creare</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="my-4 mx-3">
+  <div>
+    <div>
+      <span class="mandatoryMark">*</span>
+      <label><strong>Seleziona la tipologia di istanza da creare</strong></label>
+    </div>
+    <div class="mb-3 px-3">
+      <select #select [attr.disabled]="disabledTipoIstanzaSelect?true:null"
+                [(ngModel)]="tipologieIstanzaSelected" required 
+                class="custom-select" (change)="onChangeSelection($event.target.value)">
+        <option *ngFor="let type of tipologieIstanza; let i = index" [ngValue]="type">{{type.value}}<span class="idtipoistanza"> - {{type.id}}</span></option>
+      </select>
+    </div>
+
+    <div class="px-2">
+      <alert-box *ngIf="disabledTipoIstanzaSelect && !this.tipologieIstanzaSelected" type="WARNING">
+          <p><strong>Backoffice</strong></p>
+          <p>Modalità preview attiva per tipo istanza: <em><strong>{{boTemplateInfo}}</strong></em></p>
+          <em>Non è stato trovato nessun tipo di istanza valido per il fascicolo selezionato.</em>
+      </alert-box>
+      <alert-box *ngIf="disabledTipoIstanzaSelect" type="INFO">
+        <p><strong>Backoffice</strong></p>
+        <p>Modalità preview attiva per tipo istanza: <em><strong>{{boTemplateInfo}}</strong></em></p>
+        <em>NB: nel caso il tipo di istanza debba essere legata ad un'altra istanza o fascicolo, vai in ricerca e seleziona quello di interesse.</em>
+      </alert-box>
+    </div>
+    
+  </div>
+
+  <alert-box *ngIf="noInstanceTypeAvailable" type="WARNING" message="Non ci sono istanze che si possono aggiungere al fascicolo, per la tipologia selezionata."></alert-box>
+
+  <div *ngIf="isReferenceInstanceRequired"  class="my-2">
+    <title-section [subtitle]="!isTopLevelInstanceAllowed? 'Seleziona l\'istanza di riferimento cliccando sul pulsante \'CREA\'' : 'Per creare una istanza legata ad un\'altra di riferimento, seleziona il pulsante \'CREA\' da questa lista' "></title-section>
+    <ng-container *ngTemplateOutlet="istanzeList"></ng-container>
+  </div>
+
+  <div *ngIf="isTopLevelInstanceAllowed" class="mx-2 mt-5">
+    <div class="card-box">
+      Per creare una nuova istanza, che non è relazionata a nessun'altra istanza in questo fascicolo, o che fa riferimento ad un titolo cartaceo, premere il seguente pulsante
+      <div class="d-flex mx-4">
+        <div class="ml-auto mr-auto my-3">
+          <button class="btn btn-color-slim blue" (click)="onSubmit()">CREA ISTANZA</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 mx-1">
+      <button #hiddenFocus class="btn btn-link" (click)="onExit()">ANNULLA</button>
+  </div>
+</div>
+
+<ng-template #istanzeList>
+  <div *ngIf="displayedRowsIstanze?.length" class="ml-2 mr-3 my-0">
+    <div class="datatable-container">
+      <ngx-datatable class="material expandable datatable-style"
+                [rows]="displayedRowsIstanze"
+                [headerHeight]="'auto'"
+                [footerHeight]="50"
+                [columnMode]="'force'"
+                [scrollbarH]="true"
+                [rowHeight]="'auto'"
+                [messages]="datatable.messages"
+                [count]="datatable.count"
+                [offset]="datatable.offset"
+                [limit]="datatable.limit"
+                [selected]="datatable.selected"
+                [selectionType]="'single'"
+
+                [externalPaging]="true"
+                (page)="onSearch($event)">
+        <ngx-datatable-column *ngFor="let col of columnsIstanze" [name]="col.name" [prop]="col.prop" [width]="col.width"></ngx-datatable-column>
+      </ngx-datatable>    
+    </div>
+  </div>
+  <div *ngIf="datatable.selected?.length" class="d-flex mx-2">
+    <div class="ml-auto my-2 mr-2">
+      Utilizzare il pulsante sulla destra per crere un'istanza collegata a quella selezionata nella lista: &nbsp;<button class="btn btn-color-slim blue" (click)="onSubmit(datatable.selected[0])">CREA ISTANZA COLLEGATA</button>
+    </div>
+  </div>
+
+</ng-template>
+

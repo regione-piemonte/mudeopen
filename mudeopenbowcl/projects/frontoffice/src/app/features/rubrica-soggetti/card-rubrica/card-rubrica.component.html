@@ -1,0 +1,61 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="d-flex flex-column card-box card-box-person">
+
+  <div class="pad-card-box">
+    <div class="row pb-3">
+      <div class="col img-col">
+        <img alt=""  [src]="'assets/images/' + (!isPersonaFisica? 'pg.png' : isMale? 'person.png' : 'person_female.png')">
+      </div>
+      <div class="col-8 pl-0">
+        <div class="d-flex flex-column name-col">
+          <div class="card-name">{{nome}}</div>
+          <div class="card-data">{{fiscalData}}</div>
+        </div>
+      </div>
+      <div class="col-1 pt-3">
+        <img alt=""  src="assets/images/pen.png" (click)="onEditPersonaFisica(soggetto)">
+      </div>
+      <div class="col-1 pt-3 pr-4">
+        <img alt=""  src="assets/images/bin.png" (click)="onDelete()">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="mt-auto card-info-container py-3">
+    <div class="row">
+      <div class="info-data col-12 pb-3">
+        Contatti
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1 pr-0 icon-col">
+        <img alt=""  src="assets/images/phone.png">
+      </div>
+      <div class="col-3 pl-0">
+        <div class="info-label">Telefono</div>
+        <div class="info-data">{{phone}}</div>
+      </div>
+
+      <div class="col-1 icon-col">
+        <img alt=""  src="assets/images/mail.png">
+      </div>
+      <div class="col-3 pl-0">
+        <div class="info-label">E-mail</div>
+        <div class="info-data">{{mail}}</div>
+      </div>
+
+      <div class="col-1 icon-col">
+        <img alt=""  src="assets/images/mail.png">
+      </div>
+      <div class="col-3 pl-0">
+        <div class="info-label">PEC</div>
+        <div class="info-data">{{pec}}</div>
+      </div>
+    </div>
+  </div>
+</div>

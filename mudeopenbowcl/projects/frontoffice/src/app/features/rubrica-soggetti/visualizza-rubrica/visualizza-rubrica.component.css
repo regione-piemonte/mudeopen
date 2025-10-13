@@ -1,0 +1,25 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+
+.searchCol {
+    max-width: 445px;
+    min-width: 445px;
+}
+
+.linkDiv {
+    padding-top: 15px;
+}
+
+.sortLabel {
+    font: normal normal normal 14px/19px "Open Sans", sans-serif;
+    letter-spacing: -0.07px;
+    color: #212529;
+}
+
+.sortSelect {
+    font: normal normal normal 13px/19px "Open Sans", sans-serif;
+    letter-spacing: -0.06px;
+    color: #212529;
+}

@@ -1,0 +1,43 @@
+
+<div class="dialogTitle mb-3 py-3 pl-4 pr-3">
+  <span class="title-col1">FormIO Builder</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+
+<div class="row">
+  <div [ngClass]="{ 'col-sm-8': showCode, 'col-sm-11': !showCode }">
+    <form-builder [form]="formio" (change)="onChange($event)"></form-builder>
+  </div>
+
+  <div *ngIf="!showCode" class="col-sm-1 d-flex">
+    <em class="ml-auto fa-button-icon fa fa-code pr-3 " title="visualizza codice sorgente" (click)="showCode = true"></em>
+  </div>
+  <div *ngIf="showCode" class="col-sm-4">
+    <div class="d-flex">
+      <em class="ml-auto pr-3 fa-button-icon fa fa-times" title="visualizza codice sorgente" (click)="showCode = false"></em>
+    </div>
+    <pre class="mt-2" id="json" #json>{{showData}}</pre>
+  </div>
+
+</div>
+
+<div class="dialogTitle my-3 py-3 pl-4 pr-3">
+  <span class="title-col1">FormIO Preview</span>
+</div>
+<div class="previewBorder py-4">
+  <div class="previewPanel mx-3 px-3 py-3">
+    <formio id="form" #mainFormio 
+          [form]="formioTemplate"
+          [submission]="submission">
+    </formio>
+  </div>
+</div>
+
+<div class="d-flex mt-4 mx-4">
+  <div class="my-4 px-2">
+      <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+  </div>
+  <div class="ml-auto my-4">
+      <button class="btn btn-color-slim blue" (click)="onSubmit(true)">CONFERMA MODIFICHE</button>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<title-bar title="Denunce assoggettabili al controllo a campione"></title-bar>
+<div class="msgCC">pratica già inviata per il controllo a campione</div>
+<div  class="my-4">
+  <title-section subtitle="Seleziona la data di competenza"></title-section>
+  <ngb-datepicker #datepick (navigate)="dateNavigate($event)" 
+    [showWeekdays]="false" class="datepicker-only-month-select" navigation="select" outsideDays="collapsed"> </ngb-datepicker>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="button-group">
+      <button type="button" (click)="loadPage()" class="btn btn-primary btn-sm">
+        Cerca
+      </button>
+    </span>
+  
+</div>
+
+<div *ngIf="rows" class="my-4">
+  <title-section
+    subtitle="{{ rows.length }} Risultati di ricerca"
+  ></title-section>
+
+  <app-mude-table
+    [rows]="rows"
+    [datatable]="datatable"
+    [columns]="columnsIstanze"
+    (pageChanged)="loadPage($event)"
+  >
+  </app-mude-table>
+
+  <span class="button-group">
+    <button type="button" (click)="downloadExcel()" class="btn btn-primary btn-sm">
+      Scarica Excel
+    </button>
+  </span>
+  &nbsp;&nbsp;&nbsp;
+  <span class="button-group">
+    <button type="button" (click)="sendToBeChecked()" class="btn btn-primary btn-sm">
+      Invia controllo a campione
+    </button>
+  </span>
+
+</div>
+
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <div *appNgHasPermissionsOnIstance="[ permissions.BO_DS_CONTR_CAMP, row.funzioniUtente ]" class="custom-control mude-custom-checkbox">
+    <span class="h5" (click)="markToBeChecked(row)">
+      <em class="fa plusIcon" [ngClass]="{'fa-check-square': row.assegna_abilitazioni && !row._cc_checked, 'fa-check-square-o': row._cc_checked, 'fa-square-o': !row.assegna_abilitazioni }" aria-hidden="true"></em>
+    </span>
+  </div>
+
+  <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Mostra sommario istanza" class="expand-link" href="javascript:void(0)" (click)="navigateToDetailInstance(row)">
+    <span class="h5">
+      <em class="fa fa-file-text-o plusIcon" aria-hidden="true"></em>
+    </span>
+  </a>
+  <ng-container *ngIf="row.fonte == 'FO'">
+    <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Visualizza i dati compilati dall'utente" class="expand-link" href="javascript:void(0)" (click)="navigateToStepperInstance(row)">
+      <span class="h5">
+        <em class="fa fa-files-o plusIcon" aria-hidden="true"></em>
+      </span>
+    </a>
+  </ng-container>
+
+
+</ng-template>

@@ -1,0 +1,7 @@
+ {
+    "/rest/": {
+        "target": "https://tst-mudeopen-bo-rp.nivolapiemonte.it/mudeopen",
+        "secure": true,
+        "changeOrigin": true
+    }
+}

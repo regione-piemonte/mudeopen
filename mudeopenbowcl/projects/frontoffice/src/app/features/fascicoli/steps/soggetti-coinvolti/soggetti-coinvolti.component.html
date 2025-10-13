@@ -1,0 +1,277 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<!-- Riepilogo -->
+
+<div  class="card-box mb-4">
+    <div *ngIf="ruoliObbligatori" class="row">
+        <div class="col-6">
+            Ruoli obbligatori che devono essere presenti per l’istanza "<strong>{{tipologiaIstanzaSelected}}</strong>":
+        </div>
+        <div class="col">
+            <span *ngFor="let role of ruoliObbligatori; let i = index" class="roleMandatory" [ngClass]="{ roleMandatorySelected: isMandatoryRoleChecked(role) }">
+                {{(i>0?' - ':'')+role.value}}
+            </span>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <alert-box *ngIf="formsService.istanza?.tipo_istanza?.id == 'DENUNCIA-SISMICA'" type="INFO">Se l’intestatario non firma digitalmente l’istanza è necessario assegnare, nel quadro sottostante,  il ruolo di <strong>procuratore</strong> al soggetto che firma digitalmente l’istanza in luogo dell’intestatario. 
+            <br>Il sistema richiederà obbligatoriamente di allegare la procura speciale sismica  generata in automatico e scaricabile nel quadro Allegati.</alert-box>
+    </div>
+</div>
+
+	<!-- WIZARD SUMMARY BOX -->
+	<div *ngIf="ruoliPossibiliClean" class="roles-table card-box card-box-wizard-riepilogo px-2 pb-4 mt-0 pt-1 mb-4">
+		<title-section subtitle="Riepilogo scelte effettuate"></title-section>
+
+        <div *ngIf="!isRiepilogoItemSelected()" class="px-2 py-3">Al momento non hai aggiunto nessun soggetto coinvolto.</div>
+        <table *ngIf="isRiepilogoItemSelected()" class="table" summary="just rawQuadriTable table5 !">
+            <thead>
+                <tr class="d-flex">
+                    <th scope="col" class="col-3">Soggetto</th>
+                    <th scope="col" class="col-3">C.Fiscale/P.IVA</th>
+                    <th scope="col" class="col-4">Ruoli</th>
+                    <th scope="col" class="col-2">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of stepQuadroData.subjectList | keyvalue" class="d-flex" [ngClass]="{ currentSubjectSelected: subjectIdCurrentlySelected == item.key }">
+                    <td class="col-3">
+                        <em *ngIf="subjectIdCurrentlySelected == item.key" class="fa fa-arrow-down">&nbsp;</em>{{getSubjectInfo('name', item.value.contact.anagrafica)}}
+                        <div *ngIf="hasPresenters(item.value)" class="differentAccountSubject"><em>(rappresentato da:</em> 
+                            <span>
+                                <ng-container *ngFor="let s of stepQuadroData.subjectList | keyvalue">
+                                    <span class="listed" *ngIf="getPresenterInfo(item.value, s.key)">{{' '+getPresenterInfo(item.value, s.key)}}</span>
+                                </ng-container>
+                            </span>
+                            <em>)</em></div>
+                        <div *ngIf="!item.value.contact.contatto_in_rubrica" class="differentAccountSubject">(inserito da: <em>{{getAccountOwner(item.value)}}</em>)</div>
+                    </td>
+                    <!-- j586:item.key -->
+                    <td class="col-3">{{getSubjectInfo('cf', item.value.contact.anagrafica)}}</td>
+                    <td class="col-4 roles-td">
+                        <span *ngFor="let role of item.value.roles; let i = index">
+                            <span>{{(!role.checked || isFirstRole(item.value.roles, role)?'':' - ')}}</span>
+                            <span *ngIf="role.checked" [ngClass]="{ roleMandatory: isRoleMandatory(role), roleMandatorySelected: role.checked }">
+                                {{role.value}}
+                            </span>
+                        </span>
+                    </td>
+                    <td class="col-2">
+                        <div *ngIf="!isStepInReadOnlyMode && subjectIdCurrentlySelected == null" class="row">
+                            <!-- modify roles -->
+                            <div class="col-3 linkedText linkDiv" (click)="onSoggettoSelected(item.value.contact)"><img alt=""  title="Modifica ruoli" src="assets/images/pen.png" class="plusIcon"/></div>
+                            <!-- edit -->
+                            <div *ngIf="isAnagraficaEditAllowed(item.value)" class="col-3 linkedText linkDiv" (click)="onContactEdit(item.value)"><img alt="" title="Modifica dati anagrafici" src="assets/images/person.png" class="personIcon"/></div>
+                            <!-- voltura -->
+                            <em *ngIf="isVolturaSubentroAllowed(item.value)" class="fa fa-refresh col-3 switchIcon linkDiv" aria-hidden="true" (click)="onSoggettoSwitch(item.value.contact)" title="{{isSelectedSubjectInherited(item.value.contact)?'Sostituisci soggetto del fascicolo' : 'Sostituisci soggetto'}}"></em>
+                            <!-- roles -->
+                            <div class="col-3 linkedText linkDiv">
+                                <img alt="" *ngIf="canRemoveSubjects(item.value)" (click)="removeSubject(item.key, item.value)" src="assets/images/bin.png" class="plusIcon" title="Elimina soggetto"/>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--STEP 1: seleczione tipologia SOGGETTO -->
+    <div *ngIf="!isStepInReadOnlyMode && !subjectIdCurrentlySelected && !soggettoSelectionMethod" class="mx-0 mb-5">
+        <div class="card-left card-box narrowed-box">
+            <div class="main-label mx-2">
+                Il soggetto coinvolto da inserire è:
+            </div>
+            <form>
+                <div class="form-row pl-3 mb-2">
+                    <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" (click)="onChangeTipologiaPersona('PF')">
+                        <input #pf value="1" type="radio" id="introStepIndexChoice1" name="introStepIndexChoice" class="custom-control-input">
+                        <label class="custom-control-label checkbox-label-normal" for="introStepIndexChoice1">Persona fisica</label>
+                    </div>
+                    <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" (click)="onChangeTipologiaPersona('PG')">
+                        <input #pg value="1" type="radio" id="introStepIndexChoice2" name="introStepIndexChoice" class="custom-control-input">
+                        <label class="custom-control-label checkbox-label-normal" for="introStepIndexChoice2">Persona giuridica</label>
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="pg.checked || pf.checked" class="d-flex py-3 px-2">
+                <div class="linkedText linkDiv" (click)="soggettoSelectionMethod = 'search'">CERCA IN RUBRICA</div>
+                <div class="linkedText linkDiv mx-auto" (click)="isDefinizionePersona && onNewSoggetto()"><img alt=""  src="assets/images/plus.png" class="plusIcon"/>INSERISCI SOGGETTO</div>
+            </div>
+        </div>
+    </div>
+
+    <!--STEP 2: seleczione RUOLI-->
+    <div *ngIf="subjectIdCurrentlySelected" class="card-left card-box mb-4">
+        <form>
+            <title-section subtitle="Ruoli disponibili"></title-section>
+            <div class="px-2">Cerca i ruoli che devono essere associati al soggetto <strong>{{getSubjectInfo('name', subject.contact.anagrafica)}}</strong>.</div>
+
+            <div class="row mt-4 mb-4">
+                <div class="col">
+                    <div class="px-2">Filtro</div>
+                    <input type="text" class="form-control" [(ngModel)]="wizardLev1FilterText" id="wizText" name="wizText" placeholder="Ricerca ruolo...">
+                </div>
+            </div>
+        </form>
+
+        <form [formGroup]="soggettoForm">
+            <div class="row">
+                <div class="col">
+                    <div *ngFor="let roleCategory of roleCategories">
+                        <div *ngIf="hasCatgegoryRoles(roleCategory)">
+                            <div class="px-2 py-1 mb-2 roleCategoryDesc">{{roleCategory.value}}</div>
+                            <div class="container full-width">
+                                <ul class="list-unstyled listed-columns">
+                                    <ng-container *ngFor="let role of getRuoliPossibiliListing(roleCategory)">
+                                        <li class="elemento-container" *ngIf="checkWizardFilter(role.value) && role.visibile && !role.disabled">
+                                            <div class="custom-control mude-custom-checkbox">
+                                                <input [id]="'role'+role.id" class="custom-control-input" type="checkbox" [disabled]="role.def"  [value]="role.checked" [checked]="role.checked || role.def ? 'checked' : null" (click)="roleCheck(role, roleCategory)">
+                                                <label class="custom-control-label checkbox-label-normal" [ngClass]="{ roleMandatory: isRoleMandatory(role) }" [for]="'role'+role.id">{{ role.value }}</label>
+                                            </div>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+    
+                            <div *ngIf="roleCategory.id == 'ATD' && isRoleRTChecked" class="datatable-container mb-4 px-3">
+                                <div *ngIf="soggettiDataTable?.length">
+                                    <alert-box class="my-0">Seleziona i soggetti rappresentati dall'avente titolo</alert-box>
+                                    <ngx-datatable class="material expandable datatable-style"  
+                                        [rows]="soggettiDataTable"
+                                        [columns]="rtRappresentatoHeaders"
+                                        [headerHeight]="50"  [footerHeight]="0" 
+                                        [messages]="datatable.messages" [limit]="datatable.limit" [columnMode]="'force'" [offset]="datatable.offset" [rowHeight]="'auto'" [count]="datatable.count"
+                                        [selectionType]="'multiClick'" 
+                                        [selected]="datatable.selected">
+                                    </ngx-datatable>
+                                </div>
+                                <alert-box *ngIf="!soggettiDataTable?.length" type="WARNING" message="Nessun soggetto selezionabile. Inserisci il soggetto che vuoi far rappresentare prima selezionare questo ruolo."></alert-box>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="px-2 py-1 mb-2 roleCategoryDesc">Il soggetto coinvolto dichiara di:</div>
+                            <div class="my-2 pl-3">
+                                <it-input
+                                    type="checkbox"
+                                    [parentFormGroup]="soggettoForm"
+                                    controlName="domiciliazione_corrispondenza_professionista"
+                                    label="voler domiciliare tutta la corrispondenza presso l'indirizzo del Professionista di riferimento">
+                                </it-input>
+                                
+                                <it-input
+                                    type="checkbox"
+                                    [parentFormGroup]="soggettoForm"
+                                    controlName="opera_fini_fiscali_dipendente"
+                                    label="operare, ai fini fiscali, in qualità di dipendente"
+                                    (change)="checkOperareComeDipendente($event.target.checked)">
+                                </it-input>
+                                <div *ngIf="soggettoForm.value.opera_fini_fiscali_dipendente" class="pl-4 pr-2">
+                                    <it-input type="textarea"
+                                        [parentFormGroup]="soggettoForm"
+                                        controlName="ente_societa_appartenenza"
+                                        label="Specificare Ente / Società di appartenenza">
+                                    </it-input>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- selezione titolo -->
+            <div *ngIf="titleRequired && titoliBranch_IN_CO?.length" class="mb-4">
+                <div class="px-2 py-1 mb-2 roleCategoryDesc">Indicare il titolo di legittimazione ricoperto</div>
+
+                <div class="px-3 pt-3 mb-4 pb-4" formGroupName="titoloSoggettoAbilitato">
+                    <it-select controlName="id" 
+                        [readOnly]="isStepInReadOnlyMode"
+                        [parentFormGroup]="soggettoForm"
+                        [data]="titoliBranch_IN_CO"
+                        label="" selectedOption="Seleziona">
+                    </it-select>
+                </div>
+            </div>
+
+            <!-- selezione titolo RT -->
+            <div *ngIf="titleRequiredRT && titoliBranch_RT?.length" class="mb-4">
+                <div class="px-2 py-1 mb-2 roleCategoryDesc">Indicare il titolo di rappresentanza ricoperto:</div>
+
+                <div class="px-3 pt-3 mb-4 pb-4" formGroupName="titoloSoggettoAbilitatoRT">
+                    <it-select controlName="id" 
+                        [readOnly]="isStepInReadOnlyMode"
+                        [parentFormGroup]="soggettoForm"
+                        [data]="titoliBranch_RT"
+                        label="" selectedOption="Seleziona">
+                    </it-select>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <button class="btn btn-outline-primary" [disabled]="!rolesSelected().length" (click)="addSoggetto(subject.contact)">SALVA RUOLI</button>
+                <button type="button" class="ml-auto btn btn-link" (click)="cancelAddChangeSubject()">ANNULLA</button>
+            </div>
+        </form>
+    </div>
+
+    <alert-box *ngIf="requiredPEC" type="WARNING" message="Il sistema non ha informazioni sulla presenza del Domicilio digitale (PEC) del soggetto '{{userWithCheckKO}}'. Se è in possesso di Domicilio digitale (PEC), modificare il soggetto dalla rubrica assegnandoglielo prima di procedere."></alert-box>
+    <alert-box *ngIf="requiredPIVA" type="WARNING" message="Il sistema non ha informazioni sulla presenza di una partita IVA del soggetto '{{userWithCheckKO}}'. Se è in possesso di partita IVA, modificare il soggetto dalla rubrica assegnandogliela, prima di procedere."></alert-box>
+    <alert-box *ngIf="requiredALBO" type="WARNING" message="Il sistema non ha informazioni sull'iscrizione all'albo dei professionisti del soggetto '{{userWithCheckKO}}'. Se è in possesso di una qualifica professionale, modificare il soggetto dalla rubrica assegnandogli una qualifica professionale prima di procedere"></alert-box>
+    <alert-box *ngIf="requiredAddress" type="WARNING" message="Il sistema non ha informazioni sulla presenza dell'indirizzo del soggetto '{{userWithCheckKO}}'. modifica il soggetto dalla rubrica assegnandogli l'indirizzo prima di procedere."></alert-box>
+    <alert-box *ngIf="requiredATDSelection" type="ERROR" message="E' stato inserito un soggetto con ruolo `Rappresentante dell'avente titolo` che non ha associato nessun soggetto rappresentato"></alert-box>
+    <alert-box *ngIf="requiredTitoloSelection" type="WARNING" message="E' necessario specificare il titolo di {{titoloLegitimazioneRappresentanza}} per il soggetto '{{userWithCheckKO}}''. Usa l'icona della matita per effettuare la modifica."></alert-box>
+    <!-- dismissed-->
+    <alert-box *ngIf="differentContactNotAllowed" type="WARNING" message="E' già presente un soggetto con lo stesso codice fiscale/P.IVA preso da un altro utente. Per aggiungere quello selezionato è necessario rimuovere quello inserito in precedenza." timeout="10001" (fadeaway)="differentContactNotAllowed = false"></alert-box>
+    <alert-box *ngIf="subjectForWichRTIsRequired" type="WARNING" message="Per il soggetto '{{subjectForWichRTIsRequiredUser}}' devi inserire il suo `Rappresentante dell'avente titolo` nella lista dei soggetti."></alert-box>
+
+<div *ngIf="soggettoSelectionMethod == 'search' && !subjectIdCurrentlySelected" class="row">
+    <!-- inserisci SOGGETTO -->
+    <div *ngIf="isDefinizionePersona == 'PF'" class="col mb-5">
+        <ricerca-persona-fisica (selected)="onSoggettoSelected($event)" (cancel)="isDefinizionePersona = soggettoSelectionMethod = null"
+                [userSelectionType]="userSelectionSearch"
+                [idIstanza]="formsService.id_istanza"
+                [showCancel]="true"></ricerca-persona-fisica>
+    </div>
+
+    <!-- ricerca SOGGETTO -->
+    <div *ngIf="isDefinizionePersona == 'PG'" class="col mb-5">
+        <ricerca-persona-giuridica (selected)="onSoggettoSelected($event)" (cancel)="isDefinizionePersona = soggettoSelectionMethod = null"
+                [showCancel]="true"></ricerca-persona-giuridica>
+    </div>
+</div>
+
+<alert-box *ngIf="requirementsPM_SPEC_Error" type="WARNING">
+    <div class="d-flex">
+        <div class="pr-4">
+            Nella lista dei soggetti coinvolti è necessario che un soggetto abbia l'abilitazione come Professionista di Riferimento.<br>
+            Per assegnare l'abilitazione a uno dei soggetti coinvolti cliccare sul pulsante "Gestione abilitazioni", presente nel riquadro in altro a destra dell'interfaccia.<br>
+            Si ricorda che il progettista di riferimento deve avere una qualifica professionale e almeno un ruolo tecnico nell'ambito dell'istanza.
+        </div>
+    </div>
+</alert-box>
+<alert-box *ngIf="requirementsOptionalPM_SPEC_Error" type="WARNING">
+    <div class="d-flex">
+        <div class="pr-4">
+            Assicurarsi che il Professionista di Riferimento, o eventuale professionista specializzato, venga attribuito almeno un ruolo tecnico con la relativa iscrizione all'albo.    
+        </div>
+    </div>
+</alert-box>
+<alert-box *ngIf="stepQuadroData.subjectList && isStepValidationOK" timeout="5000" type="SUCCESS">
+    <div class="d-flex">
+        <div class="pr-4">
+            <strong>Tutti i ruoli necessari sono stati associati ai soggetti coinvolti. E' possibile andare avanti al passo successivo. </strong>
+        </div>
+    </div>
+</alert-box>
+
+<app-stepper-footer
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onStepForward()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>
+

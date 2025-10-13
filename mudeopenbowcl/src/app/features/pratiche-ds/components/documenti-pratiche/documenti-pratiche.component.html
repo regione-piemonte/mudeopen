@@ -1,0 +1,117 @@
+
+<title-bar title="Documenti relativi alla pratica DS - denuncia sismica regionale"></title-bar>
+
+<div *ngIf="!pratica.numero_pratica" class="my-5">
+  <alert-box message="La pratica e' in attesa di protocollazione. I dettagli saranno disponibili appena completato" type="ERROR"></alert-box>
+</div>
+
+
+<div class="narrowed-box mt-5">
+  <div class="card-box">
+    <div class="row">
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Numero pratica"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.numero_pratica }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Anno"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.anno }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Comune"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.comune?.value }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Data Creazione"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.data_creazione }}
+        </div>
+      </div>
+       <div class='form-group col-4 px-4'>
+        <title-section subtitle='Ente'></title-section>
+        <div class='mb-2 ml-2'>
+          {{ pratica.ente?.descrizione }}
+        </div>
+      </div> 
+      <div class='form-group col-4 px-4'>
+        <title-section subtitle='Anno'></title-section>
+        <div class='mb-2 ml-2'>
+          {{ pratica.anno}}
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+
+<div *ngIf="pratica.numero_pratica">
+  <app-mude-table [rows]="rows"
+                  [datatable]="datatable"
+                  [columns]="columns"
+                  (pageChanged)="onSearch($event)">
+  </app-mude-table>
+  <button *appNgHasPermissionsOnIstance="[ Permissions.UPLOAD_DOC, this.pratica.funzioniUtente ]" class="btn btn-rounded btn-outline-fixed-slim mr-3 mb-5 btn-color-slim blue" (click)="uploadDocumento()">
+    Aggiungi documento
+  </button>
+
+
+  <div *ngFor="let istanza of istanzeList; let i = index" class="card-box">
+    <title-section subtitle=""> <!--fa-minus-square-o-->
+      <span (click)="toggleAttachments(i)" class="attchLink">
+        <em class="fa fa-plus-square-o plusIcon" aria-hidden="true"></em>&nbsp;<strong>{{istanza.tipologia_istanza?.value}}</strong>: <em>{{istanza.numero_protocollo}}</em> del <em>{{istanza.data_protocollo}} - {{istanza.specie_pratica?.value}}</em>
+      </span>
+      <br/>
+      <em class="codiceIstanza">{{istanza.codice_istanza}}</em>
+
+      <div>
+        <a *appNgHasPermissionsOnIstance="[ Permissions.DOWNLOAD_ALLEGATO_ISTANZA, istanza.funzioniUtente ]" class="expand-link" href="javascript:void(0)">
+          <img alt="NonFirmato" placement="bottom" ngbTooltip="Scarica allegato" container="body" src="assets/images/file-arrow-down-solid.svg" (click)="downloadAllegato(false, istanza)" class="plusIcon"/>
+        </a>
+        <a *appNgHasPermissionsOnIstance="[ Permissions.DOWNLOAD_ALLEGATO_ISTANZA, istanza.funzioniUtente ]" class="expand-link" href="javascript:void(0)">
+          <img alt="Firmato" src="assets/images/file-signature-solid.svg" placement="bottom" ngbTooltip="Scarica con firma" container="body" (click)="downloadAllegato(true, istanza)" style="width: 21px"/>
+        </a>
+      </div>
+      
+    </title-section>
+    
+    <div *ngIf="istanza._toogleView">
+      <div *ngFor="let category of getAttachCategories(istanza)" class="m-3 p-3 border">
+        <div class="d-flex pb-2">
+          <div class="mr-auto">
+            <strong>{{category.tipo_allegato.categoria_allegato.descrizione_estesa_categoria_allegato}}</strong>: <strong><em><span>{{category.tipo_allegato.descrizione_breve_tipo_allegato}} </span></em></strong>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="mb-3 ">
+            {{category.tipo_allegato.descrizione_tipo_allegato}}
+          </div>
+          <upload-file [readOnly]="true"
+            (download)="download($event)"
+            [files]="category.attaches">
+          </upload-file>
+          <div *ngIf="category.tipo_allegato.firma_obbligatoria" class="mandatoryMark m2-1 ">
+            * firma P7M obbligatoria 
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a *appNgHasPermissionsOnIstance="[ Permissions.DOWNLOAD_DOC_PRATICA, this.pratica.funzioniUtente ]" class="expand-link" href="javascript:void(0)" (click)="viewDocument(row)">
+    <img alt="" src="assets/icon-table-dettaglio.svg" class="plusIcon" />
+  </a>
+  <a *appNgHasPermissionsOnIstance="[Permissions.DELETE_DOC_PRATICA, this.pratica.funzioniUtente ]" class="expand-link" href="javascript:void(0)" (click)="onDeleteDocumento(row)">
+    <img alt="" src="assets/icon-table-elimina.svg" class="plusIcon" />
+  </a>
+</ng-template>
+
+<button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">Indietro</button>

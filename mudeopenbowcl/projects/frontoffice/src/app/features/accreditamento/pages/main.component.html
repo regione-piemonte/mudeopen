@@ -1,0 +1,56 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div *ngIf="profiloResponse">
+  <div class="mb-2">
+    <title-bar breadcrumb="ACCREDITAMENTO" title="Dati personali"></title-bar>
+    <div class="mt-3">&nbsp;</div>
+    <title-section title="Codice fiscale: {{ profiloResponse?.infoUtente?.contatto?.anagrafica?.codiceFiscale }}"></title-section>
+  </div>
+
+  <div class="card mb-5">
+    <div class="anagrafica">
+      <div class="disclaimer">
+        <p>
+          Si richiede gentilmente di indicare le informazioni necessarie per
+          l'accreditamento al <strong>"MUDE".</strong>
+          <small class="form-text text-muted">* Campo obbligatorio</small>
+        </p>
+      </div>
+
+      <inserisci-persona-fisica *ngIf="profiloResponse?.infoUtente?.contatto" #subjectComp
+          [noclose]="true" 
+          [soggettoOnEdit]="profiloResponse.infoUtente.contatto" 
+          [isLoggedUser]="true">
+      </inserisci-persona-fisica>
+
+      <div class="row p-2 mt-4">
+
+        <div class="agree-checkbox" [innerHTML]="disclaimer"></div>
+
+        <div class="form-group mx-2 mt-2">
+          <div class="custom-control mude-custom-checkbox">
+            <input #terms id="checkAutorizza" 
+                  class="custom-control-input" 
+                  type="checkbox" 
+                  [checked]="profiloResponse.profiloCompleto"
+                  [disabled]="profiloResponse.profiloCompleto" 
+                  [value]="1">
+            <label class="custom-control-label checkbox-label-normal" for="checkAutorizza">Accetto l'Informativa sul trattamento dei dati personali ai sensi dell’art. 13 GDPR 2016/679</label>
+          </div>
+        </div>
+      </div>
+
+      <alert-box *ngIf="agreeRequired" message="Attenzione, è necessario accettare le condizioni di utilizzo del servizio" type="WARNING"></alert-box>
+      <alert-box *ngIf="savedOk" timeout="5000" message="Registrazione dei dati avvenuta con successo." type="SUCCESS"></alert-box>
+    </div>
+
+  <div class="actions">
+    <button class="btn btn-link" type="button" (click)="annulla()">ANNULLA</button>
+    <button class="btn btn-success" type="button" (click)="accredita(terms.checked)">
+      {{profiloResponse.profiloCompleto?'AGGIORNA':'REGISTRA'}}
+    </button>
+  </div>
+</div>

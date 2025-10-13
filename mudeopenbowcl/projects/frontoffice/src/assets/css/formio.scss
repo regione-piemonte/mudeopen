@@ -1,0 +1,275 @@
+
+.formio_panel_rounded_card > .border {
+  /*border: 0px !important;*/
+}
+
+.formio-row-borders {
+	border: 1px solid black;
+  margin-left: -5px;
+  margin-right: 0px;
+}
+
+.formio-cell-border-right .col-md-8, .formio-cell-border-right .col-md-2:not(:nth-child(3)) {
+	border-right: 1px solid black;
+}
+
+.formio_panel_no_borders {
+  
+}
+
+.formio_panel_levle1 {
+
+}
+
+.formio_panel_levle2 {
+
+}
+
+.formio-flag-text {
+
+}
+
+.formio-long-text {
+
+}
+
+.formio-appendix-text {
+  color: grey;
+}
+
+.formio-row-borders > div { border: 1px solid black; }
+.formio-cell-border-right > div { border-right: 1px solid black; }
+
+.formio-header { font-weight: bold; }
+
+
+.formio-component-datagrid, .formio-component-editgrid { 
+  &.width1800 {
+    padding-bottom: 20px;  
+    overflow-x:scroll; 
+  }
+}
+
+.datagrid-table tbody td {
+}
+
+
+.datagrid-table tbody td:last-child {
+  width: 65px;
+}
+
+.formio-tab-title {
+}
+
+.formio-tab-subtitle {
+  font-style: italic;
+  color:rgba(0, 0, 0, 0.50);
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #ff0034;
+  border-color: #373a3c;
+}
+
+.formio-table-header {
+  font-weight: bold;
+}
+
+.help-block {
+  color: rgba(0, 0, 0, 0.0);
+}
+
+
+
+ /* from global style */
+
+ 
+
+.formio_section_title {
+  color: #C4C4C4;
+}
+
+.formio-option-descr {
+  color:rgba(0, 0, 0, 0.70);
+  font-style: italic;
+}
+
+.choices__list--single .formio-option-descr {
+  display: none
+}
+
+.border {
+  border-color: gray;
+  border-radius: 10px;  
+}
+
+
+.border .border, .noborders .border {
+  border: 0px !important;
+}
+
+/*
+.formio_panel_rounded_card {
+  border-radius: 50%;
+}
+*/
+
+/*
+* ***********************
+* custom CSS to change formio element behaviors
+* ***********************
+
+TOBE DISMISSED
+.width1800 ul .list-group-item:last-child { 
+}
+.width1800 ul {
+  min-width: 2000px !important; 
+}
+.width1800 table {
+  min-width: 1600px !important; 
+}
+.width1800-edit-grid-col13 {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 130px;
+  overflow-x: hidden;
+}
+.editgrid-new-record-container {
+  width: calc(100vw - 550px);
+  @media screen and (max-width: 800px) {
+    width: calc(100vw - 50px);
+  }
+}
+
+
+*/
+
+/*
+* used to expand first column for a specific datagrid
+*/
+
+.expand-first-td td:first-child {
+  width: 99%;
+}
+
+.list-group-header .row div {
+  font-weight: bold;
+}
+
+.panelNoBordersNoPaddings {
+  // TODO
+}
+
+// select dropdown width
+.mude-expand-dropdownlist .choices__list--dropdown {
+  width: 70vw !important;;
+  @media screen and (max-width: 800px) {
+    width: 90vw !important;;
+  }
+}
+
+// removes panel borders and paddings 
+.panelNoBordersNoPaddings .card-body {
+}
+.panelNoBordersNoPaddings .border {
+  border: 0 !important;
+}
+
+
+.forceInputReadOnly input {
+  pointer-events: none;
+}
+
+.forceInputReadOnly textarea {
+  pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tooltip-main {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  font-weight: 700;
+  background: #f3f3f3;
+  border: 1px solid #737373;
+  color: #737373;
+  margin: 4px 121px 0 5px;
+  float: right;
+  text-align: left !important;
+}
+
+.tooltip-qm {
+  float: left;
+  margin: -2px 0px 3px 4px;
+  font-size: 12px;
+}
+
+.tooltip-inner {
+  max-width: 236px !important;
+  height: 76px;
+  font-size: 12px;
+  padding: 10px 15px 10px 20px;
+  background: #FFFFFF;
+  color: rgba(0, 0, 0, .7);
+  border: 1px solid #737373;
+  text-align: left;
+}
+
+.tooltip.show {
+  opacity: 1;
+}
+
+.bs-tooltip-auto[x-placement^=bottom] .arrow::before,
+.bs-tooltip-right .arrow::before {
+  border-bottom-color: #f00;
+  /* Red */
+}
+
+.col-md-0 {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+.hideFirstDeleteButton tr:nth-child(1) button.formio-button-remove-row {
+  display: none;
+}
+
+/* introduced for new SCIA/SCIA-ALT-PDC/PDC*/
+.card-body .row {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+/*
+PANEL: noborders nopaddings goUp15
+*/
+.nopaddings .border .card-body {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+
+.goUp15 {
+  margin-top: -15px;
+}

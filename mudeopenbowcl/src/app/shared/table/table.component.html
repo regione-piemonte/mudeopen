@@ -1,0 +1,78 @@
+<div class='my-4'>
+  <div class='datatable-container customdatatable'>
+    <ngx-datatable
+      #table
+      class='material expandable striped datatable-style'
+      [rows]='this.rows'
+      [headerHeight]="'auto'"
+      [footerHeight]='50'
+      [columnMode]="'force'"
+      [columns]='columns'
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [scrollbarH]="'auto'"
+      [rowHeight]="'auto'"
+      [messages]='datatable.messages'
+      [count]='datatable.count'
+      [offset]='datatable.offset'
+      [limit]='datatable.limit'
+      [externalPaging]='true'
+      [selected]='datatable.selected'
+      [rowIdentity]='rowIdentity ? rowIdentity : null'
+      (page)='changePage($event)'
+    >
+      <ng-container *ngIf='rowDetail'>
+        <!-- Row Detail Template -->
+        <ngx-datatable-row-detail
+          rowHeight='auto'
+        >
+          <ng-template
+            let-row='row'
+            let-expanded='expanded'
+            ngx-datatable-row-detail-template
+          >
+            <ng-container
+              *ngTemplateOutlet='
+                        rowDetail;
+                        context: { row: row, expanded: expanded }
+                      '
+            ></ng-container>
+          </ng-template>
+        </ngx-datatable-row-detail>
+
+        <!-- Columns -->
+        <ngx-datatable-column
+          *ngFor='let column of columns'
+          [name]='column.name'
+          [prop]='column.prop'
+          [frozenLeft]='column.frozenLeft'
+          [frozenRight]='column.frozenRight'
+          [flexGrow]='column.flexGrow'
+          [resizeable]='column.resizeable'
+          [comparator]='column.comparator'
+          [pipe]='column.pipe'
+          [sortable]='column.sortable'
+          [draggable]='column.draggable'
+          [canAutoResize]='column.canAutoResize'
+          [minWidth]='column.minWidth'
+          [width]='column.width'
+          [maxWidth]='column.maxWidth'
+          [checkboxable]='column.checkboxable'
+          [headerCheckboxable]='column.headerCheckboxable'
+          [headerClass]='column.headerClass'
+          [cellClass]='column.cellClass'
+          [isTreeColumn]='column.isTreeColumn'
+          [treeLevelIndent]='column.treeLevelIndent'
+          [summaryFunc]='column.summaryFunc'
+          [summaryTemplate]='column.summaryTemplate'
+          [cellTemplate]='column.cellTemplate'
+          [headerTemplate]='column.headerTemplate'
+          [treeToggleTemplate]='column.treeToggleTemplate'
+        >
+        </ngx-datatable-column>
+
+      </ng-container>
+
+    </ngx-datatable>
+  </div>
+</div>

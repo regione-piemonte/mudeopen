@@ -1,0 +1,47 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3 mb-3">
+  <span class="title-col1">Lista cambi stato istanza</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+
+
+<div class="mx-4 customdatatable mb-5 mx-2">
+
+  <div class="row mb-3">
+    <div class="col-3 bold italic">
+      Data
+    </div>
+    <div class="col-4 bold italic">
+      Stato
+    </div>
+    <div class="col-5 bold italic">
+      Effettuato da
+    </div>
+  </div>
+
+  <div *ngFor="let stato of listaStati; index as i" class="row pb-3" [ngClass]="{ 'altLine': i%2 }">
+    <div class="col-3" [ngClass]="{ 'bold': !stato.data_fine }">
+      {{stato.data_inizio}}
+    </div>
+    <div class="col-4" [ngClass]="{ 'bold': !stato.data_fine }">
+      {{stato.stato_istanza.descrizione_estesa || stato.stato_istanza.value}}
+      <div *ngIf="!stato.data_fine" class="activeInfo">
+        (Stato corrente)
+      </div>
+    </div>
+    <div class="col-5" [ngClass]="{ 'bold': !stato.data_fine }">
+      {{stato.effettuato_da}}
+    </div>
+  </div>
+</div>
+
+<div class="d-flex">
+  <div class="ml-auto">
+    <button class="btn btn-link mr-3 m-2 blue" (click)="onExit()">CHIUDI</button>
+  </div>
+</div>
+

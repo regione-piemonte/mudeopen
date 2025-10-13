@@ -1,0 +1,77 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Dettagli validazione</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<!-- Corpo principale. -->
+  <div class="mt-3 py-3 pl-4 pr-3">
+    <div class="mt-3">
+      <div>
+        <span class="mandatoryMark">*</span>
+        <label>Inserire la validazione javascript</label>
+      </div>
+      <div>
+        <textarea [disabled]="isReadonly" [(ngModel)]="check" class="editarea ml-0"></textarea>
+      </div>
+    </div>
+
+    <div class="mx-2 my-3" *ngIf="invalidTabStructure">
+      <alert-box type="WARNING" message="E' necessario inserire una espressione javascript valida" timeout="5000" (fadeaway)="invalidTabStructure = false"></alert-box>
+    </div>
+
+
+    <div class="mx-2 my-3">
+      <title-section subtitle="Visualizzazione" faicon="fa-id-card-o"></title-section>
+      Opzionalmente è possibile specificare un messaggio che verrà mostrato all'utente in caso di validazione 'false'
+    </div>
+    
+    <div>
+      <div>
+        <label>Tipologia di messaggio</label>
+      </div>
+      <div>
+        <select [disabled]="isReadonly" [(ngModel)]="type" required class="custom-select" #select (change)="onChangeSelection($event.target.value)">
+          <option *ngFor="let type of types" [value]="type.id">{{type.value}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-3">
+      <div>
+        <label>Testo (o HTML) del messaggio</label>
+      </div>
+      <div>
+        <textarea [disabled]="isReadonly" [(ngModel)]="_message" class="editarea ml-0"></textarea>
+      </div>
+    </div>
+
+    <div *ngIf="message && previewMessage">
+      <div class="dialogTitle my-3 py-3 pl-4 pr-3">
+        <span class="title-col1">Preview messaggio utente</span>
+      </div>
+      <div class="previewBorder py-4">
+        <div class="previewPanel mx-3 px-3 py-3">
+          <alert-box [message]="message" [type]="type || 'INFO'" [esito]="title"></alert-box>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<div class="d-flex mt-4 mx-3">
+  <div *ngIf="!isReadonly" class="my-4 px-2">
+    <button #hiddenFocus type="submit" class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+  </div>
+  <div class="ml-auto my-4">
+    <button (click)="onSubmit(true)" class="btn btn-color-slim blue">{{isReadonly?'CHIUDI':'SALVA'}}</button>
+  </div>
+</div>
+

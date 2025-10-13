@@ -1,0 +1,43 @@
+<title-bar title='Cambio stato istanza'></title-bar>
+<app-recap-breve-istanza></app-recap-breve-istanza>
+
+<div class='card-box my-2'>
+  <div class='row'>
+    <div class='col-12'>
+      <title-section subtitle='Seleziona nuovo stato istanza'></title-section>
+    </div>
+    <div class='col-12'>
+      <form [formGroup]='nuovoStatoForm'>
+        <it-select
+          (valueChangedEvent)='onPossibileStatoChange($event)'
+          [data]='possibiliStati'
+          [parentFormGroup]='nuovoStatoForm'
+          controlName='stato'
+        >
+        </it-select>
+      </form>
+    </div>
+  </div>
+  <div *ngIf='form'>
+    <hr />
+    <formio id='form'
+            [form]='form'
+            [options]='formioOptions'
+            [renderOptions]='renderOptions'
+            [readOnly]='false'
+            [success]='successEmitter'
+            [refresh]='refreshForm'
+            (ready)='ready($event)'
+            (submit)='onFormIOSubmit($event)'
+            (render)='setFlatPikr()'
+    ></formio>
+  </div>
+</div>
+
+
+<button
+class='btn btn-link mr-3 m-2 blue'
+(click)='goBack()'
+>
+Indietro
+</button>

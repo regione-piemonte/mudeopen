@@ -1,0 +1,20 @@
+
+<title-bar title="Modifica informazioni istanza"></title-bar>
+
+<div class="mt-5">
+  <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+</div>
+<div class="narrowed-box mt-3">
+    <formio id="form" #mainFormio
+      [form]="customForm"
+      [submission]="submission"
+      
+      (submit)="onFormIOSubmit($event)"
+      (ready)="onFormIOReady($event)"
+      [success]="successEmitter"
+      [options]="formioOptions"
+      [renderOptions]="renderOptions"
+      [readOnly]="_isStepInReadOnlyMode"></formio>
+</div>
+<button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">Indietro</button>
+<br><br>

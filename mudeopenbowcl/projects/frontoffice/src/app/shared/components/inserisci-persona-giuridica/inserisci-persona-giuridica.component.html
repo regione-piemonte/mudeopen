@@ -1,0 +1,490 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+<div class="containerDiv py-3 pl-4 pr-3">
+    <span class="title-col1">{{title? title : soggettoOnEdit?'Modifica soggetto':'Inserisci soggetto'}} - persona giuridica</span>
+    <span *ngIf="!noclose && !isSubjectSaved" class="close-col2" ><em class="fa fa-times" (click)="onClose()"></em></span>
+</div>
+<div *ngIf="!isSubjectSaved" class="mx-3">
+    <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<!-- Corpo principale. -->
+
+<div *ngIf="!isSubjectSaved" class="px-4 mb-4">
+    <form [formGroup]="mainContactForm" (ngSubmit)="onSubmit()">
+        <ng-container [ngTemplateOutlet]="anagraficaPGSectionBlock"></ng-container>
+
+        <ng-container *ngTemplateOutlet="tipologiaContatto"></ng-container>
+        <ng-container *ngTemplateOutlet="rappresentanteLegale"></ng-container>
+
+        <div class="pt-3">
+            <title-section subtitle="Indirizzi"></title-section>
+        </div>
+        <div *ngIf="indirizziFormArray.controls.length" class="row pl-4 pl-2">
+            <ng-container *ngTemplateOutlet="indirizziSectionBlock"></ng-container>
+        </div>
+        <div class="py-2">
+            <div *ngIf="isAddressChoice" class="row pl-4 pl-2">
+                <div class="col-6" formGroupName="tipiIndirizzo">
+                    <it-select controlName="id"
+                                    label="Indirizzo per comunicazioni postali"
+                                    [parentFormGroup]="mainContactForm"
+                                    [data]="tipologieIndirizzo"
+                                    (valueChangedEvent)="addIndirizzoForm()">
+                    </it-select>
+                </div>
+            </div>
+
+            <div *ngIf="!isAddressChoice" class="pl-4 pr-2">
+                <span (click)="isAddressChoice = true">
+                    <img alt=""  src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI INDIRIZZO</span>
+                </span>
+            </div>
+        </div>
+        <div class="my-4" *ngIf="addressRequired">
+            <alert-box (fadeaway)="addressRequired = null" message="Deve essere specificato almeno un indirizzo" timeout="5000" type="WARNING"></alert-box>
+        </div>
+
+        <div class="pr-2 my-4" *ngIf="rappresentanteRequired || addressRequired || addressAlwaysRequired">
+            <alert-box *ngIf="addressAlwaysRequired && !indirizziFormArray.length" message="Devi specificare almeno un indirizzo" type="WARNING"></alert-box>
+            <alert-box *ngIf="addressRequired && !indirizziFormArray.length" message="Devi specificare il domicilio digitale (PEC) oppure almeno un indirizzo" type="WARNING"></alert-box>
+            <alert-box *ngIf="rappresentanteRequired && !legaleRappresentante" message="Seleziona o inserisci il rappresentante legale" type="WARNING"></alert-box>
+        </div>
+        
+        <div class="d-flex mx-2 mt-4 toolbarDiv">
+            <div class="my-4">
+                <button #hiddenFocus type="submit" class="btn btn-link" (click)="onClose()">ANNULLA</button>
+            </div>
+            <div class="ml-auto my-4">
+                <button type="submit" class="btn btn-color-slim blue">SALVA</button>
+            </div>
+        </div>
+
+        <!--<input type="hidden" [value]="!isInitialization || setFocusOnSubmit(hiddenFocus)">-->
+    </form>
+</div>
+
+<div *ngIf="isSubjectSaved" class="px-4 my-4">
+
+    <app-recap-table title="<strong>Riepilogo soggetto inserito</strong>"
+            [columns]="[
+                {
+                    label: 'Ragione sociale/Denominazione',
+                    properties: ['anagrafica.ragioneSociale']
+                },
+                {
+                    label: 'C.Fiscale/P.IVA',
+                    properties: [ '_cfPIVA' ]
+                },
+                {
+                    label: 'Partita IVA comunit./estera',
+                    properties: [ 'anagrafica.partitaIvaComunitaria' ]
+                },
+                {
+                    label: 'C.fiscale rappr. legale',
+                    properties: [ 'legaleRappresentante.anagrafica.codiceFiscale' ]
+                }
+            ]"
+            [records]="[ _contact ]"
+            [editEnabled]="false"
+            [deleteEnabled]="false">
+    </app-recap-table>
+
+    <alert-box message="Soggetto salvato correttamente" timeout="5000" type="SUCCESS"></alert-box>
+
+    <div class="d-flex mt-4 mx-3 toolbarDiv">
+        <div class="ml-auto my-4">
+            <button (click)="goOn()" class="btn btn-success">AVANTI</button>
+        </div>
+    </div> 
+</div>
+
+<!-- Sezioni template. -->
+
+<ng-template #anagraficaPGSectionBlock>
+    <form [formGroup]="anagraficaForm" (ngSubmit)="onSubmit()">
+            <title-section subtitle="Dati anagrafici"></title-section>
+
+            <div class="row pl-4 pr-2">
+                <div class="col-4">
+                    <it-input
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="ragioneSociale"
+                        label="Ragione sociale/Denominazione"
+                        placeholder="Inserisci la Ragione sociale/Denominazione">
+                    </it-input>
+                </div>
+                <div class="col-4">
+                    <it-input [parentFormGroup]="anagraficaForm"
+                        controlName="codiceFiscale"
+                        label="Codice Fiscale (16 caratteri)"
+                        placeholder="Inserisci il codice fiscale">
+                    </it-input>
+                </div>
+                <div class="col-4">
+                    <it-select
+                        [readOnly]="!isContactKeyStilChangeable"
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="nazionalita"
+                        (valueChangedEvent)="onChangeNazionalita($event)"
+                        [data]="nazionalita"
+                        label="Nazionalità"
+                        selectedOption="Seleziona nazionalità">
+                    </it-select>
+                </div>
+            </div>
+
+            <ng-container *ngTemplateOutlet="partitaIvaBlock"></ng-container>
+
+            <div class="row pl-4 pr-2">
+                <div class="col-4">
+                    <it-input
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="telefono"
+                        label="Telefono/cellulare 1"
+                        placeholder="Inserisci il numero">
+                    </it-input>
+                </div>
+                <div class="col-4">
+                    <it-input
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="cellulare"
+                        label="Telefono/cellulare 2"
+                        placeholder="Inserisci il numero">
+                    </it-input>
+                </div>
+                <div class="col-4">
+                    <!--
+                        <it-input
+                            [parentFormGroup]="anagraficaForm"
+                            controlName="statoEstero"
+                            label="Città {{anagraficaForm.value.nazionalita==2?'comunitaria':'estera'}}"
+                            placeholder="Inserisci la città 0estera">
+                        </it-input>
+                    -->
+                </div>
+            </div>
+            <div class="row pl-4 pr-2">
+                <div class="col-4">
+                    <it-input
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="mail"
+                        label="E-mail"
+                        placeholder="Inserisci l'e-mail">
+                    </it-input>
+                </div>
+
+                <div class="col-4">
+                    <it-input
+                        [parentFormGroup]="anagraficaForm"
+                        controlName="pec"
+                        label="Domicilio digitale (PEC)"
+                        placeholder="Inserisci la PEC">
+                    </it-input>
+                </div>
+            </div>
+
+
+            <div class="row px-4 my-4" *ngIf="vatcodeduplicated">
+                <div class="col">
+                    <alert-box message="La partita IVA inserita è già presente in rubrica" type="WARNING"></alert-box>
+                </div>
+            </div>
+    </form>
+</ng-template>
+
+<ng-template #indirizziSectionBlock>
+    <form [formGroup]="mainContactForm" [ngStyle]="{width: '100%'}">
+        <div formArrayName="indirizzi">
+            <div class="pr-4 pl-2" *ngFor="let indirizzoForm of indirizziFormArray.controls; let i=index" [formGroupName]="i">
+                <title-section [subtitle]="getAddressType(indirizzoForm.value.tipologiaIndirizzo.id)"></title-section>
+                <div class="row p-2">
+                    <div class="col-4" formGroupName="stato">
+                        <it-select
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="id"
+                            (valueChangedEvent)="onChangeStatoIndirizzo($event, i)"
+                            [data]="stati"
+                            label="Stato"
+                            selectedOption="Seleziona Stato">
+                        </it-select>
+                    </div>
+    
+                    <div *ngIf="isItalySelected(i)" class="col-4" formGroupName="provincia">
+                        <it-select
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="id"
+                            (valueChangedEvent)="onChangeProvinciaIndirizzo($event, i)"
+                            [data]="province"
+                            label="Provincia"
+                            selectedOption="Seleziona provincia">
+                        </it-select>
+                    </div>
+    
+                    <div *ngIf="isItalySelected(i) && comuniIndirizzo" class="col-4" formGroupName="comune">
+                        <it-select 
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="id"
+                            [data]="getComuniIndirizzo(i)"
+                            label="Comune"
+                            selectedOption="Seleziona comune">
+                        </it-select>
+                    </div>
+
+                    <div *ngIf="!isItalySelected(i)" class="col-8">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="comuneIndirizzoEstero"
+                            label="Città estera"
+                            placeholder="Inserisci la Città estera">
+                        </it-input>
+                    </div>
+
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-4" formGroupName="dug">
+                        <it-select
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="id"
+                            [data]="dug"
+                            label="Indirizzo DUG"
+                            selectedOption="Seleziona DUG">
+                        </it-select>
+                    </div>
+
+                    <div class="col-6">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="duf"
+                            label="Indirizzo DUF"
+                            placeholder="indirizzo">
+                        </it-input>
+                    </div>
+
+                    <div class="col-2">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="numero"
+                            label="Civico"
+                            placeholder="">
+                        </it-input>
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="localita"
+                            label="Località"
+                            placeholder="Inserisci località">
+                        </it-input>
+                    </div>
+
+                    <div class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="cap"
+                            label="CAP"
+                            placeholder="Inserisci il CAP">
+                        </it-input>
+                    </div>
+                    <div *ngIf="false && !isLoggedUser" class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="telefono"
+                            label="Telefono"
+                            placeholder="Inserisci telefono">
+                        </it-input>
+                    </div>
+                </div>
+
+                <div *ngIf="false && !isLoggedUser" class="row p-2">
+                    <div class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="cellulare"
+                            label="Cellulare"
+                            placeholder="Inserisci cellulare">
+                        </it-input>
+                    </div>
+    
+                    <div class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="mail"
+                            label="E-mail"
+                            placeholder="Inserisci e-mail">
+                        </it-input>
+                    </div>
+
+                    <div class="col-4">
+                        <it-input
+                            [parentFormGroup]="indirizzoForm"
+                            controlName="pec"
+                            label="Domicilio digitale (PEC)"
+                            placeholder="Inserisci PEC">
+                        </it-input>
+                    </div>
+                </div>
+
+                <div class="d-flex linkDiv">
+                    <div class="ml-auto mr-2">
+                        <span (click)="removeIndirizzoForm(i)">
+                            <img alt=""  src="assets/images/minus.png" class="plusIcon" /><span class="linkedText">RIMUOVI INDIRIZZO</span>
+                        </span>
+                    </div>
+                </div>
+
+                <hr class="noTop">
+
+            </div>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #rappresentanteLegale>
+    <div *ngIf="!legaleRappresentante" class="mt-3">
+        <title-section subtitle="Inserimento Dati del Rappresentante"></title-section>
+        <div class="pl-4 pr-2">
+            <ricerca-inserisci-persona-fisica-giuridica insertChildTitle="Inserisci nuovo rappresentante" mode="ALL" [notitle]="true" [userSelectionType]=" 'CONTACTS_SELF_INCLUDED' "
+                    (selectedPF)="setRappresentanteLegale($event, 'PF')"
+                    (selectedPG)="setRappresentanteLegale($event, 'PG')">
+        </ricerca-inserisci-persona-fisica-giuridica>
+        </div>
+    </div>
+    <div *ngIf="legaleRappresentante" [formGroup]="mainContactForm">
+        <div *ngIf="legaleRappresentanteType == 'PF'" class="mt-3 pl-2 pr-2">
+            <app-recap-table title="<strong>Rappresentante</strong>"
+                [columns]="[
+                    {
+                        label: 'Codice fiscale',
+                        properties: [ 'anagrafica.codiceFiscale' ]
+                    },
+                    {
+                        label: 'Nome',
+                        properties: [ 'anagrafica.nome' ]
+                    },
+                    {
+                        label: 'Cognome',
+                        properties: [ 'anagrafica.cognome' ]
+                    }
+                ]"
+                [records]="[ legaleRappresentante ]"
+                [editEnabled]="false"
+                [deleteEnabled]="true"
+                (deleteRecord)="legaleRappresentante = null">
+            </app-recap-table>
+        </div>
+        <div *ngIf="legaleRappresentanteType == 'PG'" class="mt-3 pl-2 pr-2">
+            <app-recap-table title="<strong>Rappresentante</strong>"
+                [columns]="[
+                    {
+                        label: 'Ragione sociale',
+                        properties: [ 'anagrafica.ragioneSociale' ]
+                    },
+                    {
+                        label: 'C.Fiscale/Partita IVA',
+                        properties: [ '_cfPIVA' ]
+                    },
+                    {
+                        label: 'Partita IVA comunit./estera',
+                        properties: [ 'anagrafica.partitaIvaComunitaria' ]
+                    }
+                ]"
+                [records]="[ _legaleRappresentante ]"
+                [editEnabled]="false"
+                [deleteEnabled]="true"
+                (deleteRecord)="deleteRappresentante()">
+            </app-recap-table>
+        </div>
+        <!-- selezione titolo -->
+        <title-section subtitle=""><strong>Indicare il titolo di rappresentanza ricoperto</strong></title-section>
+        <div *ngIf="titoli?.length" class="narrowed-box mb-3 pl-3 pl-2">
+            <div class="pt-3 pl-2" formGroupName="titoloRappresentanza">
+                <it-select controlName="id" 
+                    [parentFormGroup]="mainContactForm"
+                    [data]="titoli"
+                    label="" selectedOption="Seleziona">
+                </it-select>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #tipologiaContatto>
+    <div [formGroup]="mainContactForm">
+        <title-section subtitle="Tipologia di appartenenza"></title-section>
+
+        <!-- TODO:TIPOTITOLO -->
+        <div class="pl-4 pr-2">
+            <div class="d-flex">
+                <div class="mr-4">
+                    <it-input
+                        type="checkbox"
+                        [parentFormGroup]="mainContactForm"
+                        controlName="titolare"
+                        label="Clienti">
+                    </it-input>
+                </div>
+                <div class="mr-4">
+                    <it-input
+                        type="checkbox"
+                        [parentFormGroup]="mainContactForm"
+                        controlName="professionista"
+                        label="Professionisti">
+                    </it-input>
+                </div>
+                <div class="mr-4">
+                    <it-input
+                        type="checkbox"
+                        [parentFormGroup]="mainContactForm"
+                        controlName="impresa_lavori"
+                        label="Imprese lavori">
+                    </it-input>
+                </div>
+            </div>
+        </div>    
+    </div>
+</ng-template>
+
+<ng-template #partitaIvaBlock>
+    <div [formGroup]="anagraficaForm" class="row pl-4 pr-2">
+        <div class="col-4" formGroupName="statoMembro">
+            <it-select
+                [parentFormGroup]="anagraficaForm.get('statoMembro')"
+                controlName="id"
+                [data]="statiComnunitariEsteri"
+                label="Stato {{anagraficaForm.value.nazionalita==2?'comunitario':'estero'}}"
+                selectedOption="Seleziona lo stato">
+            </it-select>
+        </div>
+
+        <div class="col-4">
+            <it-input
+                [readOnly]="!isContactKeyStilChangeable"
+                [parentFormGroup]="anagraficaForm"
+                controlName="partitaIva"
+                label="Partita IVA/Cod Fiscale (11 caratteri)"
+                (blur)="checkIfPivaExists('partitaIva', $event.target.value)"
+                placeholder="Inserisci la partita IVA">
+            </it-input>
+        </div>
+
+        <div class="col-4">
+            <it-input
+                [readOnly]="!isContactKeyStilChangeable"
+                [parentFormGroup]="anagraficaForm"
+                controlName="partitaIvaComunitaria"
+                label="Partita IVA {{anagraficaForm.value.nazionalita==2?'comunitaria':'estera'}}"
+                (blur)="checkIfPivaExists('partitaIvaComunitaria', $event.target.value)"
+                placeholder="Inserisci la partita IVA estera">
+            </it-input>
+        </div>
+    </div>
+</ng-template>

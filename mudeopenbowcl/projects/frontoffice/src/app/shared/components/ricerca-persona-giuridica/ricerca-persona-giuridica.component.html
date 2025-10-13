@@ -1,0 +1,95 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+<div class="card-box ">
+    <form [formGroup]="ricercaPersonaGiuridicaForm">
+        <div class="row">
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaGiuridicaForm"
+                    controlName="ragioneSociale"
+                    label="Ragione sociale"
+                    placeholder="Inserisci ragione sociale">
+                </it-input>
+            </div>
+
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaGiuridicaForm"
+                    controlName="partitaIva"
+                    label="Partita IVA"
+                    placeholder="Inserisci partita IVA">
+                </it-input>
+            </div>
+
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaGiuridicaForm"
+                    controlName="partitaIvaComunitaria"
+                    label="Partita IVA comunit./estera"
+                    placeholder="Inserisci partita IVA estera">
+                </it-input>
+            </div>
+        </div>
+
+        <!-- TODO:TIPOTITOLO -->
+        <div class="row pl-3">
+            <div class="d-flex">
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="titolare"
+                    label="Clienti">
+                </it-input>
+                </div>
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="professionista"
+                    label="Professionisti">
+                </it-input>
+                </div>
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="impresa_lavori"
+                    label="Imprese lavori">
+                </it-input>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <button class="btn btn-outline-primary ml-0" (click)="onSearch()">CERCA</button>
+            <button *ngIf="showCancel" type="button" class="ml-auto btn btn-link" (click)="cancelDiallog()">ANNULLA</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="soggettiDataTable" class="datatable-container card-box my-4 px-3">
+    <div class="py-3">
+        <alert-box class="my-0">Soggetti giuridici trovati</alert-box>
+    </div>
+    <ngx-datatable
+        class="material expandable datatable-style pg-datatable"
+        [rows]="_soggettiDataTable" [headerHeight]="50"
+        [footerHeight]="40" [columns]="headers"
+        [rowHeight]="'auto'" [columnMode]="'force'"
+
+        [count]="datatable.count" [offset]="datatable.offset"
+        [limit]="datatable.limit" [externalPaging]="true" [messages]="datatable.messages"
+        (page)="onSearch($event)"
+
+        [selected]="datatable.selected" [selectionType]="selectionType">
+    </ngx-datatable>
+    <div *ngIf="datatable.selected.length">
+        <button class="btn btn-outline-primary ml-2" (click)="notifySelectedEvent()">SELEZIONA {{selectionType=='single'?'SOGGETTO':'SOGGETTI'}}</button>
+        <button *ngIf="datatable.selected.length == 1" class="btn btn-outline-primary ml-4" (click)="onModifySubject()">SELEZIONA E MODIFICA SOGGETTO</button>
+    </div>
+</div>

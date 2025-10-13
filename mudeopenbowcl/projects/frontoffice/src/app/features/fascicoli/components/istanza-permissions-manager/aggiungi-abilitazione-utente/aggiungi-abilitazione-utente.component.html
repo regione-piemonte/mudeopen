@@ -1,0 +1,148 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Aggiungi abilitazione</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onExit()"></em></span>
+</div>
+<div *ngIf="!noPermissionsAvailable" class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="mt-3 mb-4 mx-3">
+  <div *ngIf="!noPermissionsAvailable">
+    <ng-container *ngTemplateOutlet="usersTabedSelection"></ng-container>
+    <ng-container *ngTemplateOutlet="usersSelected"></ng-container>
+  </div>
+
+  <div class="mt-2">
+    <alert-box *ngIf="errorMsg && !permissionSelected" type="WARNING" message="Non è stata selezionata nessuna abilitazione da assegnare"></alert-box>
+    <alert-box *ngIf="noPermissionsAvailable" type="WARNING" message="Non ci sono abilitazioni disponibili da assegnare all'utente"></alert-box>
+  </div>
+
+  <div class="d-flex mt-4 mx-4">
+    <div class="my-4 px-2">
+      <button #hiddenFocus class="btn btn-link" (click)="onExit()">{{ noPermissionsAvailable? 'CHIUDI' : 'ANNULLA'}}</button>
+    </div>
+    <div *ngIf="!noPermissionsAvailable" class="ml-auto my-4">
+      <button class="btn btn-color-slim blue" (click)="onSubmit()">SALVA</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #usersTabedSelection>
+  <div *ngIf="!userSelectedInfo">
+    <title-section subtitle="Utente da abilitare"></title-section>
+
+    <mude-tabs>
+
+      <!-- sogg coinv -->
+      <mude-tab *ngIf="subjectList" tabTitle="Soggetti coinvolti" [active]="subjectList">
+        <div class="card-box">
+          <table class="table" summary="just rawQuadriTable table1 !">
+            <thead>
+                <tr class="d-flex">
+                    <th scope="col" class="col-3">Soggetto</th>
+                    <th scope="col" class="col-3">C.Fiscale/P.IVA</th>
+                    <th scope="col" class="col-4">Ruoli</th>
+                    <th scope="col" class="col-2">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of subjectList | keyvalue" class="d-flex">
+                    <td class="col-3">
+                      <div [ngClass]="{ notregisteredstrong: isUnregistered(item.value) }">{{getSubjectInfo('name', item.value.contact.anagrafica)}}</div>
+                      <div *ngIf="isUnregistered(item.value)" class="not-registered">(non accreditato)</div>
+                    </td>
+                    <td class="col-3">{{getSubjectInfo('cf', item.value.contact.anagrafica)}}</td>
+                    <td class="col-4 roles-td">
+                        <span *ngFor="let role of item.value.roles; let i = index">
+                            <span>{{(!role.checked || isFirstRole(item.value.roles, role)?'':' - ')}}</span>
+                            <span *ngIf="role.checked">{{role.value}}</span>
+                        </span>
+                    </td>
+                    <td class="col-2">
+                        <div *ngIf="!this.isReadonly && !isUnregistered(item.value)" class="row">
+                          <button class="btn btn-outline-primary ml-2" (click)="onUserSelected(item.value)">SELEZIONA</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </mude-tab>
+
+      <!-- utenti accreditati -->
+      <mude-tab tabTitle="Utenti accreditati" [active]="!subjectList">
+          <ricerca-persona-fisica [userSelectionType]="userSelectionType"
+                                  [excludeIDs]="excludeIDs"
+                                  (selected)="onUserSelected($event)">
+          </ricerca-persona-fisica>
+      </mude-tab>
+
+    </mude-tabs>
+  </div>
+</ng-template>
+
+<ng-template #usersSelected>
+  <div *ngIf="userSelectedInfo" class="card p-4">
+    <app-recap-table
+        title="<strong>Soggetto da abilitare</strong>"
+        [columns]="[
+          {
+            label: 'Nome',
+            properties: [ 'nome' ]
+          },
+          {
+            label: 'Cognome',
+            properties: [ 'cognome' ]
+          },
+          {
+            label: 'Codice fiscale',
+            properties: ['codiceFiscale']
+          }
+        ]"
+        [records]="[ userSelectedInfo ]"
+        [editEnabled]="false"
+        [deleteEnabled]="false">
+    </app-recap-table>
+
+    <div *ngIf="!noPermissionsAvailable">
+      <title-section subtitle="Abilitazioni da assegnare"></title-section>
+
+      <div *ngIf="!permissionList && permissionSelected" class="pl-3">
+        {{permissionSelected.abilitazione.desc_abilitazione}}
+      </div>
+      <select *ngIf="permissionList" [disabled]="isReadonly" [(ngModel)]="permissionSelected" required class="custom-select" #select (change)="onPermSelected()">
+        <option *ngFor="let permission of permissionList" [ngValue]="permission">{{permission.abilitazione.desc_abilitazione}}</option>
+      </select>
+
+      <div class="px-5 pt-3 function-div" [innerHTML]="permissionFunctions"></div>
+
+      <div *ngIf="quadroSelectionRequired" class="py-3">
+        <title-section subtitle="Seleziona i quadri di competenza"></title-section>
+        <div class="pl-5 quadri-div">
+          <div *ngFor="let quadro of quadriRootList">
+            <ng-container *ngTemplateOutlet="quadroCheckbox; context: {quadro: quadro}"></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #quadroCheckbox let-quadro="quadro">
+  <div class="custom-control mude-custom-checkbox">
+    <input [disabled]="quadro._disabled" [id]="'quadro'+quadro.id_quadro" class="custom-control-input" type="checkbox" [checked]="quadro.flg_modificabile" (click)="onQuadroCheck(quadro)">
+    <label class="custom-control-label checkbox-label-normal" [for]="'quadro'+quadro.id_quadro">{{ getQuadroLabel(quadro) }}</label>
+
+    <ng-container *ngIf="!quadro._hideSubQuadri">
+      <div *ngFor="let subquadro of getSubquadri(quadro)" class="pl-5">
+        <ng-container *ngTemplateOutlet="quadroCheckbox; context: {quadro: subquadro}"></ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>

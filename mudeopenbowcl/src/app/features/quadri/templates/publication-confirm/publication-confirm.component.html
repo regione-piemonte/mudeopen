@@ -1,0 +1,28 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Pubblicazione template</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4 my-3">
+  La pubblicazione del template rende visibile la versione selezionata a tutti gli utenti. Asscurarsi che la compilazione del template funzioni correttamente, utilizzando la funzione di preview, prima di procedere.
+</div>
+
+<div class="mb-4">
+    <div *ngIf="data?.num_versione > 1" class="mx-4 my-5">
+        <div class="custom-control mude-custom-checkbox">
+            <input id="agreeCheck" class="custom-control-input" type="checkbox" [value]="true" [(ngModel)]="simplePublish">
+            <label class="custom-control-label checkbox-label-normal" for="agreeCheck">La pubblicazione non comporta modifiche strutturali al template</label>
+            <div class="mandatoryMark">
+              (selezionando questa spunta, non verrà mostrato nessun messaggio agli utenti che avevano delle istanza in bozza con la versione precedente del template)
+            </div>
+        </div>
+    </div>
+    <div class="d-flex my-4">
+      <button class="ml-auto mr-auto btn btn-outline-primary" (click)="onSubmit(true)">PUBBLICA</button>
+    </div>
+</div>
+

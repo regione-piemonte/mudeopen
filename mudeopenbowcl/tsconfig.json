@@ -1,0 +1,43 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "es2020",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": { 
+      //"@angular/*": [ "node_modules/@angular/*" ],
+
+      // this is for symbolic link created through "npm link"
+      //"mudecommon": ["node_modules/mudecommon/dist/mudecommon/"],
+      //"mudecommon": ["node_modules/mudecommon/"],
+      //"mudecommon": ["node_modules/@mudeopen/mude-common-library/"],
+
+      // this is for local development
+      //"mudecommon": [ "../mudefowcl-common/projects/mudecommon/src/public-api" ]
+      //"mudecommon": [ "mudeopencommon/projects/mudecommon/src/public-api" ]
+
+      // this is for "npm install mudecommon-1.0.0.tgz"
+      //"mudecommon": [ "node_modules/mudecommon/projects/mudecommon/src/public-api" ]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+
+}

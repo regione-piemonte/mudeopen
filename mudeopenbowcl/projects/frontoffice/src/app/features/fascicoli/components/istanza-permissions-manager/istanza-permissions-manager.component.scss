@@ -1,0 +1,42 @@
+.detailbox {
+    margin-left: 100px;
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+
+    max-width: 990px;
+    @media screen and (max-width: 1200px) {
+        max-width: 650px;
+    }
+    @media screen and (max-width: 800px) {
+        max-width: 500px;
+    }
+    @media screen and (max-width: 500px) {
+        max-width: 300px;
+    }
+}
+
+.detail-action {
+    width: 60px;
+    display: inline-block;
+}
+
+.modify-div {
+    width: 20px;
+    display: inline-block;
+}
+
+.detail-descr {
+    display: inline-block;
+}
+
+.detail-descr .fa {
+    color: gray;
+}
+
+::ng-deep .datatable-row-detail {
+    padding: 0px 0px 20px 0px  !important;
+}
+
+::ng-deep .datatable-body-row:hover  .datatable-row-group{
+    background-color: white !important;
+}

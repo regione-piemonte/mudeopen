@@ -1,0 +1,67 @@
+<div class='narrowed-box'>
+  <div class='card-box'>
+    <div class='row ml-2'>
+      <!-- first col -->
+      <div class='col-4'>
+        <div class='my-2'>
+          <title-section subtitle='Numero istanza'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.codice_istanza }}</label>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='my-2'>
+          <title-section subtitle='Tipo istanza'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.tipologia_istanza.value }}</label>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='my-2'>
+          <title-section subtitle='Stato istanza'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.stato_istanza?.value }}</label>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='my-2'>
+          <title-section subtitle='Intestatario'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{
+            istanza?.intestatario?.anagrafica?.nome
+            }} {{
+            istanza?.intestatario?.anagrafica?.cognome ?  istanza?.intestatario?.anagrafica?.cognome : istanza?.intestatario?.anagrafica?.ragioneSociale 
+            }}</label>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='my-2'>
+          <title-section subtitle='Comune'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.comune?.value }}</label>
+        </div>
+      </div>
+
+      <div class='col-4'>
+        <div class='mb-2'>
+          <title-section subtitle='Indirizzo'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ indirizzoIstanza }}</label>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+</div>

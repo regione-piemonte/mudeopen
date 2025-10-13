@@ -1,0 +1,238 @@
+<title-bar title="Ricerca istanze"></title-bar>
+
+<div class="narrowed-box">
+  <div class="card-box">
+    <ng-container
+      *ngTemplateOutlet="
+        ricercaIstanzaFields;
+        context: { formgroup: ricercaIstanzeForm }
+      "
+    ></ng-container>
+  </div>
+</div>
+
+<ng-template #ricercaIstanzaFields let-formgroup="formgroup">
+  <form
+    id="formIstanze"
+    #searchForm
+    [formGroup]="formgroup"
+    (ngSubmit)="onSearch()"
+  >
+    <div class="row">
+      <!-- first col -->
+      <div class="form-group col px-4">
+        <title-section subtitle="Intestatario"></title-section>
+        <div class="mb-2 ml-2">
+          <div class="">Nome, cognome o CF</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input
+            type="search"
+            id="id_intestatario_pf"
+            class="form-control"
+            formControlName="id_intestatario_pf"
+            placeholder=""
+          />
+        </div>
+
+        <div class="my-2 ml-2">
+          <div class="">Ragione sociale o P.IVA</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input
+            type="search"
+            id="id_intestatario_pg"
+            class="form-control"
+            formControlName="id_intestatario_pg"
+            placeholder=""
+          />
+        </div>
+
+        <title-section subtitle="Professionista di Riferimento"></title-section>
+        <div class="mb-2 ml-2">
+          <div class="">Nome, cognome o CF</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input
+            type="search"
+            id="id_pm"
+            class="form-control"
+            formControlName="id_pm"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <!-- second col -->
+      <div class="form-group col">
+        <title-section subtitle="Ubicazione"></title-section>
+        <div class="searchCol" formGroupName="id_provincia">
+          <it-select
+            [emptyOption]="''"
+            controlName="id"
+            [parentFormGroup]="formgroup"
+            (valueChangedEvent)="onChangeProvincia($event)"
+            label="Provincia"
+            [data]="provincePiemonte"
+          >
+          </it-select>
+        </div>
+        <div class="searchCol pt-2 comuni-column" formGroupName="id_comune">
+          <it-select
+            [emptyOption]="''"
+            label="Comune"
+            [parentFormGroup]="formgroup"
+            [data]="comuni"
+            controlName="id"
+          >
+          </it-select>
+        </div>
+        <div class="searchCol pt-2">
+          <div class="row">
+            <div class="col-4 pr-0 mr-0 dug-column" formGroupName="id_dug">
+              <it-select
+                [emptyOption]="''"
+                [data]="dug"
+                [parentFormGroup]="formgroup"
+                label="Indirizzo"
+                controlName="id"
+              >
+              </it-select>
+            </div>
+            <div class="col-8 ml-0 pl-1 duf-column">
+              <it-input
+                label="&nbsp;"
+                [parentFormGroup]="formgroup"
+                controlName="duf"
+                placeholder=""
+              ></it-input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- third col -->
+      <div class="form-group col">
+        <title-section subtitle="Data istanza depositata"></title-section>
+        <div class="maxColWidth row mb-0">
+          <div class="col ml-2">Data</div>
+        </div>
+        <div class="ml-2 d-flex pb-3">
+          <div class="">
+            <it-datepicker
+              [parentFormGroup]="formgroup"
+              controlName="data_dps"
+              label=""
+              small="true"
+            ></it-datepicker>
+          </div>
+        </div>
+
+        <title-section subtitle="Stato"></title-section>
+        <div class="searchCol" formGroupName="stato">
+          <it-select
+            [emptyOption]="''"
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            [data]="statoIstanzaList"
+            label=""
+          >
+          </it-select>
+        </div>
+
+        <div formGroupName="id_tipo_istanza">
+          <title-section subtitle="Tipo istanza"></title-section>
+          <div class="searchCol">
+            <it-select
+              [emptyOption]="''"
+              [parentFormGroup]="formgroup"
+              controlName="id"
+              [data]="tipologieIstanza"
+              label=""
+            >
+            </it-select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <title-section subtitle="">Ricerca per numero istanza</title-section>
+    <div class="col-md-6 mb-5 px-2">
+      <it-input
+        [parentFormGroup]="formgroup"
+        controlName="codice_istanza"
+        label=""
+        placeholder=""
+      >
+      </it-input>
+    </div>
+    <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+  </form>
+</ng-template>
+
+<ng-template #formToolbar let-formgroup="formgroup">
+  <div class="d-flex mt-4 mb-4 mx-2">
+    <div class="">
+      <button class="btn btn-outline-fixed-slim">CERCA</button>
+    </div>
+    <div class="ml-auto">
+      <button type="reset" class="linkedText" (click)="clean()">
+        NUOVA RICERCA
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<!--Filtri veloci-->
+<title-section subtitle="Filtri veloci"></title-section>
+<div>
+  <div>
+    <button
+      *ngFor="let el of this.statiFiltro"
+      form="formIstanze"
+      class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      type="submit"
+      (click)="filtriVeloci(el.id)"
+    >
+      {{ el.value }}
+    </button>
+  </div>
+</div>
+
+<div *ngIf="isSubmitted">
+  <app-mude-table
+    [rows]="rows"
+    [datatable]="datatable"
+    [columns]="columnsIstanze"
+    (pageChanged)="onSearch($event)"
+  >
+  </app-mude-table>
+</div>
+
+<div class="button-container">
+  <span class="button-group" *ngIf="isSubmitted">
+    <button
+      type="button"
+      id="downloadExcel"
+      class="btn btn-primary btn-m"
+      (click)="downloadExcel()"
+    >
+      Scarica Excel
+    </button>
+  </span>
+</div>
+
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Mostra sommario istanza" class="expand-link" href="javascript:void(0)" (click)="navigateToDetailInstance(row)">
+    <span class="h5">
+      <em class="fa fa-file-text-o plusIcon" aria-hidden="true"></em>
+    </span>
+  </a>
+  <ng-container *ngIf="row.fonte == 'FO'">
+    <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Visualizza i dati compilati dall'utente" class="expand-link" href="javascript:void(0)" (click)="navigateToStepperInstance(row)">
+      <span class="h5">
+        <em class="fa fa-files-o plusIcon" aria-hidden="true"></em>
+      </span>
+    </a>
+  </ng-container>
+</ng-template>

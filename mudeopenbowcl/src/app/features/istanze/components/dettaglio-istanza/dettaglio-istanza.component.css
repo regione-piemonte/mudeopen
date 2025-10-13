@@ -1,0 +1,30 @@
+.editarea {
+    width: 100%;
+}
+.text{
+    visibility: hidden;
+}
+.searchDiv {
+    align-content: stretch;
+    flex: 999 999 auto;
+}
+
+.filterDiv {
+    background-color: #ffffd2;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    display: flex;
+}
+.filterDiv div {
+    flex-grow: 1;
+    width: 100%;
+}
+.button-container {
+    margin: 15px !important;
+}
+
+.button-container {
+    margin: 15px !important;
+    margin-left: 0px !important;
+
+}

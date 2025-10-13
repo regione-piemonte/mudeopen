@@ -1,0 +1,65 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Intestazione / indice PDF istanza: <em>"{{data.des_template}}"</em></span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4 my-3">
+  E' possibile specificare un file DOCX contenente l'intestazione o indice del template che verrà inserito all'inizio del modello dell'istanza.
+</div>
+
+<div class="mb-4">
+    <div class="p-4">
+
+      <div class="my-4">
+        <title-section subtitle="File di intestazione" faicon="fa-file-word-o"></title-section>
+      </div>
+      <upload-file
+          [readOnly]="readOnly"
+          [maxfiles]="1"
+          [accept]="'.docx'"
+          (delete)="intestazioneRemove(data, $event)"
+          (upload)="intestazioneSelect(data, $event)"
+          (download)="downloadDocx(data, $event, 'modello_intestazione')"
+          label="Trascina il file oppure fai click per selezionarlo"
+          [files]="docxFileList">
+      </upload-file>
+    </div>
+
+    <title-section subtitle="" faicon="fa-id-card-o"></title-section>
+    <div class="mx-4 my-3">
+      E' possibile scaricare una preview del modello istanza, contenente tutti i DOCX dei quadri associati al template selezionato. Questo modello verra usato per generare il PDF alla fine delle creazione delle istanze da parte degli utenti.
+    </div>
+    <div class="d-flex my-4">
+      <button type="submit" class="ml-auto mr-auto btn btn-outline-primary" (click)="downloadDocxPdf()">SCARICA MODELLO DOCX DELL'ISTANZA</button>
+    </div>
+    <div *ngIf="!readOnly" class="p-4">
+      <div class="mb-4">
+        <title-section subtitle="Upload file DOCX istanza" faicon="fa-file-word-o"></title-section>
+        Se vuoi fare delle personalizzazioni al file DOCX dell'istanza, allegalo qui sotto dopo averlo scaricato e modificato
+      </div>
+      <upload-file
+          [maxfiles]="1"
+          [accept]="'.docx'"
+          (upload)="intestazioneSelect(data, $event, 'full-document')"
+          label="Trascina il file oppure fai click per selezionarlo"
+          [files]="docxInstanceFileList">
+      </upload-file>
+
+      <div class="my-4">
+        <alert-box *ngIf="loadDocx" type="SUCCESS" message="Nuovo file DOCX istanza caricato correttamente" timeout="10000" (fadeaway)="loadDocx = false"></alert-box>
+      </div>
+      
+  </div>
+
+  <div class="d-flex mt-4 mx-4">
+        <div class="ml-auto my-4">
+          <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">CHIUDI</button>
+        </div>
+  </div>
+
+</div>
+

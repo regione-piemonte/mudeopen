@@ -1,0 +1,181 @@
+/*
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+*/
+
+#wizardSummary {
+    background: #f4f7fa;
+    border: 1px solid #e5e5e5;
+    padding: 30px;
+}
+.iconBox {
+    margin-left: 10px;
+    height: 18px;
+    margin-top: -5px;
+}
+.remove-icon {
+    color: #eeddee;
+    cursor: pointer;
+    font-size: 0.889rem;
+}
+.label-red-pointer {
+    color: #bd171c;
+    cursor: pointer;
+    font-size: 0.889rem;
+}
+
+.interventi-summary {
+    padding-left: 15px;
+    list-style: square;
+    margin: 0;
+    
+}
+
+label.titoletto {
+    font-size: 1.222rem !important;
+    font-weight: 700 !important;
+    color: #0066c6;
+    border: 0;
+    margin: 0;
+        margin-bottom: 0px;
+    margin-bottom: 30px;
+}
+
+label.titolo-elemento {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #000;
+}
+
+.wizardDiv {
+    padding-bottom: 10px;;
+}
+
+#wizText {
+    width: 60% !important;
+    display: inline;
+    @media screen and (max-width: 800px) {
+        width: 100% !important;
+        display: block;
+    }
+
+}
+
+.buttonsContainer {
+    margin-top: 15px;;
+    margin-bottom: 20px;;
+}
+
+.operaContainer {
+    padding-left: 10px;
+}
+
+.operaDetailContainer {
+    font-weight: bold;
+}
+
+.wizard-head {
+    font: normal normal bold 16px/24px "Open Sans", sans-serif;
+    color: #000000DE;
+}
+
+.wizard-summary-row {
+    padding-top: 10px;
+    border-top: 2px outset #e4e7ea;
+}
+
+
+.listed-columns {
+    column-count: 2;
+    @media screen and (max-width: 1400px) {
+        column-count: 2;
+    }
+    @media screen and (max-width: 1000px) {
+        column-count: 1;
+    }
+ }
+
+ .listed-two-columns {
+    column-count: 2;
+    @media screen and (max-width: 1400px) {
+        column-count: 1;
+    }
+ }
+
+ .full-width {
+    max-width: 100% !important;
+ }
+ 
+
+ .elemento-container {
+    padding-bottom:15px;
+    padding-right: 60px;
+}
+
+.card-box-wizard-riepilogo {
+    min-width: 300px;
+    background: #F7F7F7 0% 0% no-repeat padding-box;
+}
+
+.wizard-col1 {
+    display: inline-block;
+    width: calc(100% - 100px);
+    vertical-align: top;
+}
+.wizard-col2 {
+    display: inline-block;
+    width: 100px;
+    vertical-align: top;
+}
+
+.xicon {
+    margin-left: 10px;    
+}
+
+.card-left {
+    min-width: 300px;
+}
+
+.roleMandatory {
+    font-weight: bold;
+}
+
+.roleMandatorySelected {
+    color: green;
+}
+
+.currentSubjectSelected {
+    background-color: #c9dcea !important;
+}
+
+.roles-td {
+    width: 300px;
+}
+
+.roles-table {
+    min-width: 700px;
+}
+
+.roleCategoryDesc {
+    background-color: #ebebeb;
+}
+
+.personIcon {
+    width: 22px;
+}
+
+.switchIcon {
+    padding-top: 2px;
+    font-size: 20px;
+    color: #0060C1;
+    cursor: pointer;
+}
+
+.differentAccountSubject {
+    color: grey;
+    font-size: 13px;
+}
+
+.listed:not(:last-child):after {
+    content: ",";
+}

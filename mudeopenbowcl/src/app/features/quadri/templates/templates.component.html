@@ -1,0 +1,360 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<title-bar title="Gestione template istanze"></title-bar>
+
+<div class="my-5">
+  <div class="py-3">
+    <title-section subtitle="Lista dei template"></title-section>
+    <div class="mx-2">
+      Tutte le procedure esposte agli utenti del MUDE, e i relativi quadri e allegati che le compongono, possono essere create e pubblicate da questa lista.
+    </div>
+  </div>
+
+  <div class="my-2">
+    <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+  </div>
+  
+  <div class="noscrollcustomdatatable datatable-style customdatatable">
+    <div class="editarea">
+      <div *ngIf="!isFilterOn" class="linkDiv d-flex my-2">
+        <span class="ml-auto linkedText small-text" (click)="isEditingIndex === null && showFilter()">{{isFilterOn?'CHIUDI FILTRO DI RICERCA':'FILTRO DI RICERCA'}}</span>
+      </div>
+      <div *ngIf="isFilterOn" class="filterDiv py-2">
+        <div class="px-3 actionDiv" style="width: 650px">
+          <!-- search -->
+          <em class="fa-button-icon fa fa-search mr-2" title="Applica filtro" (click)="isEditingIndex === null && onSearch()"></em>
+          <!-- cancel search -->
+          <em class="fa-button-icon fa fa-times" title="Elimina filtro" (click)="isEditingIndex === null && hideFilter()"></em>
+        </div>
+        <div class="pr-2 pl-1">
+          <select [(ngModel)]="searchTipologiaIstanza" class="px-2 editarea">
+            <option value=""></option>
+            <option *ngFor="let opt of tipoIstanzaList" [ngValue]="opt">{{opt.id}} - {{opt.value}}</option>
+          </select>
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchCodice" class="editarea" maxlength="50" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchDescrizione" class="editarea" maxlength="50" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchVersione" class="editarea" maxlength="50" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="px-2">
+          <select [(ngModel)]="searchStato" class="editarea">
+            <option value=""></option>
+            <option *ngFor="let opt of statiList" [value]="opt.id">{{opt.value}}</option>
+          </select>
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchDataInizioValidita" class="editarea form-control" (keydown)="false" placeholder="DD/MM/YYYY"
+            name="dp1"  ngbDatepicker #di="ngbDatepicker"
+            [minDate]="minDate" [maxDate]="maxDate" [startDate]="startDate"
+            (click)="di.toggle()">
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchDataCessazione" class="editarea form-control" (keydown)="false" placeholder="DD/MM/YYYY"
+            name="dp2"  ngbDatepicker #dc="ngbDatepicker"
+            placement="bottom-right"
+            [minDate]="minDate" [maxDate]="maxDate" [startDate]="startDate"
+            (click)="dc.toggle()">
+        </div>
+
+      </div>
+  
+      <ngx-datatable *ngIf="rows" #table
+          class="material expandable striped"
+          [rowClass]="getRowClass"
+          [rows]="this.rows"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [columnMode]="'force'"
+          [scrollbarH]="true"
+          [rowHeight]="'auto'"
+          [messages]="datatable.messages"
+
+          [count]="datatable.count"
+          [offset]="datatable.offset"
+          [limit]="datatable.limit"
+          [externalPaging]="true"
+          (page)="onSearch($event)"
+
+          [selected]="datatable.selected">
+
+        <!-- Column: Editing Mode-->
+        <ngx-datatable-column name="Azione" [resizeable]="false" maxWidth="100" width="100" [cellClass]="'ng-custom-action-cell'">
+          <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+            <!-- Pencil icon -->
+            <em *ngIf="isEditingIndex != rowIndex && row.modificabile" class="fa-button-icon fa fa-pencil mr-2" title="modifica" (click)="startEditing(row, rowIndex)"></em>
+            <!-- Delete icon -->
+            <em *ngIf="isEditingIndex != rowIndex && row.modificabile" class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="deleteRow(row, rowIndex)"></em>
+            <!-- Save icons -->
+            <em *ngIf="isEditingIndex == rowIndex" class="fa-button-icon fa fa-check mr-2" title="salva" (click)="saveRow(row, rowIndex)"></em>
+            <!-- Cancel icons -->
+            <em *ngIf="isEditingIndex == rowIndex" class="fa-button-icon fa fa-close" title="annulla" (click)="cancelEditing(row, rowIndex)" ></em>
+            <!-- new ver -->
+            <em *ngIf="isEditingIndex != rowIndex && row.ultima_versione && !row.modificabile" class="fa-button-icon fa fa-plus-square-o mr-2" title="nuova versione template per questa tipologia di istanza" (click)="newTemplateVersion(row)"></em>
+            <!-- clone -->
+            <em *ngIf="isEditingIndex != rowIndex && !row.modificabile" class="fa-button-icon fa fa-clone mr-2" title="clona template per una differente tipologia di istanza" (click)="cloneTemplate(row)"></em>
+            <div>
+              <!-- intestazione -->
+              <em *ngIf="isEditingIndex != rowIndex" class="fa-button-icon fa fa-sticky-note-o mr-2" title="upload DOCX intestazione / indice" (click)="intestazioneTemplate(row)"></em>
+              <!-- pubblica -->
+              <em *ngIf="isEditingIndex != rowIndex && row.modificabile" class="fa-button-icon fa fa-television mr-2" title="pubblica template" (click)="publishTemplate(row)"></em>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- 
+          Column: Open Panel
+        -->
+        <ngx-datatable-column [flexGrow]="0.1" [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a class="table-icons" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" title="apri / chiudi sezione" (click)="toggleExpandRow(row, expanded)"></a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Istanza" Column 1 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Istanza">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div *ngIf="row.id_template"><strong>{{row.tipo_istanza?.value}}</strong></div>
+            <select *ngIf="!row.id_template && isEditingIndex == rowIndex" [(ngModel)]="edtTipologiaIstanza" class="editarea pl-0">
+              <option *ngFor="let opt of tipoIstanzaListFiltered" [ngValue]="opt">{{opt.id}} - {{opt.value}}</option>
+            </select>
+            <div *ngIf="isEditingIndex == rowIndex && errCol[0]" class="invalid-feedback d-block">{{errCol[0]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Codice" Columns 2 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Codice">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div *ngIf="isEditingIndex != rowIndex">
+              <div>{{row.cod_template}}</div>
+              <div class="pmclass">{{row.obbligatoria_nomina_pm ? 'Resp. di Riferimento obbligatorio' : 'Resp. di Riferimento opzionale'}}</div>
+            </div>
+            <div *ngIf="isEditingIndex == rowIndex">
+              <input [(ngModel)]="edtCodice" class="editarea pl-0" maxlength="20">
+              <div class="custom-control mude-custom-checkbox">
+                <input id="edtPM" name="edtPM" [(ngModel)]="edtPM" type="checkbox" [value]="true" class="custom-control-input">
+                <label for="edtPM" class="custom-control-label checkbox-label-normal">Resp. di rif. obbl.</label>
+              </div>
+            </div>
+            <div *ngIf="isEditingIndex == rowIndex && errCol[1]" class="invalid-feedback d-block">{{errCol[1]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Descrizione" Columns 3 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Descrizione">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div *ngIf="row && isEditingIndex != rowIndex" class="pmclass">{{row.des_template}}</div>
+            <input *ngIf="isEditingIndex == rowIndex" [(ngModel)]="edtDescrizione" class="editarea pl-0" maxlength="50">
+            <div *ngIf="isEditingIndex == rowIndex && errCol[2]" class="invalid-feedback d-block">{{errCol[2]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Versione" Columns 4 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Versione">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div><a href="{{frontOfficePath}}fascicolo?boTemplateOverride={{row.num_versione}}_{{row.tipo_istanza?.id}}" target="_new">{{row.num_versione}}</a></div>
+            <!--
+            <input *ngIf="isEditingIndex == rowIndex" [(ngModel)]="edtVersione" class="editarea pl-0" pattern="^[0-9]*$" maxlength="20">
+            <div *ngIf="isEditingIndex == rowIndex && errCol[3]" class="invalid-feedback d-block">{{errCol[3]}}</div>
+            -->
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "stato" Columns 5 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Attivo">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div>{{row.flg_attivo? 'Si':'No'}}</div>
+            <!--<select *ngIf="isEditingIndex == rowIndex" [(ngModel)]="edtStato" class="editarea pl-0">
+              <option *ngFor="let opt of statiList" [value]="opt.id">{{opt.value}}</option>
+            </select>-->
+            <div *ngIf="isEditingIndex == rowIndex && errCol[4]" class="invalid-feedback d-block">{{errCol[4]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Data inizio" Columns 6 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Data inizio">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div *ngIf="row && isEditingIndex != rowIndex">{{row.data_inizio_validita}}</div>
+            <!--
+            <div *ngIf="isEditingIndex == rowIndex">
+              <input [(ngModel)]="edtDataInizioValidita" class="editarea form-control ml-0" (keydown)="false" placeholder="DD/MM/YYYY"
+                      name="dp1"  ngbDatepicker #d="ngbDatepicker"
+                      [minDate]="minDate" [maxDate]="maxDate" [startDate]="startDate"
+                      (click)="d.toggle()">
+            </div>
+            -->
+            <div *ngIf="isEditingIndex == rowIndex && errCol[5]" class="invalid-feedback d-block">{{errCol[5]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- "Data fine" Columns 7 -->
+        <ngx-datatable-column [flexGrow]="0.2" name="Data fine">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <div *ngIf="row && isEditingIndex != rowIndex">{{row.data_cessazione}}</div>
+            <!--
+            <div *ngIf="isEditingIndex == rowIndex">
+              <input [(ngModel)]="edtDataCessazione" class="editarea form-control ml-0" (keydown)="false" placeholder="DD/MM/YYYY"
+                      name="dp2"  ngbDatepicker #d="ngbDatepicker"
+                      placement="bottom-right"
+                      [minDate]="minDate" [maxDate]="maxDate" [startDate]="startDate"
+                      (click)="d.toggle()">
+            </div>
+            -->
+            <div *ngIf="isEditingIndex == rowIndex && errCol[6]" class="invalid-feedback d-block">{{errCol[6]}}</div>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- 
+          Row Panel Template 
+        -->
+        <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+            <div class="collation mt-1 mb-3 py-2">
+              <a class="table-icons" [class.datatable-icon-right]="rowExpandedQuadri != row.id_template" [class.datatable-icon-down]="rowExpandedQuadri == row.id_template" title="apri / chiudi sezione" (click)="rowExpandedQuadri = rowExpandedQuadri == row.id_template ? null : row.id_template"></a>
+              Lista quadri
+            </div>
+            <div *ngIf="rowExpandedQuadri == row.id_template" class="collationList mb-3 raw-detail-table">
+              <div class="tableFixHead">
+                <table summary="just a tableFixHead table!">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="quadri-action-div"></th>
+                      <th scope="col" class="quadro-head">Tipo</th>
+                      <th scope="col" class="quadro-head">Tipo gestione</th>
+                      <th scope="col" class="quadro-head">Etichetta</th>
+                      <th scope="col" class="quadro-head">Versione</th>
+                      <th scope="col" class="quadro-head">Ordinale</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let templateQuadro of (row?.templateQuadri?.length && row.templateQuadri); let i = index">
+                      <td class="ng-custom-action-cell quadri-action-div">
+                        <!-- modify -->
+                        <em *ngIf="row.modificabile" class="fa-button-icon fa fa-pencil mr-2" title="modifica" (click)="quadroAdd(row, templateQuadro)"></em>
+                        <!-- delete -->
+                        <em *ngIf="row.modificabile" class="fa-button-icon fa fa-trash-o" title="elimina" (click)="quadroDelete(row, templateQuadro)"></em>
+                      </td>
+                      <td class="quadro-td">{{templateQuadro.quadro.tipo_quadro?.cod_tipo_quadro}}</td>
+                      <td class="quadro-td">{{quadriService.getTipoGestione(templateQuadro.quadro.flg_tipo_gestione)}}</td>
+                      <td class="quadro-td">{{quadriService.getQuadroLabel(templateQuadro.quadro)}}</td>
+                      <td class="quadro-td">{{templateQuadro.quadro.num_versione}}</td>
+                      <td class="quadro-td">{{templateQuadro.ordinamento_template_quadro}}</td>
+                    </tr>
+                  </tbody>
+                </table>  
+              </div> 
+              <div *ngIf="row.modificabile" class="linkDiv my-2 d-flex">
+                <span (click)="quadroAdd(row)">
+                  <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI QUADRO</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="collation mt-1 mb-3 py-2">
+              <a class="table-icons" [class.datatable-icon-right]="rowExpandedAllegati != row.id_template" [class.datatable-icon-down]="rowExpandedAllegati == row.id_template" title="apri / chiudi sezione" (click)="rowExpandedAllegati = rowExpandedAllegati == row.id_template? null : row.id_template"></a>
+              Lista allegati
+            </div>
+            <div *ngIf="rowExpandedAllegati == row.id_template" class="collationList mb-3 raw-detail-table">
+              <div *ngIf="!rowExpandedFilterAllegati" class="linkDiv my-2 d-flex">
+                <span (click)="toggleAllegatiFilter()" class="ml-auto">
+                  <span class="linkedText small-text">FILTRO DI RICERCA</span>
+                </span>              
+              </div>
+              <div class="tableFixHead">
+                <table summary="just tableFixHead table!">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="quadri-action-div"></th>
+                      <th scope="col" class="quadro-head">Allegato</th>
+                      <th scope="col" class="quadro-head">Categoria</th>
+                      <th scope="col" class="quadro-head growth">Obbligatorio</th>
+                      <th scope="col" class="quadro-head growth">Ripetibile</th>
+                      <th scope="col" class="quadro-head">Ricorrente</th>
+                      <th scope="col" class="quadro-head">Firma</th>
+                      <th scope="col" class="quadro-head">Ordinale</th>
+                    </tr>
+                    <tr *ngIf="rowExpandedFilterAllegati" class="allegati-filter">
+                      <th scope="col">
+                        <!-- cancel search -->
+                        <em class="fa-button-icon fa fa-times" title="elimina filtro" (click)="toggleAllegatiFilter()"></em>
+                      </th>
+                      <th scope="col">
+                        <input name="searchAllegato" id="searchAllegato" [(ngModel)]="searchAllegato">
+                      </th>
+                      <th scope="col">
+                        <input name="searchCategoria" id="searchCategoria" [(ngModel)]="searchCategoria">
+                      </th>
+                      <th scope="col">
+                        <input name="searchObbligatorio" id="searchObbligatorio" [(ngModel)]="searchObbligatorio">
+                      </th>
+                      <th scope="col">
+                        <input name="searchRipetibile" id="searchRipetibile" [(ngModel)]="searchRipetibile">
+                      </th>
+                      <th scope="col">
+                        <select name="searchRicorrente" id="searchRicorrente" [(ngModel)]="searchRicorrente" size="1">
+                          <option value=""></option>
+                          <option value="si">Si</option>
+                          <option value="no">No</option>
+                        </select>
+                      </th>
+                      <th scope="col">
+                        <!--input name="searchFirma" id="searchFirma" [(ngModel)]="searchFirma"-->
+                      </th>
+                      <th scope="col">
+                        <!--input name="searchOrdinale" id="searchOrdinale" [(ngModel)]="searchOrdinale"-->
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let allegato of templateAllegati(row); let i = index">
+                      <td class="ng-custom-action-cell quadri-action-div">
+                        <!-- modify -->
+                        <em *ngIf="row.modificabile" class="fa-button-icon fa fa-pencil mr-2" title="modifica" (click)="allegatoAdd(row, allegato)"></em>
+                        <!-- delete -->
+                        <em *ngIf="row.modificabile" class="fa-button-icon fa fa-trash-o" title="elimina" (click)="allegatoDelete(row, allegato)"></em>
+                        <!-- TODO: flg_associabile -->
+                      </td>
+                      <td class="quadro-td"><span title="{{allegato.descrizione_tipo_allegato}} - {{allegato.descrizione_breve_tipo_allegato}}">{{allegato.codice_tipo_allegato}}</span></td>
+                      <td class="quadro-td"><span title="{{allegato.categoria_allegato.descrizione_estesa_categoria_allegato}}">{{allegato.categoria_allegato.id_categoria_allegato}}</span></td>
+                      <td class="quadro-td"><pre>{{
+                        allegato.espressione_obbligatorieta?('Sì: '+allegato.espressione_obbligatorieta): 
+                                                      (allegato.obbligatorio?'Sì':'No')
+                        }}</pre></td>
+                      <td class="quadro-td">{{
+                        allegato.espressione_ripetibilita?('Sì: '+allegato.espressione_ripetibilita):
+                                                      (allegato.ripetibile==null||allegato.ripetibile?'Sì':'No')
+                        }}</td>
+                      <td class="quadro-td">{{allegato.flag_ricorrente?'Sì':'No'}}</td>
+                      <td class="quadro-td">{{allegato.firma_obbligatoria?'Sì':'No'}}</td>
+                      <td class="quadro-td">{{allegato.ordinamento}}</td>
+                    </tr>
+                  </tbody>
+                </table>         
+              </div> 
+              <div *ngIf="row.modificabile" class="linkDiv my-2 d-flex">
+                <span (click)="allegatoAdd(row)" class="ml-auto">
+                  <img alt="" src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI ALLEGATO</span>
+                </span>              
+              </div>
+            </div>
+          </ng-template>
+        </ngx-datatable-row-detail>
+
+      </ngx-datatable>    
+    </div>
+
+    <div *ngIf="isEditingIndex === null" class="linkDiv my-2 d-flex">
+      <span (click)="addNew()">
+        <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI NUOVO TEMPLATE</span>
+      </span>    
+    </div>
+
+  </div>
+</div>

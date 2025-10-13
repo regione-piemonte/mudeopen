@@ -1,0 +1,90 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+
+
+<title-section subtitle=""><strong>{{title}}</strong></title-section>
+
+<div *ngIf="hasReferenceInstance" class="px-2 my-3">
+  {{description}}
+</div>
+
+<div *ngIf="!hasReferenceInstance" class="form-group mb-5">
+  <div class="px-2 my-3">
+    Eventuali altre istanze di riferimento per la presente istanza
+  </div>
+
+  <div class="custom-control mude-custom-checkbox">
+    <form>
+      <div class="form-row pl-3 mb-2">
+        Si applica ? &nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="mude-custom-radio custom-control mude-custom-checkbox mr-4">
+            <input #applicaSi value="1" type="radio" id="applicaChoice1" name="applicaChoice" [checked]="isApplicaSi" class="custom-control-input" (click)="onApplica($event.target.checked, $event.target.value)">
+            <label class="custom-control-label checkbox-label-normal" for="applicaChoice1">si</label>
+        </span>
+        <span class="mude-custom-radio custom-control mude-custom-checkbox mr-4">
+            <input #applicaNo value="0" type="radio" id="applicaChoice2" name="applicaChoice" [checked]="!isApplicaSi" class="custom-control-input" (click)="onApplica($event.target.checked, $event.target.value)">
+            <label class="custom-control-label checkbox-label-normal" for="applicaChoice2">no</label>
+        </span>
+      </div>
+    </form>
+
+    <div *ngIf="applicaNo.checked" class="px-2 my-3">
+      non si segnalano altre istanze di riferimento per la presente istanza
+    </div>
+  
+  </div>
+</div>
+
+<div *ngIf="isApplicaSi">
+  <div *ngIf="rows" class="pt-3">
+    <div class="datatable-container customdatatable">
+      <ngx-datatable #table
+          class="material expandable striped  datatable-style"
+          [rows]="rows"
+          [headerHeight]="'auto'"
+          [footerHeight]="50"
+          [columnMode]="'force'"
+          [scrollbarH]="'auto'"
+          [rowHeight]="'auto'"
+          [messages]="datatable.messages"
+
+          [count]="datatable.count"
+          [offset]="datatable.offset"
+          [limit]="datatable.limit"
+          [externalPaging]="false"
+
+          [selected]="datatable.selected">
+
+        <ngx-datatable-column name="Azione" minWidth="60" width="60" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+          <ng-template ngx-datatable-cell-template let-row="row" let-rowIndex="rowIndex">
+            <!-- delete -->
+            <em *ngIf="canDeleteIstanza(rowIndex)" class="fa-button-icon fa fa-trash-o mr-1" title="elimina" (click)="deleteIstanza(row)"></em>
+          </ng-template>
+        </ngx-datatable-column>
+      
+        <ngx-datatable-column *ngFor="let col of columnsIstanze" 
+            [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+            [name]="col.name" [prop]="col.prop">
+        </ngx-datatable-column>
+
+      </ngx-datatable>    
+    </div>
+
+  </div>
+  <div class="linkDiv d-flex">
+    <span (click)="addNewReference()" class="ml-auto">
+      <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI RIFERIMENTO</span>
+    </span>
+  </div>
+</div>
+
+<app-stepper-footer
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onStepForward()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>

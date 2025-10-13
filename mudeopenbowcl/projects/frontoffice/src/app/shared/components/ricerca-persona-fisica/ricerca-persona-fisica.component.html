@@ -1,0 +1,92 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+<div class="card-box ">
+    <form [formGroup]="ricercaPersonaFisicaForm">
+        <div class="row">
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaFisicaForm"
+                    controlName="nome"
+                    label="Nome"
+                    placeholder="Inserisci nome">
+                </it-input>
+            </div>
+    
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaFisicaForm"
+                    controlName="cognome"
+                    label="Cognome"
+                    placeholder="Inserisci cognome">
+                </it-input>
+            </div>
+
+            <div class="col-4">
+                <it-input
+                    [parentFormGroup]="ricercaPersonaFisicaForm"
+                    controlName="codiceFiscale"
+                    label="Codice fiscale"
+                    placeholder="Inserisci codice fiscale">
+                </it-input>
+            </div>
+        </div>
+
+        <!-- TODO:TIPOTITOLO -->
+        <div *ngIf="isContactSearch" class="row pl-3">
+            <div class="d-flex">
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="titolare"
+                    label="Clienti">
+                </it-input>
+                </div>
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="professionista"
+                    label="Professionisti">
+                </it-input>
+                </div>
+                <div class="mr-4">
+                <it-input
+                    type="checkbox"
+                    parentFormGroup="ricercaSoggettoForm"
+                    controlName="impresa_lavori"
+                    label="Imprese lavori">
+                </it-input>
+                </div>
+            </div>
+        </div>
+    
+        <div class="d-flex">
+            <button class="btn btn-outline-primary ml-0" (click)="onSearch()">CERCA</button>
+            <button *ngIf="showCancel" type="button" class="ml-auto btn btn-link" (click)="cancelDiallog()">ANNULLA</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="soggettiDataTable" class="datatable-container card-box my-4 px-3">
+    <div class="py-3">
+        <alert-box class="my-0">Soggetti trovati</alert-box>
+    </div>
+    <ngx-datatable [externalPaging]="true" class="material expandable datatable-style"
+        [rows]="soggettiDataTable" [limit]="datatable.limit" [headerHeight]="50" 
+        [columns]="headers"
+        [footerHeight]="40" [columnMode]="'force'" [offset]="datatable.offset" [rowHeight]="'auto'" [count]="datatable.count"
+        [selectionType]="selectionType" (page)="onSearch($event)" [messages]="datatable.messages"
+        [selected]="datatable.selected">
+    </ngx-datatable>
+    <div *ngIf="datatable.selected.length">
+        <button class="btn btn-outline-primary ml-2" (click)="notifySelectedEvent()">SELEZIONA {{selectionType=='single'?'SOGGETTO':'SOGGETTI'}}</button>
+        <button *ngIf="isModifyAllowed" class="btn btn-outline-primary ml-4" (click)="onModifySubject()">SELEZIONA E MODIFICA SOGGETTO</button>
+    </div>
+</div>
+
+

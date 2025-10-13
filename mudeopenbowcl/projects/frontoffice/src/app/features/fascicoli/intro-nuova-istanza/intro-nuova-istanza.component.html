@@ -1,0 +1,477 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="mb-2">
+	<title-bar [breadcrumb]="breadcrumb" [title]="pageTitle"></title-bar>
+    <div class="mt-3">&nbsp;</div>
+	<title-section [title]="pageState"></title-section>
+</div>
+
+<!-- choice: wizard / no wizard. -->
+<div *ngIf="introStepIndex == -1">
+	<div class="card-box narrowed-box">
+		<div class="main-label pb-4">
+			<strong>Conosci l’istanza da presentare?</strong>
+		</div>
+		<form>
+			<div class="form-row pl-3 mb-3">
+				<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+					<input type="radio" id="introStepIndexChoice1" name="introStepIndexChoice" class="custom-control-input" [value]="0" [(ngModel)]="introStepIndexChoice">
+					<label class="custom-control-label checkbox-label-normal" for="introStepIndexChoice1">Si. Scegli istanza</label>
+				</div>
+				<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+					<input type="radio" id="introStepIndexChoice2" name="introStepIndexChoice" class="custom-control-input" [value]="12" [(ngModel)]="introStepIndexChoice">
+					<label class="custom-control-label checkbox-label-normal" for="introStepIndexChoice2">No. Crea istanza con procedura guidata</label>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="d-flex narrowed-box">
+		<div class="ml-auto py-4">
+			<button type="submit" class="btn btn-success" (click)="selectCreationType()">AVANTI</button>
+		</div>
+	</div>
+</div>
+
+<!-- new instance  without wizard. -->
+<div *ngIf="introStepIndex == 0">
+	<ng-container *ngTemplateOutlet="tipologiaIstanzaBlock"></ng-container>
+</div>
+
+<div *ngIf="introStepIndex == 1">
+	<ng-container *ngTemplateOutlet="tipologiaPresentatoreBlock"></ng-container>
+</div>
+
+<!-- Wizard. -->
+<form *ngIf="introStepIndex > 10">
+	<!--STEP 1: ELEMENTO-->
+	<div *ngIf="introStepIndex == 11 || introStepIndex == 12">
+
+		<div class="card-box narrowed-box mb-4">
+			<title-section subtitle="">Cerca <strong>l’elemento</strong> che deve essere presente nella tua istanza.</title-section>
+
+			<div class="row mt-4 mb-4">
+				<div class="col">
+					<input type="text" class="form-control" [(ngModel)]="wizardLev1FilterText" id="wizText" name="wizText" placeholder="Cerca...">
+				</div>
+			</div>
+		</div>
+
+		<div class="card-box">
+			<title-section subtitle="Nuova istanza"></title-section>
+			<title-section subtitle="Elemento"></title-section>
+
+			<div class="row">
+				<div class="col">
+					<div class="container full-width">
+						<ul class="list-unstyled listed-columns">
+							<li class="elemento-container" *ngFor="let elemento of wizardElementi">
+								<div class="custom-control mude-custom-checkbox" *ngIf="checkWizardFilter(elemento.denominazione)">
+									<input [id]="'wizEl'+elemento.posizione" class="custom-control-input" type="checkbox" [value]="elemento.checked" [checked]="elemento.checked" (click)="onElementoCheck(elemento)">
+									<label class="custom-control-label checkbox-label-normal" [for]="'wizEl'+elemento.posizione">{{ elemento.posizione }}. {{ elemento.denominazione }}</label>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<!--STEP 2: OPERA-->
+	<div class="card-box custom-control " *ngIf="introStepIndex == 13">
+		<title-section subtitle="Nuova istanza"></title-section>
+		<title-section subtitle="Opera"></title-section>
+
+		<ul class="list-unstyled listed-columns pl-4">
+			<li class="elemento-container" *ngFor="let elemento of wizardSelected; let i = index">
+				<strong>{{elemento.posizione}}.&nbsp;{{elemento.denominazione}}</strong>
+				<!-- opere inside elemento box -->
+				<ng-container *ngFor="let opera of elemento.opere">
+					<span class="mude-custom-checkbox">
+						<input [id]="'wizOp'+i" class="custom-control-input" type="checkbox" [value]="opera.checked" [checked]="opera.checked" (click)="onOperaCheck(opera)">
+						<label class="custom-control-label checkbox-label-normal" [for]="'wizOp'+i">{{ opera.denominazione }}</label>
+					</span>
+				</ng-container>
+			</li>
+		</ul>
+	</div>
+
+	<!--STEP 3: adempimenti a Tutela-->
+	<div *ngIf="introStepIndex == 14">
+		<div class="card-box">
+			<title-section subtitle="Nuova istanza"></title-section>
+			<title-section subtitle="Adempimenti a Tutela"></title-section>
+
+			<form>
+				<div class="form-row pl-3 mb-3">
+					<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+						<input type="radio" id="showTutela1" name="showTutela" class="custom-control-input" value="0" [(ngModel)]="showTutela">
+						<label class="custom-control-label checkbox-label-normal" for="showTutela1">No</label>
+					</div>
+					<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+						<input type="radio" id="showTutela2" name="showTutela" class="custom-control-input" value="1" [(ngModel)]="showTutela">
+						<label class="custom-control-label checkbox-label-normal" for="showTutela2">Si</label>
+					</div>
+				</div>
+			</form>
+
+			<div *ngIf="showTutela == 1" class="row">
+				<div class="col">
+					<div class="container full-width">
+						<ul class="list-unstyled listed-columns">
+							<li class="elemento-container" *ngFor="let ademTut of adempimentiTutela">
+							<div class="custom-control mude-custom-checkbox">
+								<input [id]="'wizEl'+ademTut.posizione" class="custom-control-input" type="checkbox" value="ademTut.checked" [checked]="ademTut.checked" (click)="onAdempimentoTutelaCheck(ademTut)">
+								<label class="custom-control-label checkbox-label-normal" [for]="'wizEl'+ademTut.posizione">{{ ademTut.posizione }}. {{ ademTut.denominazione }}</label>
+							</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--STEP 4: adempimenti a Prestazioni-->
+	<div *ngIf="introStepIndex == 15">
+		<div class="card-box">
+			<title-section subtitle="Nuova istanza"></title-section>
+			<title-section subtitle="Adempimenti a Prestazioni"></title-section>
+
+			<form>
+				<div class="form-row pl-3 mb-3">
+					<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+						<input type="radio" id="showPrestazioni1" name="showPrestazioni" class="custom-control-input" value="0" [(ngModel)]="showPrestazioni">
+						<label class="custom-control-label checkbox-label-normal" for="showPrestazioni1">No</label>
+					</div>
+					<div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4">
+						<input type="radio" id="showPrestazioni2" name="showPrestazioni" class="custom-control-input" value="1" [(ngModel)]="showPrestazioni">
+						<label class="custom-control-label checkbox-label-normal" for="showPrestazioni2">Si</label>
+					</div>
+				</div>
+			</form>
+
+			<div *ngIf="showPrestazioni == 1" class="row">
+				<div class="col">
+					<div class="container full-width">
+						<ul class="list-unstyled listed-columns">
+							<li class="elemento-container" *ngFor="let ademTut of adempimentiPrestazioni">
+							<div class="custom-control mude-custom-checkbox">
+								<input [id]="'wizEl'+ademTut.posizione" class="custom-control-input" type="checkbox" value="ademTut.checked" [checked]="ademTut.checked" (click)="onAdempimentoPrestazioniCheck(ademTut)">
+								<label class="custom-control-label checkbox-label-normal" [for]="'wizEl'+ademTut.posizione">{{ ademTut.posizione }}. {{ ademTut.denominazione }}</label>
+							</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- WIZARD SUMMARY BOX -->
+	<div class="card-box card-box-wizard-riepilogo pt-4 px-4" *ngIf="introStepIndex >= 12">
+		<alert-box message="Riepilogo scelte effettuate" class="my-0"></alert-box>
+
+		<div class="row">
+			<div class="col-12">
+				<span class="wizard-col1 wizard-head">Elementi selezionati</span>
+				<span class="wizard-col2 wizard-head">Azioni</span>
+				<div *ngIf="wizardSelected.length == 0" class="row">
+					<div class="col-12">Al momento non hai effettuato alcuna scelta.</div>
+				</div>
+				<div class="wizard-summary-row pb-2" *ngFor="let elemento of wizardSelected; let i = index">
+					<div class="operaCheckContainer">
+						<span class="wizard-col1">{{elemento.posizione}}.&nbsp;{{elemento.denominazione}}</span>
+						<span class="wizard-col2"><img alt=""  src="assets/images/bin.png"  class="iconBox remove-icon"  title="Rimuovi elemento" (click)="onElementoCheck(elemento)"></span>
+					</div>
+
+					<!-- opere inside elemento box -->
+					<ul>
+						<div *ngFor="let opera of elemento.opere">
+							<li *ngIf="opera.checked">
+								<strong class="wizard-col1">{{opera.denominazione}}</strong>
+								<span class="wizard-col2">
+									<span class="xicon" (click)="opera.checked = false"><em class="fa fa-times"></em></span>
+									<span (click)="showMessageBox('Categoria di intervento', opera.categoria.denominazione)"><img alt=""  class="iconBox" src="assets/svg/category.png" title="Visualizza 'Categoria di intervento'"></span>
+									<span (click)="showMessageBox('Regime giuridico', getRegimeGiuridico(opera).denominazione)"><img alt=""  class="iconBox" src="assets/svg/legal.svg" title="Visualizza 'Regime giuridico'"></span>
+								</span>
+							</li>
+						</div>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+
+		<ol *ngIf="showTutela == 1" class="no-bullet-indent">
+			<li *ngFor="let tutela of adempimentiTutelaSelected" class="wizard-summary-row pb-2 mb-2">
+				<div *ngIf="tutela.checked">
+					<strong class="wizard-col1">{{tutela.denominazione}}</strong>
+					<span class="wizard-col2">
+						<img alt=""  class="iconBox remove-icon" title="Rimuovi" src="assets/images/bin.png" (click)="onAdempimentoTutelaCheck(tutela)">
+						<span (click)="showMessageBox('Tipologia adempimenti a tutela', tutela.tipologia)"><img alt=""  class="iconBox" src="assets/svg/category.png" title="Visualizza 'Tipologia adempimenti a tutela'"></span>
+						<span (click)="showMessageBox('Regime aggiuntivo adempimenti a tutela', getRegimeAggiuntivo(tutela).denominazione)"><img alt=""  class="iconBox" src="assets/svg/legal.svg" title="Visualizza 'Regime aggiuntivo adempimenti a tutela'"></span>
+					</span>
+				</div>
+			</li>
+		</ol>
+
+		<ol *ngIf="showPrestazioni == 1" class="no-bullet-indent">
+			<li *ngFor="let prestazioni of adempimentiPrestazioniSelected" class="wizard-summary-row pb-2 mb-2">
+				<div *ngIf="prestazioni.checked">
+					<strong class="wizard-col1">{{prestazioni.denominazione}}</strong>
+					<span class="wizard-col2">
+						<img alt=""  class="iconBox remove-icon" title="Rimuovi" src="assets/images/bin.png" (click)="onAdempimentoPrestazioniCheck(prestazioni)">
+						<span (click)="showMessageBox('Tipologia adempimenti a prestazioni', prestazioni.tipologia)"><img alt=""  class="iconBox" src="assets/svg/category.png" title="Visualizza 'Tipologia adempimenti a prestazioni'"></span>
+						<span (click)="showMessageBox('Regime aggiuntivo adempimenti a prestazioni', getRegimeAggiuntivo(prestazioni).denominazione)"><img alt=""  class="iconBox" src="assets/svg/legal.svg" title="Visualizza 'Regime aggiuntivo adempimenti a prestazioni'"></span>
+					</span>
+				</div>
+			</li>
+		</ol>
+
+	</div>
+
+	<alert-box *ngIf="wizardInstanceFound != ''" [message]="wizardInstanceFound" classExtra="my-5 ml-4 narrowed-box" classType="success">
+		<div class="pt-2">
+			In base alle scelte effettuate attraverso la procedura guidata, l’intervento edilizio richiede una istanza di tipo autorizzativo.
+		</div>
+	</alert-box>
+
+	<alert-box *ngIf="wizardInstanceFound == 'NONEEDED'" message="Nessuna istanza da presentare" classExtra="my-5 ml-4 narrowed-box" classType="success">
+		<div class="pt-2">
+			In base alle scelte effettuate attraverso la procedura guidata, l’intervento edilizio non richiede la presentazione di una istanza.
+		</div>
+	</alert-box>
+
+	<!-- WIZARD TOOLBAR BOTTOM -->
+	<div class="d-flex">
+		<div class="py-4 my-4">
+			<button type="submit" class="btn btn-link" (click)="introStepIndex = introStepIndex == 11?-1 : introStepIndex - 1">INDIETRO</button>
+		</div>
+		<div class="ml-auto py-4 my-4">
+			<button type="submit" class="btn btn-success" (click)="goNextStep()" [disabled]="!canGoNextStep()">{{introStepIndex==15? 'CONFERMA' : 'AVANTI' }}</button>
+		</div>
+	</div>
+</form>
+
+
+<!-- Sezioni template no wizard. -->
+<ng-template #tipologiaIstanzaBlock>
+	<form [formGroup]="parentFormGroup" (ngSubmit)="onSubmit()">
+
+		<div *ngIf="!folderSaved" class="card-box mb-4">
+
+			<title-section subtitle="Ubicazione"></title-section>
+			<div class="row p-2">
+				<div class="col-4" formGroupName="provincia">
+					<it-select
+						[parentFormGroup]="parentFormGroup"
+						controlName="id"
+						(valueChangedEvent)="onProvinciaSelected($event)"
+						[data]="provincePiemonte"
+						label="Provincia"
+						selectedOption="Seleziona una provincia">
+					</it-select>
+				</div>
+
+				<div class="col-4" formGroupName="comune">
+					<it-select
+						[parentFormGroup]="parentFormGroup"
+						controlName="id"
+						[data]="comuniForProvincia"
+						label="Comune"
+						selectedOption="Seleziona un comune"
+                        (valueChangedEvent)="onComuneSelected()">
+					</it-select>
+				</div>
+			</div>
+
+			<title-section subtitle="Istanza"></title-section>
+			<div class="row p-2">
+				<div class="col-8" formGroupName="tipologiaIstanza">
+					<it-select #selectTipoIstanza
+						[disabled]="!tipologieIstanza || formsService.boTemplateOverride"
+						[parentFormGroup]="parentFormGroup"
+						controlName="id"
+						[data]="tipologieIstanza"
+						label="Tipo di istanza"
+						selectedOption="Seleziona una tipologia istanza">
+					</it-select>
+				</div>
+			</div>
+
+			<div *ngIf="noTipoIstanzaSelected && isTipoIstanzaRequired" class="px-2">
+				<alert-box *ngIf="noTipoIstanzaSelected" type="WARNING" message="Non è stato selezionato un comune per ci sia la tipologia di instanza selezionato dal backoffice"></alert-box>
+			</div>
+			<div *ngIf="formsService.boTemplateOverride" class="px-2">
+				<alert-box type="INFO">
+					<p><strong>Backoffice</strong></p>
+					<p>Modalità preview attiva per tipo istanza: <em><strong>{{boTemplateInfo}}</strong></em></p>
+					<em>NB: nel caso il tipo di istanza debba essere legata ad un'altra istanza o fascicolo, vai in ricerca e seleziona quello di interesse.</em>
+				</alert-box>
+			</div>
+
+			<div class="d-flex" *ngIf="!isReadOnlyMode">
+				<div class="ml-5 mr-5 py-4 my-4">
+					<button type="submit" class="btn btn-outline-primary">{{!entryPoint?'CREA FASCICOLO':'SALVA FASCICOLO'}}</button>
+				</div>
+			</div>
+	
+		</div>
+
+	</form>
+
+	<div *ngIf="folderSaved">
+		<alert-box *ngIf="!entryPoint" type="SUCCESS" message="Fascicolo salvato correttamente" timeout="5000"></alert-box>
+
+		<div *ngIf="formsService.fascicolo" class="card p-4">
+			<app-recap-table
+					title="<strong>Riepilogo fascicolo</strong>"
+					[columns]="[
+						{
+							label: 'Codice fascicolo',
+							properties: ['codice_fascicolo']
+						},
+						{
+							label: 'Provincia',
+							properties: [ 'provincia.value' ]
+						},
+						{
+							label: 'Comune',
+							properties: [ 'comune.value' ]
+						},
+						{
+							label: 'Tipo di istanza',
+							properties: [ 'tipologia_istanza.value' ]
+						}
+					]"
+					[records]="[ formsService.fascicolo ]"
+					[editEnabled]="false"
+					[deleteEnabled]="false">
+
+					<!--
+,
+						{
+							label: 'Tipo di intervento',
+							properties: [ 'tipologia_intervento.value' ]
+						}						
+					-->
+			</app-recap-table>
+		</div>
+
+		<div *ngIf="formsService?.fascicolo?.assegna_abilitazioni" class="linkDiv my-2 d-flex">
+			<div class="ml-auto">
+				<span (click)="displayFolderPermissionsManagerPopup(formsService.fascicolo.id_fascicolo)" class="linkedText">pannello gestione abilitazioni</span>
+			</div>
+		</div>
+				
+		<div *ngIf="_istanzeFascicoloList && istanzeFascicoloList && istanzeFascicoloList.length" class="mt-4">
+			<div class="mb-2">
+				<title-section subtitle="">Lista delle istanze legate al fascicolo</title-section>
+			</div>
+
+
+			<table class="tbl-width table-istanza" summary="just rawQuadriTable table8 !">
+				<tr>
+					<th scope="col" class="dr-col1 detail-row-cell">Codice istanza</th>
+					<th scope="col" class="dr-col2 detail-row-cell">Comune</th>
+					<th scope="col" class="dr-col3 detail-row-cell">Tipo istanza</th>
+					<th scope="col" class="dr-col4 detail-row-cell">Stato</th>
+					<th scope="col" class="dr-col5 detail-row-cell">Azioni</th>
+				</tr>
+				<tr *ngFor="let istanza of istanzeFascicoloList; let i=index" class="istanza-fascicolo-row{{i % 2}}">
+					<td class="dr-col1 detail-row-cell">{{istanza.codice_istanza}}</td>
+					<td class="dr-col2 detail-row-cell">{{istanza.comune.value}}</td>
+					<td class="dr-col3 detail-row-cell">{{istanza.tipologia_istanza.value}}</td>
+					<td class="dr-col4 detail-row-cell">{{istanza.stato_istanza.value}}</td>
+					<td class="dr-col5 detail-row-cell pb-3">
+						<div class="d-flex">
+							<div class="ml-auto linkedText linkDiv" [ngStyle]="{ visibility: istanza.modifica?'visible':'hidden' }" (click)="formsService.editIstanza(istanza)"><img alt=""  src="assets/images/pen.png" class="plusIcon"/></div>
+							<div *ngIf="formsService.canDisplayDetails(istanza, 'FO')" class="linkedText linkDiv" [ngStyle]="{ visibility: istanza.visualizza?'visible':'hidden' }" (click)="formsService.viewIstanza(istanza)"><img alt=""  src="assets/images/doc.png" class="plusIcon"/></div>
+							<div *ngIf="formsService.showNonMudeDetails(istanza, 'FO')" class="linkDivPanel" (click)="downloadPDF(istanza)" title="Scarica PDF istanza"><em class="fa fa-file-pdf-o" aria-hidden="true"></em></div>
+							<div *ngIf="formsService.showNonMudeDetails(istanza, 'FO')" class="pl-2 linkDivPanel" (click)="openAttachmentsList(istanza)" title="Visualizza allegati"><em class="fa fa-files-o" aria-hidden="true"></em></div>
+							<div *ngIf="formsService.isThereIdfFile(istanza)" class="pl-2 linkDivPanel size20" (click)="downloadIdfFile(istanza)" title="Scarica autorizzazione richiesta per vincolo idrogeologico"><em class="fa fa-file-image-o" aria-hidden="true"></em></div>
+
+							<div *ngIf="istanza?.fonte != 'AEOS' && formsService.checkStatus(istanza, 'APA')" class="pl-2 linkDivPanel size20" (click)="downloadReceiptPDF(istanza)" title="Scarica ricevuta"><em class="fa fa-wpforms" aria-hidden="true"></em></div>
+							<div class="mr-auto linkedText linkDiv" [ngStyle]="{ visibility: istanza.elimina?'visible':'hidden' }" (click)="deleteIstanza(istanza)"><img alt=""  src="assets/images/bin.png" class="plusIcon"/></div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="d-flex my-4">
+			<div class="" *ngIf="entryPoint">
+				<button type="submit" class="btn btn-link" (click)="_location.back()">INDIETRO</button>
+			</div>
+			 <div *ngIf="formsService.fascicolo.nuova_istanza" class="ml-auto">
+				<button type="submit" (click)="addIstanzaInCurrentFascicolo()" class="btn btn-success">{{!entryPoint?'AVANTI':'AGGIUNGI ISTANZA'}}</button>
+			</div>
+		</div>
+	</div>
+
+</ng-template>
+
+<ng-template #tipologiaPresentatoreBlock>
+	<form [formGroup]="parentFormGroup" (ngSubmit)="onSubmit()">
+		<!-- ISTSUCC: parent tipologia -->
+		<div *ngIf="formsService.fascicolo?.tipologia_istanza?.id" class="card-box mb-3">
+			<title-section subtitle="Tipologia istanza selezionata"></title-section>
+			<div class="pl-3 mb-3">{{tipologieIstanzaSelected}}</div>
+
+			<title-section subtitle="Parole chiave"></title-section>
+			<div class="px-4">
+				<div class="mb-2">Se vuoi puoi indicare delle parole chiave che ti permetteranno di identificare e ricercare più velocemente questa istanza</div>
+				<it-input
+					[parentFormGroup]="parentFormGroup"
+					controlName="keywords"
+					label=""
+					placeholder="Lista di tag separati da spazio">
+				</it-input>
+			</div>
+		</div>
+
+		<!-- BRANCHES: selection -->
+		<div class="card-box mb-3">
+			<title-section subtitle="Seleziona il caso in cui rientri"></title-section>
+			<div *ngFor="let tipologiaPresentatore of listaTipologiePresentatore; let i = index" class="form-row pl-3 mb-3">
+				<div class="mude-custom-radio custom-control mude-custom-checkbox mt-2 mx-4">
+					<input type="radio" [id]="'presentatoreChoice'+i" name="presentatoreChoice" class="custom-control-input" [value]="tipologiaPresentatore.id" (click)="onChangeTipologiaPresentatore(tipologiaPresentatore.id)">
+					<label class="custom-control-label checkbox-label-normal" [for]="'presentatoreChoice'+i">{{tipologiaPresentatore.value}}</label>
+				</div>
+			</div>
+		</div>
+
+		<!-- ISTSUCC: selezione soggetti fascicolo -->
+		<div *ngIf="areFolderSubjectsAvailable()" class="card-box mb-3">
+			<div (dblclick)="reloadSoggetti()">
+				<title-section subtitle="Soggetti presenti nel fascicolo"></title-section>
+			</div>
+			<seleziona-soggetti-fascicolo [roles]="ruoliSoggettiFascicolo"
+				(onItemsSelected)="onItemsSelected($event)"></seleziona-soggetti-fascicolo>
+		</div>
+
+		<div class="my-2">
+			<alert-box *ngIf="warningCambioIntestatario" type="WARNING" message="Attenzione: l'utente con cui sei autenticato non corrisponde all'intestatario del fascicolo: {{warningCambioIntestatario}}. Procedendo con questa selezione verrà cambiato l'intestatario per l'istanza che si sta creando."></alert-box>
+			<alert-box *ngIf="noBranchSelected && !idTipologiaPresentatore" type="WARNING" message="Seleziona uno dei casi in cui rientri"></alert-box>
+		</div>
+		
+		<div class="d-flex">
+			<div class="py-4 my-4">
+			   <button type="submit" class="btn btn-link" (click)="backFromPresentatore(0)">INDIETRO</button>
+		   </div>
+		   <div class="ml-auto py-4 my-4">
+			   <button type="submit" class="btn btn-success">AVANTI</button>
+		   </div>
+		</div>
+	</form>
+</ng-template>
+
+<message-box *ngIf="messageBoxDialogText != ''" #messageBoxTooltip [title]="messageBoxDialogTitle" (close)="messageBoxDialogText = ''">
+	{{messageBoxDialogText}}
+</message-box>
+

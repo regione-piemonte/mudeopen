@@ -1,0 +1,80 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Cambio stato istanza in: REGISTRATA DA PA</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="mb-4">
+  <form [formGroup]="registratadapaForm">
+    <div class="p-4">
+
+			<title-section subtitle="Protocollo istanza"></title-section>
+			<div class="row p-2">
+				<div class="col-4">
+          <it-input
+              [parentFormGroup]="registratadapaForm"
+              controlName="numeroPratica"
+              label="Numero"
+              placeholder="Inserisci protocollo">
+          </it-input>
+				</div>
+<!--
+				<div class="col-4">
+          <it-datepicker [parentFormGroup]="registratadapaForm"
+              controlName="dataPratica"
+              label="Data protocollo istanza">
+          </it-datepicker>
+				</div>
+-->
+			</div>
+
+			<title-section subtitle="Protocollo assegnato dal comune"></title-section>
+			<div class="row p-2">
+				<div class="col-4">
+          <it-input
+              [parentFormGroup]="registratadapaForm"
+              controlName="numeroProtocollo"
+              label="Protocollo/Repertorio"
+              placeholder="Inserisci protocollo">
+          </it-input>
+				</div>
+
+				<div class="col-4">
+          <it-datepicker [parentFormGroup]="registratadapaForm"
+              controlName="dataProtocollo"
+              label="Data Prot./Repertorio">
+          </it-datepicker>
+				</div>
+			</div>
+<!--
+			<title-section subtitle="Annotazioni"></title-section>
+			<div class="row p-2">
+				<div class="col-12">
+          <it-input type="textarea"
+              [parentFormGroup]="registratadapaForm"
+              controlName="note">
+          </it-input>
+				</div>
+			</div>
+-->
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+      <div class="my-4 px-2">
+        <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+      </div>
+      <div class="ml-auto my-4">
+        <button type="submit" class="btn btn-color-slim blue" (click)="onSubmit(true)">CAMBIA STATO</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!--<input type="hidden" [value]="!isInitialization || setFocusOnSubmit(hiddenFocus)">-->

@@ -1,0 +1,408 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="mb-5">
+  <title-bar breadcrumb="RICERCHE" title="Pratiche denuncia sismica di competenza regionale"></title-bar>
+</div>
+
+<div class="narrowed-box">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="ricercaFascicoloIstanzaFields; context: {type:'istanzeDS', formgroup: ricercaIstanzeDSForm}"></ng-container>
+      </div>
+</div>
+
+<ng-template #ricercaFascicoloIstanzaFields let-type="type" let-formgroup="formgroup">
+<form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+    <div class="row">
+    
+      <!-- first col:  -->
+      <div class="form-group col px-4">
+          <title-section subtitle="Soggetto"></title-section>
+<div style="border: 1px dashed lightblue; border-radius: 5px;">
+
+          <div class="mb-2 ml-2">
+            <div class="">Nome, cognome o CF </div>
+          </div>
+          <div class="searchCol pb-3">
+            <input type="search" id="id_intestatario_pf" class="form-control" formControlName="id_intestatario_pf" placeholder="">
+          </div>
+
+          <div class="my-2 ml-2">
+            <div class="">Ragione sociale o P.IVA</div>
+          </div>
+          <div class="searchCol pb-3">
+            <input type="search" id="id_intestatario_pg" class="form-control" formControlName="id_intestatario_pg" placeholder="">
+          </div>
+
+          <div class="m-2">Tipo soggetto</div>
+          <div class="searchCol" formGroupName="tipo_soggetto">
+            <it-select [emptyOption]=" '' "
+              [parentFormGroup]="formgroup"
+              controlName="id"
+              [data]="tipiSoggetto"
+              label="">
+            </it-select>
+          </div>
+
+    </div>
+
+
+        <title-section subtitle="Periodo temporale"></title-section>
+<div style="border: 1px dashed lightblue; border-radius: 5px;">
+
+        <div class="maxColWidth row mb-0">
+          <div class="col ml-2">Da</div>
+          <div class="col mr-2">A</div>
+        </div>
+        <div class="dates-margins-left d-flex pb-4">
+          <div class="">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_from" label="" small="true"></it-datepicker>
+          </div>
+          <div class="ml-2">
+            <it-datepicker [parentFormGroup]="formgroup" controlName="data_to" label="" small="true"></it-datepicker>
+          </div>
+        </div>
+        <div class="searchCol" formGroupName="tipo_data">
+          <it-select [emptyOption]=" '' "
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            [data]="tipiRicercaData"
+            label="Campo data della ricerca">
+          </it-select>
+        </div>
+</div>
+
+      </div>
+
+      <!-- second col: INDIRIZZO -->
+      <div class="form-group col">
+        <title-section subtitle="Ubicazione"></title-section>
+
+<div style="border: 1px dashed lightblue; border-radius: 5px;">
+        <div class="searchCol" formGroupName="id_provincia">
+          <it-select [emptyOption]=" '' " controlName="id" [parentFormGroup]="formgroup" (valueChangedEvent)="onChangeProvincia($event)"
+                      label="Provincia" [data]="provincePiemonte">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2 comuni-column" formGroupName="id_comune">
+          <it-select [emptyOption]=" '' " label="Comune" [parentFormGroup]="formgroup"
+            [data]="comuni" controlName="id">
+          </it-select>
+        </div>
+        <div class="searchCol pt-2">
+          <div class="row">
+            <div class="col-4 pr-0 mr-0 dug-column" formGroupName="id_dug">
+              <it-select [emptyOption]=" '' " [data]="dug" [parentFormGroup]="formgroup"
+                label="Indirizzo" controlName="id">
+              </it-select>
+            </div>
+            <div class="col-6 ml-0 px-0">
+              <it-input label="&nbsp;" [parentFormGroup]="formgroup" controlName="duf" placeholder="descrizione"></it-input>
+            </div>
+            <div class="col-2  ml-0 px-0 pr-3">
+              <it-input label="&nbsp;" [parentFormGroup]="formgroup" controlName="numero_civico" placeholder="n°"></it-input>
+            </div>
+          </div>
+        </div>
+
+        <div class="searchCol pt-2 pl-2 ">
+          <div class="row">
+            <div class="col-4 mr-0 pr-0">
+              <it-input label="Interno" [parentFormGroup]="formgroup" controlName="interno" placeholder=""></it-input>
+            </div>
+            <div class="col-4 ml-0 px-0">
+              <it-input label="Scala" [parentFormGroup]="formgroup" controlName="scala" placeholder=""></it-input>
+            </div>
+            <div class="col-4 ml-0 px-0 pr-3">
+              <it-input label="Piano" [parentFormGroup]="formgroup" controlName="piano" placeholder=""></it-input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <!-- third col: CATASTO -->
+      <div class="form-group col">
+        <title-section subtitle="Dati catastali"></title-section>
+<div style="border: 1px dashed lightblue; border-radius: 5px;">
+        <div class="searchCol" formGroupName="tipo_catasto">
+            <it-select [emptyOption]=" '' "
+              [parentFormGroup]="formgroup"
+              controlName="id"
+              [data]="tipiCatasto"
+              label="Tipo catasto">
+            </it-select>
+        </div>
+        <div class="searchCol pt-2 pb-2">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="foglio"
+              (keyup)="checkCRKeyForSearch($event)"
+              label="Foglio"
+              placeholder="">
+          </it-input>
+        </div>
+        <div class="searchCol pb-2">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="numero"
+              (keyup)="checkCRKeyForSearch($event)"
+              label="Numero"
+              placeholder="">
+          </it-input>
+        </div>
+        <div class="searchCol pb-3">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="subalterno"
+              (keyup)="checkCRKeyForSearch($event)"
+              label="Subalterno"
+              placeholder="">
+          </it-input>
+        </div>
+</div>
+
+        <title-section subtitle="Tipo pratica"></title-section>
+        <div class="searchCol" formGroupName="tipi_pratica">
+          <it-select [emptyOption]=" '' "
+            [parentFormGroup]="formgroup"
+            controlName="id"
+            [data]="tipiPratica"
+            label="">
+          </it-select>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="row">
+    
+      <!-- first col:  -->
+      <div class="form-group col px-4">
+        <title-section subtitle=""><strong>Ricerca per numero pratica</strong></title-section>
+        <div class="searchCol">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="num_pratica"
+              (keyup)="checkCRKeyForSearch($event)"
+              label=""
+              placeholder="">
+          </it-input>
+        </div>
+      </div>
+
+      <!-- second col: INDIRIZZO -->
+      <div class="form-group col">
+        <title-section subtitle=""><strong>Ricerca per numero istanza</strong></title-section>
+        <div class="searchCol">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="codice_istanza"
+              (keyup)="checkCRKeyForSearch($event)"
+              label=""
+              placeholder="">
+          </it-input>
+        </div>
+      </div>
+
+      <!-- third col: CATASTO -->
+      <div class="form-group col">
+        <title-section subtitle=""><strong>Ricerca per numero protocollo</strong></title-section>
+        <div class="searchCol">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="numero_protocollo"
+              (keyup)="checkCRKeyForSearch($event)"
+              label=""
+              placeholder="">
+          </it-input>
+        </div>
+      </div>
+    </div>
+
+
+    <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+  </form>
+</ng-template>
+
+<ng-template #formToolbar let-formgroup="formgroup">
+  <div class="d-flex mt-4 mb-4 mx-2">
+    <div class="">
+      <button class="btn btn-outline-fixed-slim">CERCA</button>
+    </div>
+    <div class="ml-auto">
+      <button type="reset" class="linkedText">NUOVA RICERCA</button>
+    </div>
+  </div>
+</ng-template>
+
+<div class="my-3">
+  <alert-box *ngIf="wrongDateInterval" (fadeaway)="wrongDateInterval = null" type="WARNING" message="L'intervallo di date specificato non è corretto" timeout="6000"></alert-box>
+  <alert-box *ngIf="selectProvince" (fadeaway)="selectProvince = false" type="WARNING" message="Per la i campi che hai inserito è necessario selezionare anche la provincia e il comune" timeout="6000"></alert-box>
+  <alert-box *ngIf="wrongDateSelection" (fadeaway)="wrongDateSelection = null" type="WARNING" message="Non sono stati compilati tutti i campi della ricerca per data" timeout="6000"></alert-box>
+  <alert-box *ngIf="wrongSubjectSelection" (fadeaway)="wrongSubjectSelection = null" type="WARNING" message="Non sono stati compilati in modo corretto i campi della ricerca per soggetto: selezionare Nome e Tipo soggetto, oppure Ragione sociale e Tipo soggetto" timeout="6000"></alert-box>
+</div>
+
+
+<!--
+
+RISULTATI RICERCA ISTANZEDS
+
+-->
+
+<div *ngIf="searchSelected == 0 && displayedRowsIstanzeDS" class="my-5">
+
+
+  <div *ngIf="hasUserRole('DO')" class="d-flex py-3">
+    <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == ''    }" (click)="onSearch(0)">Tutti</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ATI' }" (click)="onSearch(0, 'ATI')" title="ATTESA INTEGRAZIONE">ATI</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'SAI' }" (click)="onSearch(0, 'SAI')" title="SCANDENZA ATTESA INT.">SAI</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'INT' }" (click)="onSearch(0, 'INT')" title="INTEGRAZIONE RICEVUTA">INT</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'AFL' }" (click)="onSearch(0, 'AFL')" title="ATTESA FINE LAVORI">AFL</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'COC' }" (click)="onSearch(0, 'COC')" title="CONTROLLO CAMPIONE">COC</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ICO' }" (click)="onSearch(0, 'ICO')" title="IN CONTROLLO">ICO</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ICI' }" (click)="onSearch(0, 'ICI')" title="ISTRUTTORIA CONTROLLO CAMPIONE">ICI</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'AIC' }" (click)="onSearch(0, 'AIC')" title="ATTESA INT-DOC CONTROLLO CAMPIONE">AIC</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'SIC' }" (click)="onSearch(0, 'SIC')" title="SCADENZA ATTESA INT-DOC CONTROLLO A CAMPIONE">SIC</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'RES' }" (click)="onSearch(0, 'RES')" title="RIFIUTATA">RES</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ACC' }" (click)="onSearch(0, 'ACC')" title="ACCETTATA">ACC</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ACO' }" (click)="onSearch(0, 'ACO')" title="ACCETTATA Controllo a campione">ACO</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'INC' }" (click)="onSearch(0, 'INC')" title="INTEGRAZIONE Controllo a campione">INC</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ITS' }" (click)="onSearch(0, 'ITS')" title="ATTESA ADEMPIMENTI">ITS</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ASR' }" (click)="onSearch(0, 'ASR')" title="ADEMPIMENTI RICEVUTI">ASR</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'SIA' }" (click)="onSearch(0, 'SIA')" title="Scadenza attesa Integrazione">SIA</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'VIG' }" (click)="onSearch(0, 'VIG')" title="IN VIGILANZA">VIG</button>
+    <button class="smallBtn btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ARC' }" (click)="onSearch(0, 'ARC')" title="ARCHIVIATA">ARC</button>    
+  </div>
+
+  <div *ngIf="!hasUserRole('DO')" class="d-flex py-3">
+    <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == ''    }" (click)="onSearch(0)">Tutti</button>
+    <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'APA' }" (click)="onSearch(0, 'APA')">REGISTRATA DA PA</button>
+    <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'AFL' }" (click)="onSearch(0, 'AFL')">ATTESA FINE LAVORI</button>
+    <button class="btn btn-rounded btn-outline-fixed-slim mr-3" [ngClass]="{ 'btn-color-slim blue': stateButtonIstanzeDS == 'ATI' }" (click)="onSearch(0, 'ATI')">ATTESA INTEGRAZIONE</button>
+  </div>
+
+  <div class="py-3">
+    <title-section subtitle="{{datatableIstanzeDS.count}} Risultati di ricerca"></title-section>
+  </div>
+
+  <div class="datatable-container scrollablecustomdatatable">
+    <ngx-datatable #istanzeDSTable
+        class="material expandable striped  datatable-style"
+        [rows]="displayedRowsIstanzeDS"
+        [headerHeight]="'auto'"
+        [footerHeight]="50"
+        [columnMode]="'force'"
+        [scrollbarH]="'auto'"
+        [rowHeight]="'auto'"
+        [messages]="datatableIstanzeDS.messages"
+
+        [count]="datatableIstanzeDS.count"
+        [offset]="datatableIstanzeDS.offset"
+        [limit]="datatableIstanzeDS.limit"
+
+        [externalPaging]="true"
+        (page)="onSearch($event, stateButtonIstanzeDS)"
+
+        [selected]="datatableIstanzeDS.selected">
+
+      <!-- actions toolbar-->
+      <ngx-datatable-column name="Azioni" minWidth="88" width="88" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+        <ng-template ngx-datatable-cell-template let-row="row">
+          <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Mostra dettagli pratica" class="expand-link" href="javascript:void(0)" (click)="navigateToDetailPractice(row)">
+            <span class="h5">
+              <em class="fa fa-folder-o plusIcon" aria-hidden="true"></em>
+            </span>
+          </a>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- expand column-->
+      <ngx-datatable-column name="Elenco pratiche DS" maxWidth="98" [canAutoResize]="false">
+        <ng-template ngx-datatable-cell-template let-row="row" let-expanded="expanded">
+          <div class="d-flex">
+            <div class="mx-auto linkedText linkDiv" (click)="toggleExpandRowIstanzeFascicolo(row, expanded)" title="Visualizza istanze"><img alt=""  src="assets/images/dots.png" class="plusIcon"/></div>
+          </div>
+        </ng-template>
+      </ngx-datatable-column>
+      
+      <!-- columns -->
+      <ngx-datatable-column *ngFor="let col of columnsIstanzeDS" 
+          [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+          [name]="col.name" [prop]="col.prop">
+      </ngx-datatable-column>
+
+      <!-- 
+        Row Detail Template 
+      -->
+      <ngx-datatable-row-detail [rowHeight]="'auto'">
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+          <ng-container *ngTemplateOutlet="listaIstanze; context: {istanze: row._istanzeFascicoloList, expanded: expanded, action: row.funzioniUtente }"></ng-container>
+        </ng-template>
+      </ngx-datatable-row-detail>
+
+    </ngx-datatable>    
+  </div>
+
+  <div class="button-group mt-2 d-flex">
+    <button type="button" (click)="downloadExcel()" class="btn btn-primary btn-sm ml-auto">
+      Scarica Excel
+    </button>
+  </div>
+
+</div>
+
+
+<ng-template #listaIstanze let-istanze="istanze" let-expanded="expanded" let-action="action">
+  <div class="mb-4">
+    <table *ngIf="istanze.length" class="tbl-width table-istanza mb-4" summary="just rawQuadriTable table8 !">
+        <tr>
+          <th scope="col" class="dr-col5 detail-row-cell">Azioni</th>
+          <th scope="col" class="dr-col1 detail-row-cell">Codice istanza</th>
+          <th scope="col" class="dr-col2 detail-row-cell">Comune</th>
+          <th scope="col" class="dr-col3 detail-row-cell">Tipo istanza</th>
+          <th scope="col" class="dr-col4 detail-row-cell">Stato</th>
+          <th scope="col" class="dr-col3 detail-row-cell">protocollo</th>
+          <th scope="col" class="dr-col3 detail-row-cell">data prot.</th>
+        </tr>
+        <ng-container *ngFor="let istanza of istanze; let i=index">
+          <ng-container *ngTemplateOutlet="istanzaRow; context: {istanza: istanza, i: i}"></ng-container>
+        </ng-container>
+
+        <ng-template #istanzaRow let-istanza="istanza" let-i="i">
+          <tr class="istanza-fascicolo-row{{i % 2}}">
+            <td class="dr-col5 detail-row-cell pb-3 pl-2">
+              <div class="d-flex mt-2">
+                <div *ngIf="istanza.id_istanza_riferimento"><img alt="" class="hierarchy-angle" [ngStyle]="getIndentation(istanza)" src="assets/images/hierarchy.png"/></div>
+
+                <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, action ]" data-toggle="tooltip" title="Mostra sommario istanza" class="expand-link" href="javascript:void(0)" (click)="navigateToDetailInstance(istanza)">
+                  <span class="h5"><em class="fa fa-file-text-o plusIcon" aria-hidden="true"></em></span>
+                </a>
+                <ng-container *ngIf="istanza.fonte == 'FO'">
+                  <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, action ]" data-toggle="tooltip" title="Visualizza i dati compilati dall'utente" class="expand-link" href="javascript:void(0)" (click)="navigateToStepperInstance(istanza)">
+                    <span class="h5"><em class="fa fa-files-o plusIcon" aria-hidden="true"></em></span>
+                  </a>
+                </ng-container>
+
+              </div>
+            </td>
+            <!-- instances sub columns -->
+            <td class="dr-col1 detail-row-cell">{{istanza.codice_istanza}}</td>
+            <td class="dr-col2 detail-row-cell">{{istanza.comune.value}}</td>
+            <td class="dr-col3 detail-row-cell">{{istanza.tipologia_istanza.value + ((istanza.specie_pratica && ' - ' + istanza.specie_pratica.value) || '')}}</td>
+            <td class="dr-col4 detail-row-cell">{{istanza.stato_istanza.value}}</td>
+
+            <td class="dr-col3 detail-row-cell">{{istanza.numero_protocollo}}</td>
+            <td class="dr-col4 detail-row-cell">{{istanza.data_protocollo}}</td>
+          </tr>
+          <ng-container *ngFor="let figlia of istanza._istanzeFiglie; let i=index">
+            <ng-container *ngTemplateOutlet="istanzaRow; context: {istanza: figlia, i: i}"></ng-container>
+          </ng-container>
+        </ng-template>
+    </table>
+  </div>
+</ng-template>

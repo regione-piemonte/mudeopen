@@ -1,0 +1,85 @@
+<title-bar title="Documenti relativi alla pratica"></title-bar>
+<div class="narrowed-box">
+  <div class="card-box">
+    <div class="row">
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Numero pratica"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.numero_pratica }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Anno"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.anno }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Comune"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.comune.value }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Data Creazione"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.data_creazione }}
+        </div>
+      </div>
+       <div class='form-group col-4 px-4'>
+        <title-section subtitle='Ente'></title-section>
+        <div class='mb-2 ml-2'>
+          {{ pratica.ente.descrizione }}
+        </div>
+      </div> 
+      <div class='form-group col-4 px-4'>
+        <title-section subtitle='Anno'></title-section>
+        <div class='mb-2 ml-2'>
+          {{ pratica.anno}}
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+
+<app-mude-table
+  [rows]="rows"
+  [datatable]="datatable"
+  [columns]="columns"
+  (pageChanged)="onSearch($event)"
+>
+</app-mude-table>
+<button
+  *appNgHasPermissionsOnIstance="[
+    Permissions.UPLOAD_DOC,
+    this.pratica.funzioniUtente
+  ]"
+  class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+  (click)="uploadDocumento()"
+>
+  Aggiungi documento
+</button>
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a
+    *appNgHasPermissionsOnIstance="[
+      Permissions.DOWNLOAD_DOC_PRATICA,
+      this.pratica.funzioniUtente
+    ]"
+    class="expand-link"
+    href="javascript:void(0)"
+    (click)="viewDocument(row)"
+    ><img alt="" src="assets/icon-table-dettaglio.svg" class="plusIcon" />
+  </a>
+
+  <a
+    *appNgHasPermissionsOnIstance="[
+      Permissions.DELETE_DOC_PRATICA,
+      this.pratica.funzioniUtente
+    ]"
+    class="expand-link"
+    href="javascript:void(0)"
+    (click)="onDeleteDocumento(row)"
+    ><img alt="" src="assets/icon-table-elimina.svg" class="plusIcon" />
+  </a>
+</ng-template>
+<button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">Indietro</button>

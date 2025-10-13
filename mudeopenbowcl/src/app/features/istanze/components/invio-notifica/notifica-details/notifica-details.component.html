@@ -1,0 +1,83 @@
+<div class="dialogTitle py-3 pl-4 mr-2">
+  <title-bar title="Dettaglio notifica"></title-bar>
+
+  <div class="narrowed-box w-100">
+    <div class="card-box m-1">
+      <div class="row m-2">
+        <!-- first col -->
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Data notifica"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ notification?.dt_ins }}</label>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Mittente"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ notification?.ruolo_mittente }}</label>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Destinatario"></title-section>
+          </div>
+          <div
+            class="pb-3"
+            *ngFor="let destinatario of notification?.destinatari"
+          >
+            <label>{{ destinatario.id }} - data lettura:  [{{ destinatario.value }}]</label>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Documenti Allegati"></title-section>
+          </div>
+          <div class="pb-3" *ngFor="let doc of notification?.documentiRif">
+            <label
+              >{{ doc.tipo_documento.descrizione_tipo_docpa }} -
+              {{ doc.nome_file_documento }}</label
+            >
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Oggetto"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ notification?.oggetto_notifica }}</label>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="my-2">
+            <title-section subtitle="Testo"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ notification?.testo_notifica }}</label>
+          </div>
+        </div>
+
+        <div  class="row m-2" style="width: 100%;" *ngIf="notification.dettaglio_notifica">
+          <div class="mb-2">
+            <title-section subtitle="Dettaglio"></title-section>
+          </div>
+          <br>
+          <div class="pb-3 w-100">
+            <label class="detail">{{ notification?.dettaglio_notifica }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">
+    Indietro
+  </button>
+</div>

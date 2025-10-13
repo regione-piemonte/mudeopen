@@ -1,0 +1,43 @@
+<title-bar title="Scrivania istanze"></title-bar>
+
+<div *ngIf="rows" class="my-4">
+  <title-section
+    subtitle="{{ rows.length }} Risultati di ricerca"
+  ></title-section>
+
+  <app-mude-table
+    [rows]="rows"
+    [datatable]="datatable"
+    [columns]="columnsIstanze"
+    (pageChanged)="loadPage($event)"
+  >
+  </app-mude-table>
+
+  <span class="button-group">
+    <button type="button" (click)="loadPage()" class="btn btn-primary btn-sm">
+      Aggiorna lista
+    </button>
+  </span>
+  &nbsp;&nbsp;&nbsp;
+  <span class="button-group">
+    <button type="button" (click)="downloadExcel()" class="btn btn-primary btn-sm">
+      Scarica Excel
+    </button>
+  </span>
+
+</div>
+
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Mostra sommario istanza" class="expand-link" href="javascript:void(0)" (click)="navigateToDetailInstance(row)">
+    <span class="h5">
+      <em class="fa fa-file-text-o plusIcon" aria-hidden="true"></em>
+    </span>
+  </a>
+  <ng-container *ngIf="row.fonte == 'FO'">
+    <a *appNgHasPermissionsOnIstance="[ permissions.CONSULTA_IST, row.funzioniUtente ]" data-toggle="tooltip" title="Visualizza i dati compilati dall'utente" class="expand-link" href="javascript:void(0)" (click)="navigateToStepperInstance(row)">
+      <span class="h5">
+        <em class="fa fa-files-o plusIcon" aria-hidden="true"></em>
+      </span>
+    </a>
+  </ng-container>
+</ng-template>

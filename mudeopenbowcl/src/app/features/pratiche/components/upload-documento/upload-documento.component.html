@@ -1,0 +1,85 @@
+<title-bar title="Upload documenti relativi alla pratica"></title-bar>
+<div class="narrowed-box">
+  <div class="card-box">
+    <div class="row">
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Numero pratica"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.numero_pratica }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Anno"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.anno }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Comune"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.comune.value }}
+        </div>
+      </div>
+      <div class="form-group col-4 px-4">
+        <title-section subtitle="Provincia"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.provincia.value }}
+        </div>
+      </div>
+      <!-- <div class="form-group col-4 px-4">
+        <title-section subtitle="PM"></title-section>
+        <div class="mb-2 ml-2">
+          {{ pratica.pm }}
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+<div class="narrowed-box">
+  <div class="card-box">
+  <form [formGroup]="tipoFileForm"  (ngSubmit)="onSubmit()">
+
+    <title-section subtitle="Scegli file"></title-section>
+    <div class="searchCol" formGroupName="tipo">
+      <it-select
+        [emptyOption]="''"
+        [parentFormGroup]="tipoFileForm"
+        controlName="id"
+        [data]="fileList"
+        label="Tipo file"
+      >{{fileList.value}}
+      </it-select>
+    </div>
+ 
+ 
+    <div class="file">
+      <input class=" form-control" type="file"  (change)="onChange($event)" />
+    </div>
+
+    <div class="d-flex mt-4 mb-4 mx-2">
+   
+      <div class="ml-auto">
+        <button class="btn btn-primary btn-m" [disabled]='!tipoFileForm.valid'>CARICA</button>      </div>
+    </div>
+  </form> </div>
+  <!-- <div *ngIf="check == true" class="card-box">
+  <formio
+    *ngIf="check == true"
+    id="formDoc"
+    [form]="form"
+    [options]="formioOptions"
+    [renderOptions]="renderOptions"
+    [readOnly]="false"
+    [success]="successEmitter"
+    [refresh]="refreshForm"
+    (ready)="ready($event)"
+    (submit)='onFormIOSubmit($event)'
+  ></formio> 
+</div> -->
+</div>
+<button
+  class='btn btn-link mr-3 m-2 blue'
+  (click)='goBack()'
+  >
+  Indietro
+  </button>

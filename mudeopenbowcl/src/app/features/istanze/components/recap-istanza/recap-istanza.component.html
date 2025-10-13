@@ -1,0 +1,183 @@
+<div class="mt-4">
+  <mude-tabs (changed)="selectForm($event)">
+
+    <!-- Dattagli istanza -->
+    <mude-tab tabTitle="Informazioni istanza" [active]="searchSelected == 0">
+        <ng-container *ngTemplateOutlet="istanzaDetails; context: {type:'istanza'}"></ng-container>
+    </mude-tab>
+
+    <!-- Ricerca fascicoli -->
+    <ng-container *ngFor="let tab of additionalTabs; index as i">
+      <mude-tab [tabTitle]="tab.label" [active]="searchSelected == i+1">
+        <ng-container *ngTemplateOutlet="additionalTabDetails; context: {type: tab.type, label: tab.label}"></ng-container>
+      </mude-tab>
+    </ng-container>
+  </mude-tabs>
+</div>
+
+<ng-template #additionalTabDetails let-label="label" let-type="type">
+  <div class="card-box">
+    <div class="row ml-2">
+      <div *ngFor="let column of getColumns(type)  | keyvalue" class="col-md-4">
+        
+          <div class="my-2 label">
+            <title-section subtitle="{{ column.key.substring(column.key.indexOf(':')+1) }}"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ column.value }}</label>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #istanzaDetails let-type="type">
+  <div class="card-box">
+    <div class="row ml-2">
+      <!-- first col -->
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Numero istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.codice_istanza }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Tipo istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.tipologia_istanza.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Stato istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.stato_istanza?.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Istanza di riferimento"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.istanza_riferimento?.codice_istanza }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Data stato istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.data_stato }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Comune"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.comune?.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Intestatario"></title-section>
+        </div>
+        <div class="pb-3">
+          <label
+            >{{ istanza?.intestatario?.anagrafica?.nome }}
+            {{
+              istanza?.intestatario?.anagrafica?.cognome
+                ? istanza?.fascicolo?.intestatario?.anagrafica?.cognome
+                : istanza?.fascicolo?.intestatario?.anagrafica?.ragioneSociale
+            }}
+          </label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class='my-2 label'>
+          <title-section subtitle='Numero pratica'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.numero_pratica }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Professionista di Riferimento"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.pm }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Responsabile procedimento"></title-section>
+        </div>
+        <div class="pb-3" style="max-width: 100%">
+          <label class="respProc">{{ istanza?.responsabile_procedimento }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Numero Protocollo"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.numero_protocollo }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Data Protocollo"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.data_protocollo }}</label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="isIdfPresent(istanza)">
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="Autorizzazione vincolo idrogeologico"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ isIdfApproved(istanza) }}</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="Numero determina esito autorizzazione vincolo"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ istanza?.idf_numero_determina_esito_aut }}</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="data scadenza autorizzazione vincolo"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ istanza?.idf_data_scadenza_autorizzazione }}</label>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</ng-template>

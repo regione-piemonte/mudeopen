@@ -1,0 +1,194 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<title-bar title="Ricerca istanze inviate al BO"></title-bar>
+
+<div class="narrowed-box">
+  <mude-tabs (changed)="selectForm($event)">
+
+    <!-- Ricerca fascicoli -->
+    <mude-tab tabTitle="Ricerca istanze" [active]="searchSelected == 0">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="ricercaFascicoloIstanzaFields; context: {formgroup: ricercaIstanzeForm}"></ng-container>
+      </div>
+    </mude-tab>
+
+  </mude-tabs>
+</div>
+  
+<ng-template #ricercaFascicoloIstanzaFields let-formgroup="formgroup">
+  <form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+      <div class="row">
+      
+        <!-- first col -->
+        <div class="form-group col px-4">
+          <title-section subtitle="Intestatario"></title-section>
+          <div class="mb-2 ml-2">
+            <div class="">Nome, cognome o CF </div>
+          </div>
+          <div class="searchCol pb-3">
+            <input type="search" id="id_intestatario_pf" class="form-control" formControlName="id_intestatario_pf" placeholder="">
+          </div>
+
+          <div class="my-2 ml-2">
+            <div class="">Ragione sociale o P.IVA</div>
+          </div>
+          <div class="searchCol pb-3">
+            <input type="search" id="id_intestatario_pg" class="form-control" formControlName="id_intestatario_pg" placeholder="">
+          </div>
+        </div>
+
+        <!-- second col -->
+        <div class="form-group col">
+          <title-section subtitle="Ubicazione"></title-section>
+          <div class="searchCol" formGroupName="id_provincia">
+            <it-select [emptyOption]=" '' " controlName="id" [parentFormGroup]="formgroup" (valueChangedEvent)="onChangeProvincia($event)"
+                        label="Provincia" [data]="provincePiemonte">
+            </it-select>
+          </div>
+          <div class="searchCol pt-2 comuni-column" formGroupName="id_comune">
+            <it-select [emptyOption]=" '' " label="Comune" [parentFormGroup]="formgroup"
+              [data]="comuni" controlName="id">
+            </it-select>
+          </div>
+          <div class="searchCol pt-2">
+            <div class="row">
+              <div class="col-4 pr-0 mr-0 dug-column" formGroupName="id_dug">
+                <it-select [emptyOption]=" '' " [data]="dug" [parentFormGroup]="formgroup"
+                  label="Indirizzo" controlName="id">
+                </it-select>
+              </div>
+              <div class="col-8  ml-0 pl-1 duf-column">
+                <it-input label="&nbsp;" [parentFormGroup]="formgroup" controlName="duf" placeholder=""></it-input>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- third col -->
+        <div class="form-group col">
+          <title-section subtitle="Periodo temporale"></title-section>
+          <div class="maxColWidth row mb-0">
+            <div class="col ml-2">Da</div>
+            <div class="col mr-2">A</div>
+          </div>
+          <div class="ml-2 d-flex pb-3">
+            <div class="">
+              <it-datepicker [parentFormGroup]="formgroup" controlName="data_creazione_from" label="" small="true"></it-datepicker>
+            </div>
+            <div class="ml-2">
+              <it-datepicker [parentFormGroup]="formgroup" controlName="data_creazione_to" label="" small="true"></it-datepicker>
+            </div>
+          </div>
+
+          <title-section subtitle="Stato"></title-section>
+          <div class="searchCol" formGroupName="stato">
+              <it-select [emptyOption]=" '' "
+                [parentFormGroup]="formgroup"
+                controlName="id"
+                [data]="statoIstanzaList"
+                label="">
+              </it-select>
+          </div>
+
+          <div formGroupName="id_tipo_istanza">
+            <title-section subtitle="Tipo istanza"></title-section>
+            <div class="searchCol">
+              <it-select [emptyOption]=" '' "
+                [parentFormGroup]="formgroup"
+                controlName="id"
+                [data]="tipologieIstanza"
+                label="">
+              </it-select>
+            </div>
+          </div>
+          
+        </div>
+
+      </div>
+
+      <title-section subtitle="">Ricerca per numero istanza</title-section>
+      <div class="col-md-6 mb-5 px-2">
+          <it-input
+              [parentFormGroup]="formgroup"
+              controlName="codice_istanza"
+              label=""
+              placeholder="">
+          </it-input>
+      </div>
+      <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+    </form>
+</ng-template>
+
+<ng-template #formToolbar let-formgroup="formgroup">
+  <div class="d-flex mt-4 mb-4 mx-2">
+    <div class="">
+      <button class="btn btn-outline-fixed-slim">CERCA</button>
+    </div>
+    <div class="ml-auto">
+      <button type="reset" class="linkedText">NUOVA RICERCA</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<div class="my-3">
+  <alert-box *ngIf="wrongDateInterval" type="WARNING" message="L'Intervallo di date specificato non è corretto" timeout="5000"></alert-box>
+</div>
+
+
+
+
+
+
+
+<div *ngIf="rows" class="my-5">
+  <div class="py-3">
+    <title-section subtitle="{{rows.length}} Risultati di ricerca"></title-section>
+  </div>
+
+    <div class="datatable-container customdatatable">
+      <ngx-datatable #table
+          class="material expandable striped  datatable-style"
+          [rows]="rows"
+          [headerHeight]="'auto'"
+          [footerHeight]="50"
+          [columnMode]="'force'"
+          [scrollbarH]="'auto'"
+          [rowHeight]="'auto'"
+          [messages]="datatable.messages"
+
+          [count]="datatable.count"
+          [offset]="datatable.offset"
+          [limit]="datatable.limit"
+          [externalPaging]="true"
+          (page)="onSearch($event)"
+
+          [selected]="datatable.selected">
+
+        <ngx-datatable-column name="Azioni" minWidth="60" width="60" [cellClass]="'ng-custom-action-cell'" [sortable]="false">
+          <ng-template ngx-datatable-cell-template let-row="row">
+            <!-- [routerLink]="['/backoffice/gestione/istanza/cambio-stato', row.id_istanza]" -->
+            <em *ngIf="displayChangeAPA(row)" (click)="onTempStateChange(row)" class="fa fa-refresh col-3 switchIcon linkDiv" aria-hidden="true" title="Cambia stato"></em>
+          </ng-template>
+        </ngx-datatable-column>
+      
+        <!-- Column: Open Panel-->
+        <ngx-datatable-column [flexGrow]="0.8" [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+          <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+            <a class="table-icons" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" title="apri / chiudi sezione" (click)="toggleExpandRow(row, expanded)"></a>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column *ngFor="let col of columnsIstanze" 
+            [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+            [name]="col.name" [prop]="col.prop">
+        </ngx-datatable-column>
+
+
+      </ngx-datatable>    
+    </div>
+
+  </div>

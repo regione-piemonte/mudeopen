@@ -1,0 +1,167 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+<div class="card-box narrowed-box mb-4">
+    <div class="row">
+        <div class="col-6">
+            <title-section subtitle="">Tipologia istanza selezionata</title-section>
+            <div class="px-2">
+                <strong class="">{{tipologiaIstanzaSelected}}</strong>
+            </div>
+        </div>
+        <div class="col-6">
+            <title-section subtitle="">Tipologia del presentatore selezionato</title-section>
+            <div class="px-2">
+                <strong>{{tipologiaPresentatoreSelected}}</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- indicare il titolo di rappresentanza ricoperto -->
+    <!--STEP 2: seleczione RUOLI-->
+    <div class="py-3">
+        <div class="row">
+            <div class="col-6">
+                <title-section subtitle="">Nome e cognome del presentatore</title-section>
+                <div class="px-2">
+                    <strong class="">{{presenterName}}</strong>
+                </div>
+            </div>
+            <div class="col-6">
+                <title-section subtitle="">Ruolo del presentatore</title-section>
+                <div class="px-2">
+                    <strong>
+                        <div class="full-width">
+                            <ul class="list-unstyled listed-columns">
+                                <li class="elemento-container" *ngFor="let role of ruoliPossibili">
+                                    <div class="custom-control mude-custom-checkbox" *ngIf="role.default"> <!--checkWizardFilter(role.value) && role.visibile-->
+                                        <input [id]="'role'+role.id" class="custom-control-input" type="checkbox" [value]="role.checked" [checked]="role.checked || role.default" [disabled]="role.default" (click)="roleCheck(role)">
+                                        <label class="custom-control-label checkbox-label-normal"  [for]="'role'+role.id">{{ role.value }}</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    
+        <div class="mx-2">
+            <alert-box *ngIf="!isThereAtLeastOneRole()" message="Seleziona almeno un ruolo dalla lista" type="WARNING"></alert-box>
+        </div>
+    </div>
+
+</div>
+
+
+<div *ngIf="titoli && titoli.length > 1 && (stepQuadroData.titoloSoggettoAbilitato || stepQuadroData.idTipoSoggetto == 4)" class="card-box card-box-wizard-riepilogo pt-3 px-4 mb-4">
+
+    <div *ngIf="stepQuadroData.idTipoSoggetto != 4">
+        <alert-box message="Titolo selezionato" class="my-0"></alert-box>
+    </div>
+    <div *ngIf="stepQuadroData.idTipoSoggetto == 4">
+        <alert-box message="Spuntare la casella riguardante la dichiarazione" class="my-0"></alert-box>
+    </div>
+
+    <div class="row" *ngIf="stepQuadroData.titoloSoggettoAbilitato">
+        <div class="col-12">
+            <div class="wizard-summary-row pb-2">
+                <div class="operaCheckContainer">
+                    <span class="wizard-col1">{{stepQuadroData.titoloSoggettoAbilitato.value}}</span>
+                    <span *ngIf="!quadroOptions?.solo_deleganti && !isStepInReadOnlyMode && titoli && titoli.length > 1" class="wizard-col2"><img alt=""  src="assets/images/bin.png" class="iconBox remove-icon"  title="Rimuovi elemento" (click)="stepQuadroData.titoloSoggettoAbilitato = null"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<div *ngIf="titoli && stepQuadroData.idTipoSoggetto != 4 && !stepQuadroData.titoloSoggettoAbilitato">
+    <form [formGroup]="soggettoAbilitatoForm" (ngSubmit)="setSoggetto()">
+        <div *ngIf="titoli.length == 1 && stepQuadroData.idTipoSoggetto != 3" class="card-box narrowed-box mb-4">
+            <title-section subtitle="">Soggetto legittimato alla presentazione della pratica</title-section>
+            <div class="mx-2 mt-2 mb-4">
+                <strong>{{titoli[0].value}}</strong>
+            </div>
+        </div>
+        <div *ngIf="titoli.length > 1" class="card-box narrowed-box mb-4">
+            <div *ngIf="stepQuadroData.idTipoSoggetto == 1">
+                <title-section subtitle="">Indicare con quale titolo sei leggitimato alla presentazione dell'istanza</title-section>
+            </div>
+
+            <div *ngIf="stepQuadroData.idTipoSoggetto == 2">
+                <title-section subtitle="">Indicare il titolo di rappresentanza ricoperto</title-section>
+            </div>
+
+            <div class="row mt-4 pt-3 mb-4 pb-4">
+                <div class="col-8" formGroupName="titoloSoggettoAbilitato">
+                    <it-select
+                        [readOnly]="isStepInReadOnlyMode"
+                        [parentFormGroup]="soggettoAbilitatoForm"
+                        controlName="id"
+                        [data]="titoli"
+                        label=""
+                        selectedOption="Seleziona">
+                    </it-select>
+                </div>
+                <div class="col-4" formGroupName="titoloSoggettoAbilitato">
+                    <button class="btn btn-outline-primary ml-3" [disabled]="isStepInReadOnlyMode || !soggettoAbilitatoForm.value.titoloSoggettoAbilitato.id">SELEZIONA</button>
+                </div>  
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card-box card-box-wizard-riepilogo pt-4 px-4" *ngIf="stepQuadroData.idTipoSoggetto != 1 && getDelegatiLength() > 0">
+    <alert-box message="Lista di riepilogo dei soggetti deleganti" class="my-0"></alert-box>
+
+    <table class="table py-5" summary="just rawQuadriTable table7 !">
+        <tr class="d-flex">
+            <th scope="col" class="col-3">Soggetto</th>
+            <th scope="col" class="col-3">C.Fiscale/P.IVA</th>
+            <th scope="col" class="col-1">Azioni</th>
+        </tr>
+        <tr *ngFor="let delegato of stepQuadroData.delegatiList | keyvalue" class="d-flex">
+            <td class="col-3">{{getSubjectInfo('name', delegato.value.contact.anagrafica)}}</td>
+            <td class="col-3">{{getSubjectInfo('cf', delegato.value.contact.anagrafica)}}</td>
+            <td class="col-1">
+                <span *ngIf="!isStepInReadOnlyMode" class=""><img alt=""  src="assets/images/bin.png"  class="iconBox remove-icon"  title="Rimuovi elemento" (click)="onDeleteSoggetto(delegato.key, delegato.value)"></span>
+            </td>
+        </tr>
+    </table>
+    <div *ngIf="!isStepInReadOnlyMode" class="d-flex mt-2 mb-4" (click)="addMoreDeleganti = true">
+        <div class="ml-auto">
+            <img alt=""  src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI DELEGANTI</span>
+        </div>
+    </div>
+</div>
+
+<div class="card-box px-4" *ngIf="!quadroOptions?.nessun_delegante && !isStepInReadOnlyMode && (((stepQuadroData.idTipoSoggetto == 2 && stepQuadroData.titoloSoggettoAbilitato) || stepQuadroData.idTipoSoggetto == 3) && (getDelegatiLength() == 0 || addMoreDeleganti))">
+    <div class="mt-2 mb-4">
+        <strong>Seleziona i soggetti che ti hanno delegato</strong>
+    </div>
+    <ricerca-inserisci-persona-fisica-giuridica [notitle]="true" selectionType="multiClick"
+        (complete)="addMoreDeleganti = false"
+        (selectedPF)="addSubject($event, 'PF')"
+        (selectedPG)="addSubject($event, 'PG')">
+    </ricerca-inserisci-persona-fisica-giuridica>
+</div>
+
+<div class="card-box px-0" *ngIf="!quadroOptions?.nessun_delegante && !isStepInReadOnlyMode && ((stepQuadroData.idTipoSoggetto == 4) && (getDelegatiLength() == 0 || addMoreDeleganti))">
+    <ricerca-inserisci-persona [noclose]="true" label="Seleziona la PA che rappresenti"
+                (closeEvent)="addMoreDeleganti = false"
+                (selected)="addSubject($event, 'PG')">
+    </ricerca-inserisci-persona>
+</div>
+
+
+<app-stepper-footer
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onStepForward()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>
+

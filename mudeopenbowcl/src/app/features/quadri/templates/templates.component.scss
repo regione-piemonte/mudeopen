@@ -1,0 +1,111 @@
+.editarea {
+    width: 100%;
+}
+
+.searchDiv {
+    align-content: stretch;
+    flex: 999 999 auto;
+}
+
+.filterDiv {
+    background-color: #ffffd2;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    display: flex;
+}
+.filterDiv div {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.filterDiv div input, .filterDiv div select {
+    width: 100%;
+}
+
+.actionDiv {
+    width: 100px;
+}
+
+
+.collation {
+    width: 78%;
+    margin-left: 100px;
+    background-color: rgb(212, 228, 228);
+    border-radius: 5px 5px 0px 0px;
+}
+
+.collationList {
+    padding-left: 130px;
+}
+
+::ng-deep .custom_datatable .datatable-body {
+    min-height: 550px;
+}
+
+
+::ng-deep .editing-row {
+    background-color: #fdf9e5;
+    /*height: 250px;*/
+}
+
+.raw-detail-table {
+    width: 80%;
+}
+
+::ng-deep .expanded-row {
+}
+
+thead .quadro-head {
+    font-size: 12px !important;
+    color: rgb(185, 88, 88) !important;
+}
+
+tbody .quadro-td {
+    font-size: 12px !important;
+}
+
+.quadri-action-div {
+    width: 90px;
+}
+
+.tableFixHead table  { 
+    border-collapse: collapse; width: 100%; 
+}
+
+.tableFixHead { 
+    overflow-y: auto; 
+    overflow-x: hidden; 
+    max-height: 300px; 
+}
+.tableFixHead thead th { 
+    position: sticky; 
+    top: 0px; 
+    z-index: 1; 
+}
+.tableFixHead th { 
+    background:#f5f5f5; 
+    padding: 10px 10px 10px 0px;
+    border-bottom: 1px solid gray;
+}
+
+.tableFixHead td { 
+    border-bottom: 1px solid lightgray;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.allegati-filter input, .allegati-filter select {
+    width: 100%;
+    font-size: 12px;
+    height: 25px !important;
+}
+
+.growth {
+    max-width: 20%;
+}
+
+.pmclass {
+    font-size: 85%;
+    color: gray;
+}
+

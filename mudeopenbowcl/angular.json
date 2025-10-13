@@ -1,0 +1,258 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "mudeopenbo": {
+      "root": "",
+      "sourceRoot": "src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "preserveSymlinks": true,
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/mudeopen-common/assets",
+                "output": "./assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/frontoffice/src/assets",
+                "output": "./assets"
+              }              
+            ],
+            "styles": [
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/mudeopen-common/assets/css/g_mude.css",
+              "src/styles.scss"
+            ],
+            "scripts": [
+              "./node_modules/mudeopen-common/assets/js/globals.js"
+            ]
+          },
+          "configurations": {
+            "dev-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.dev-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            },
+            "local-rp-01": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "outputPath": "dist"
+            },
+            "prod-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.prod-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            },
+            "tst-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.tst-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            },
+			"test-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.test-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            },
+            "int-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.int-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            },
+            "coll-rp-01": {
+              "fileReplacements": [
+                {
+                  "replace": "buildfiles/environment.local-rp-01.ts",
+                  "with": "buildfiles/environment.coll-rp-01.ts"
+                },
+                {
+                  "replace": "proxy-conf/proxy.conf-srv.json",
+                  "with": "proxy-conf/proxy.conf-fo.json"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "localhost",
+            "port": 17001,
+            "baseHref": "/mudeopen/",
+            "browserTarget": "mudeopenbo:build",
+            "proxyConfig": "proxy-conf/proxy.conf-srv.json"
+          },
+          "configurations": {
+            "local": {
+              "browserTarget": "mudeopenbo:build:local"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "mudeopenbo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": ["src/styles.scss"],
+            "scripts": [],
+            "assets": ["src/favicon.ico", "src/assets"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "mudeopen-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "mudeopenbo:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "mudeopenbo:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "mudeopenbo",
+  "cli": {
+    "analytics": "2a148aa1-09a4-428e-a3e8-e3dd5056d313"
+  }
+}

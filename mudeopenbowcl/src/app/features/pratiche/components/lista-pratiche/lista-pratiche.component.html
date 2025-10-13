@@ -1,0 +1,378 @@
+<title-bar title="Ricerca Pratiche"></title-bar>
+
+<div class="narrowed-box">
+  <div class="card-box">
+    <ng-container
+      *ngTemplateOutlet="
+        ricercaIstanzaFields;
+        context: { formgroup: ricercaPraticaForm }
+      "
+    ></ng-container>
+  </div>
+</div>
+
+<ng-template #ricercaIstanzaFields let-formgroup="formgroup">
+  <form #searchForm [formGroup]="formgroup" (ngSubmit)="onSearch()">
+    <div class="row">
+      <!-- first col -->
+      <div class="form-group col px-4">
+        <title-section subtitle="Numero Pratica"></title-section>
+        <div class="mb-2 ml-2">
+          <div class="">Numero Pratica</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input
+            type="search"
+            id="numero_pratica"
+            class="form-control"
+            formControlName="numero_pratica"
+            placeholder=""
+          />
+        </div>
+        <!--
+        <div class='my-2 ml-2'>
+          <div class=''>Anno</div>
+        </div>
+        <div class='searchCol pb-3'>
+          <input
+            type='search'
+            id='anno'
+            class='form-control'
+            formControlName='anno'
+            placeholder=''
+          />
+        </div> -->
+
+        <!-- <title-section subtitle='PM di riferimento'></title-section>
+        <div class='mb-2 ml-2'>
+          <div class=''>Nome, cognome o CF</div>
+        </div>
+        <div class='searchCol pb-3'>
+          <input
+            type='search'
+            id='id_pm'
+            class='form-control'
+            formControlName='id_pm'
+            placeholder=''
+          />
+        </div> -->
+      </div>
+
+      <!-- second col -->
+      <div class="form-group col">
+        <title-section subtitle="Ubicazione"></title-section>
+        <div class="searchCol" formGroupName="id_provincia">
+          <it-select
+            [emptyOption]="''"
+            controlName="id"
+            [parentFormGroup]="formgroup"
+            (valueChangedEvent)="onChangeProvincia($event)"
+            label="Provincia"
+            [data]="provincePiemonte"
+          >
+          </it-select>
+        </div>
+        <div class="searchCol pt-2 comuni-column" formGroupName="id_comune">
+          <it-select
+            [emptyOption]="''"
+            label="Comune"
+            [parentFormGroup]="formgroup"
+            [data]="comuni"
+            controlName="id"
+          >
+          </it-select>
+        </div>
+        <div class="searchCol pt-2">
+          <!-- <div class='row'>
+            <div class='col-4 pr-0 mr-0 dug-column' formGroupName='id_dug'>
+              <it-select
+                [emptyOption]="''"
+                [data]='dug'
+                [parentFormGroup]='formgroup'
+                label='Indirizzo'
+                controlName='id'
+              >
+              </it-select>
+            </div>
+            <div class='col-8 ml-0 pl-1 duf-column'>
+              <it-input
+                label='&nbsp;'
+                [parentFormGroup]='formgroup'
+                controlName='duf'
+                placeholder=''
+              ></it-input>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- third col -->
+      <div class="form-group col">
+        <title-section subtitle="Anno pratica"></title-section>
+
+        <!-- <div class='maxColWidth row mb-0'></div>
+        <div class='ml-2 d-flex pb-3'>
+          <div class=''>
+            <it-datepicker
+              [parentFormGroup]='formgroup'
+              controlName='data_registrazione_pratica'
+              label=''
+              small='true'
+            ></it-datepicker>
+          </div>
+        </div> -->
+
+        <!-- <div class='maxColWidth row mb-0'>
+          <div class='col ml-2'>Data protocollo</div>
+        </div>
+        <div class='ml-2 d-flex pb-3'>
+          <div class=''>
+            <it-datepicker
+              [parentFormGroup]='formgroup'
+              controlName='data_protocollo'
+              label=''
+              small='true'
+            ></it-datepicker>
+          </div>
+        </div> -->
+
+        <!--
+        <div formGroupName='id_tipo_istanza'>
+          <title-section subtitle='Tipo istanza'></title-section>
+          <div class='searchCol'>
+            <it-select
+              [emptyOption]="''"
+              [parentFormGroup]='formgroup'
+              controlName='id'
+              [data]='tipologieIstanza'
+              label=''
+            >
+            </it-select>
+          </div>
+        </div> -->
+
+        <div class="mb-2 ml-2">
+          <div class="">Anno pratica</div>
+        </div>
+        <div class="searchCol pb-3">
+          <input
+            type="search"
+            id="anno"
+            class="form-control"
+            formControlName="anno"
+            placeholder=""
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- <div class='form-group col px-4'>
+        <title-section subtitle=''>Numero pratica</title-section>
+        <div class='mb-2 ml-2'>
+          <it-input
+            [parentFormGroup]='formgroup'
+            controlName='id_pratica'
+            label=''
+            placeholder=''
+          >
+          </it-input>
+        </div>
+      </div> -->
+      <!-- <div class='form-group col px-4'>
+        <title-section subtitle=''>Ricerca per codice istanza</title-section>
+        <div class='mb-2 ml-2'>
+          <it-input
+            [parentFormGroup]='formgroup'
+            controlName='codice_istanza'
+            label=''
+            placeholder=''
+          >
+          </it-input>
+        </div>
+      </div> -->
+      <!-- <div class='form-group col px-4'>
+        <title-section subtitle=''>Ricerca per codice pratica</title-section>
+        <div class='mb-2 ml-2'>
+          <it-input
+            [parentFormGroup]='formgroup'
+            controlName='codice_pratica'
+            label=''
+            placeholder=''
+          >
+          </it-input>
+        </div>
+      </div> -->
+    </div>
+    <ng-container *ngTemplateOutlet="formToolbar"></ng-container>
+  </form>
+</ng-template>
+
+<ng-template #formToolbar let-formgroup="formgroup">
+  <div class="d-flex mt-4 mb-4 mx-2">
+    <div class="">
+      <button
+        class="btn btn-outline-fixed-slim"
+        [disabled]="!ricercaPraticaForm.valid"
+      >
+        CERCA
+      </button>
+    </div>
+    <div class="ml-auto">
+      <button type="reset" class="linkedText" (click)="reset()">NUOVA RICERCA</button>
+    </div>
+  </div>
+</ng-template>
+
+<app-mude-table
+  *ngIf="isSubmitted"
+  [rows]="rows"
+  [datatable]="datatable"
+  [rowIdentity]="rowIdentity"
+  [rowDetail]="istancesDetailRow"
+  [rowExpanded]="rowExpanded"
+  [columns]="columnsPratica"
+  (pageChanged)="onSearch($event)"
+>
+</app-mude-table>
+
+<div class="button-container">
+  <span class="button-group" *ngIf="isSubmitted"
+    ><button
+      type="button"
+      id="downloadExcel"
+      class="btn btn-primary btn-m"
+      (click)="downloadExcel()"
+    >
+      Scarica Excel
+    </button>
+  </span>
+</div>
+
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a
+    *appNgHasPermissionsOnIstance="[
+      permissions.CONSULTA_PRATICA,
+      row.funzioniUtente
+    ]"
+    class="expand-link"
+    href="javascript:void(0)"
+    (click)="navigateToDocument(row)"
+    ><img alt="" src="assets/images/doc.png" class="plusIcon" />
+  </a>
+</ng-template>
+
+<ng-template
+  #expandRowTemplate
+  let-row="row"
+  let-expanded="expanded"
+  ngx-datatable-cell-template
+>
+  <a
+    class="expand-link"
+    href="javascript:void(0)"
+    (click)="toggleExpandRow(row, expanded)"
+    ><img alt="" src="assets/images/dots.png" class="plusIcon" />
+  </a>
+</ng-template>
+
+<ng-template #istancesDetailRow let-row="row" let-expanded="expanded">
+  <table *ngIf="row._istanzePraticheList?.length" class="tbl-width table-istanza">
+    <caption>Lista pratiche</caption>
+    <tr>
+      <th scope="col" class="dr-col5 detail-row-cell">Azioni</th>
+      <th scope="col" class="dr-col3 detail-row-cell">Numero istanza</th>
+      <th scope="col" class="dr-col3 detail-row-cell">Numero fascicolo</th>
+      <th scope="col" class="dr-col3 detail-row-cell">Tipo istanza</th>
+      <th scope="col" class="dr-col1 detail-row-cell">Intestatario</th>
+     
+      <th scope="col" class="dr-col1 detail-row-cell">Indirizzo</th>
+      <th scope="col" class="dr-col1 detail-row-cell">Data Ricezione</th>
+      <th scope="col" class="dr-col4 detail-row-cell">Stato</th>
+      <th scope="col" class="dr-col1 detail-row-cell">Data Stato</th>
+      <th scope="col" class="dr-col1 detail-row-cell">
+        Occupazione suolo pubblico
+      </th>
+      <th scope="col" class="dr-col2 detail-row-cell">Comune</th>
+    </tr>
+    <ng-container
+      *ngFor="let istanza of row._istanzePraticheList; let i = index"
+    >
+      <ng-container
+        *ngTemplateOutlet="istanzaRow; context: { istanza: istanza, i: i }"
+      ></ng-container>
+    </ng-container>
+
+    <ng-template #istanzaRow let-istanza="istanza" let-i="i">
+      <tr class="istanza-pratica-row{{ i % 2 }}">
+        <td class="dr-col5 detail-row-cell pb-3 pl-2">
+          <a
+            *appNgHasPermissionsOnIstance="[
+              permissions.CONSULTA_IST,
+              row.funzioniUtente
+            ]"
+            class="expand-link"
+            href="javascript:void(0)"
+            (click)="navigateToDetailInstance(istanza.id_istanza)"
+            ><img alt="" src="assets/images/doc.png" class="plusIcon" />
+          </a>
+        </td>
+        <td class="dr-col1 detail-row-cell">{{ istanza.codice_istanza }}</td>
+        <td class="dr-col1 detail-row-cell">{{ istanza?.fascicolo?.codice_fascicolo }}</td>
+       
+        <td class="dr-col1 detail-row-cell">
+          {{ istanza.tipologia_istanza.value }} - {{ istanza.specie_pratica?.value ? istanza.specie_pratica?.value : ''}}
+
+        </td>
+        <td class="dr-col2 detail-row-cell">
+          {{ istanza?.fascicolo?.intestatario.anagrafica?.nome }}
+        
+          {{
+            istanza?.fascicolo?.intestatario.anagrafica?.cognome 
+              ? istanza?.fascicolo?.intestatario.anagrafica?.cognome
+              : istanza?.fascicolo?.intestatario.anagrafica?.ragioneSociale
+          }}
+        </td>
+        <td class="dr-col2 detail-row-cell">
+          {{ istanza.indirizzo?.dug?.value }} {{ istanza.indirizzo?.duf }}
+          {{ istanza.indirizzo?.numero }} (
+          {{ istanza.indirizzo?.provincia?.value }}
+          {{ istanza.indirizzo?.cap }} )
+        </td>
+        <td class="dr-col3 detail-row-cell">
+          {{ istanza.data_stato_dps }}
+        </td>
+        <td class="dr-col3 detail-row-cell">
+          {{ istanza.stato_istanza.value }}
+        </td>
+        <td class="dr-col4 detail-row-cell">{{ istanza.data_creazione }}</td>
+        <td class="dr-col4 detail-row-cell">
+          {{ istanza?.occupazione_suolo_pubblico ? 'Sì' : 'No' }}
+        </td>
+        <td class="dr-col2 detail-row-cell">{{ istanza.comune.value }}</td>
+
+      </tr>
+      <ng-container
+        *ngFor="let figlia of istanza._istanzeFiglie; let i = index"
+      >
+        <ng-container
+          *ngTemplateOutlet="istanzaRow; context: { istanza: figlia, i: i }"
+        ></ng-container>
+      </ng-container>
+    </ng-template>
+  </table>
+
+  <div class="button-container w-100">
+    <span class="button-group w-100"
+      ><button
+        type="button"
+        id="downloadExcelIstanze"
+        (click)="downloadExcelIstanze(row)"
+        class="btn btn-primary btn-sm"
+      >
+        Scarica Excel
+      </button>
+    </span>
+  </div>
+</ng-template>
+<!-- <button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">Indietro</button> -->

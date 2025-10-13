@@ -1,0 +1,38 @@
+<title-bar title='Notifiche istanza'></title-bar>
+ <app-recap-breve-istanza></app-recap-breve-istanza> 
+ 
+ 
+ 
+ <app-mude-table
+ [rows]='rows'
+ [datatable]='datatable'
+ [columns]='columns'
+ (pageChanged)='onSearch($event)'
+>
+</app-mude-table>
+<button
+  class='btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue'
+  (click)="nuovaNotifica()"
+>
+  Nuova Notifica
+</button>
+
+<button
+class='btn btn-link mr-3 m-2 blue'
+(click)='goBack()'
+>
+Indietro
+</button>
+ <!-- *appNgHasPermissionsOnIstance="[
+      permissions.CONSULTA_PRATICA,
+      row.funzioniUtente
+    ]" -->
+<ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+  <a
+   (click)="getNotificationDetail(row)"
+    class="expand-link"
+    href="javascript:void(0)"
+   
+    ><img alt="" src="assets/images/doc.png" class="plusIcon" />
+  </a>
+</ng-template>

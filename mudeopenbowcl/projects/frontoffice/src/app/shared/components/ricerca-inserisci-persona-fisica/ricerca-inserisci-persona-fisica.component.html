@@ -1,0 +1,21 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div>
+    <legend>Ricerca soggetto fisico</legend>
+    <ricerca-persona-fisica
+        [excludeIDs]="excludeIDs"
+        (selected)="onItemSelected($event)">
+    </ricerca-persona-fisica>
+
+    <div class="linkedText linkDiv" (click)="isSubjectNotFound = true"><img alt=""  src="assets/images/plus.png" class="plusIcon"/>INSERISCI SOGGETTO</div>
+
+    <div *ngIf="isSubjectNotFound">
+        <inserisci-persona-fisica
+            (closeEvent)="onItemSelected($event)"
+            (selected)="onItemSelected($event)">
+        </inserisci-persona-fisica>
+    </div>
+</div>

@@ -1,0 +1,194 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Allegato</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+<div class="mb-4">
+  <form [formGroup]="mainForm">
+    <div class="p-4">
+
+      <div class="mx-2">
+        <title-section subtitle="Visualizzazione" faicon="fa-id-card-o"></title-section>
+      </div>
+
+      <div class="mb-5">
+          <it-select
+            [readOnly]="!!data"
+            [parentFormGroup]="mainForm"
+            controlName="codice_tipo_allegato"
+            [data]="allegatiList"
+            label="Tipo allegato">
+        </it-select>
+      </div>
+
+      <div class="mb-5">
+        <it-input
+            type="checkbox"
+            [parentFormGroup]="mainForm"
+            (change)="setObbligatorio($event)"
+            controlName="obbligatorio"
+            label="Allegato obbligatorio per l'utente">
+        </it-input>
+
+        <div class="form-row ml-4 mb-2">
+          <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" (click)="onTabChange(0)">
+            <input [disabled]="!mainForm.value.obbligatorio" value="1" type="radio" id="exprTypeChoice1" name="exprTypeChoice" [checked]="conditionType == 0" class="custom-control-input">
+            <label class="custom-control-label checkbox-label-normal" for="exprTypeChoice1">Espressione condzionale</label>
+          </div>
+          <ng-template #derogaCheckInclude>Lista degli enti in deroga per cui l'allegato diventa <strong>obbligatorio</strong>.<br><br>Per qualunque altro ente non presente nella lista questo allegto diventa facoltativo</ng-template>
+          <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" placement="top" [ngbTooltip]="derogaCheckInclude" (click)="onTabChange(1)">
+            <input [disabled]="!mainForm.value.obbligatorio" value="1" type="radio" id="exprTypeChoice2" name="exprTypeChoice" [checked]="conditionType == 1" class="custom-control-input">
+            <label class="custom-control-label checkbox-label-normal" for="exprTypeChoice2">Lista enti in deroga</label>
+          </div>
+          <ng-template #derogaCheckEsclude>Lista degli enti non in deroga per cui l'allegato diventa <strong>facoltativo</strong>.<br><br>Per qualunque altro ente non presente nella lista questo allegto diventa obbligatorio</ng-template>
+          <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" placement="top" [ngbTooltip]="derogaCheckEsclude" (click)="onTabChange(2)">
+            <input [disabled]="!mainForm.value.obbligatorio" value="2" type="radio" id="exprTypeChoice3" name="exprTypeChoice" [checked]="conditionType == 2" class="custom-control-input">
+            <label class="custom-control-label checkbox-label-normal" for="exprTypeChoice3">Lista enti non in deroga</label>
+        </div>
+  </div>
+
+        <!-- JS EXPRESSION -->
+        <div *ngIf="conditionType == 0">
+          <div class="ml-3 pb-2">
+            <it-input
+                [disabled]="!mainForm.value.obbligatorio"
+                [parentFormGroup]="mainForm"
+                controlName="espressione_obbligatorieta"
+                label="Espressione obbligatorietà condizionale (JS)">
+            </it-input>
+          </div>
+        </div>
+
+        <!-- DEROGHE -->
+        <div *ngIf="conditionType > 0" class="ml-3">
+          <div formGroupName="_entiSelect">
+            <it-select emptyOption="- Seleziona l'ente da aggiungere alla lista -" controlName="id" [parentFormGroup]="mainForm" (valueChangedEvent)="onEnteSelected($event)"
+                        label="" [data]="entiListRemaining">
+            </it-select>
+          </div>
+          <!--
+          <select [(ngModel)]="enteSelected" class="custom-select" (change)="onEnteSelected($event.target.value)">
+            <option value="-"></option>
+            <option *ngFor="let ente of entiListRemaining" [value]="ente.id">{{ente.id + ' - ' + ente.value}}</option>
+          </select>
+          -->
+          <ngx-datatable
+                class="material expandable striped"
+                [rows]="entiChosen"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [columnMode]="'force'"
+                [rowHeight]="'auto'"
+                [messages]="datatable.messages"
+                [count]="datatable.count"
+                [offset]="datatable.offset"
+                [limit]="datatable.limit"
+                [selected]="datatable.selected">
+              
+            <!-- Column: Editing Mode-->
+            <ngx-datatable-column name="Ente">
+              <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+                <em class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="deleteEnte(row, rowIndex)"></em>
+                &nbsp; 
+                <strong [innerHTML]="getEnteName(row)"></strong>
+              </ng-template>
+            </ngx-datatable-column>
+          
+          </ngx-datatable>
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <it-input #ripetible
+            type="checkbox"
+            [parentFormGroup]="mainForm"
+            (change)="setRipetibile($event)"
+            controlName="ripetibile"
+            label="L'utente può allegare più di un file">
+        </it-input>
+        <div class="ml-3 pb-2">
+          <it-input
+              [disabled]="!mainForm.value.ripetibile"
+              [parentFormGroup]="mainForm"
+              controlName="espressione_ripetibilita"
+              label="Espressione del numero di ripetibilità (JS)">
+          </it-input>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <it-input
+            type="checkbox"
+            [disabled]="mainForm.value.obbligatorio"
+            [parentFormGroup]="mainForm"
+            controlName="flag_ricorrente"
+            label="Il file è sempre presente tra gli allegati facoltativi">
+        </it-input>
+      </div>
+
+      <!--
+      <div class="mb-3">
+        <it-input
+            type="checkbox"
+            [parentFormGroup]="mainForm"
+            controlName="firma_obbligatoria"
+            label="La firma è obbligatoria">
+        </it-input>
+      </div>
+
+      <div class="mb-3">
+        <it-input
+            type="checkbox"
+            [parentFormGroup]="mainForm"
+            controlName="valida_firma"
+            label="La firma deve essere validata">
+        </it-input>
+      </div>
+      -->
+
+      <div class="mb-3">
+        <it-input
+          [parentFormGroup]="mainForm"
+            controlName="ordinamento"
+            label="Valore ordinale">
+        </it-input>
+      </div>
+
+      <div class="mx-2">
+        <title-section subtitle="Modello da presentare all'utente" faicon="fa-file-word-o"></title-section>
+      </div>
+      <div class="my-4">
+        <upload-file
+            [maxfiles]="1"
+            [accept]="'.docx'"
+            (delete)="removeDocx(data, $event)"
+            (upload)="selectDocx(data, $event)"
+            (download)="downloadDocx(data, $event, 'modello_allegato')"
+            label="Trascina il file oppure fai click per selezionarlo"
+            [files]="docxFileList">
+        </upload-file>
+      </div>
+
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+        <div class="my-4 px-2">
+            <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+        </div>
+        <div class="ml-auto my-4">
+            <button type="submit" class="btn btn-color-slim blue" (click)="onSubmit(true)">SALVA ALLEGATO</button>
+          </div>
+    </div>
+
+    <!--<input type="hidden" [value]="!isInitialization || hiddenFocus.focus()">-->
+  </form>
+</div>
+

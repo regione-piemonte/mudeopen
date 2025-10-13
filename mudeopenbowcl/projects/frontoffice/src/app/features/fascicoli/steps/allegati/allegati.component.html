@@ -1,0 +1,160 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="card-box mb-4 pt-0 pb-4 px-0">
+  <scrollable-tabs 
+          [tabs]="tabs" 
+          format="normal" 
+          (change)="selectedTab($event)">
+  </scrollable-tabs>
+
+  <ng-container *ngIf="tabSubIndexSelected == 0">
+    <div class="pb-4 mx-2">
+      <div class="my-5 mx-2" *ngIf="mandatoryAttachements && !mandatoryAttachements.length">
+        <alert-box message="Non sono previsti allegati obbligatori o necessari in base alle informazioni compilate nei quadri precedenti. " type="INFO"></alert-box>
+      </div>
+
+      <title-section *ngIf="mandatoryAttachements && !mandatoryAttachements.length" subtitle="">Inserire eventualmente gli allegati facoltativi.</title-section>
+      <title-section *ngIf="!(mandatoryAttachements && !mandatoryAttachements.length)" subtitle="">Inserire tutti gli allegati obbligatori, e quelli necessari, per la corretta compilazione dell'istanza</title-section>
+    </div>
+    <div class="m-3" *ngIf="dependencyMessage">
+      <alert-box [message]="dependencyMessage" esito="" [type]="dependencyMessageType || 'INFO'"></alert-box>
+    </div>
+  
+    
+  
+    <div *ngFor="let attach of mandatoryAttachements" class="m-3 p-3 border">
+      <div class="d-flex pb-2">
+        <div class="mr-auto">
+          <strong>{{attach.categoria_allegato.descrizione_estesa_categoria_allegato}}</strong>: <strong><em><span>{{attach.descrizione_breve_tipo_allegato}} </span></em></strong>
+          <span class="grayed" (click)="debugConditions(attach)">{{true || !attach.obbligatorio?'&nbsp;&nbsp;&nbsp;':(attach.espressione_obbligatorieta?'(necessario)':'(obbligatorio)')}}</span>
+        </div>
+      </div>
+      <div class="px-3">
+        <div class="mb-3 ">
+          {{attach.descrizione_tipo_allegato}}
+        </div>
+        <div *ngIf="attach.modello_allegato?.id" class="m2-1 mt-2">
+          <span [ngClass]="{ 'btn-link': areModelsDownloadActive(), 'btn-link-disabled': !areModelsDownloadActive() }" (click)="downloadModello(attach.modello_allegato?.id)">{{!areModelsDownloadActive()?'complia i quadri precedenti per scaricare il modello precompilato':'scarica il modello precompilato'}}: {{attach.modello_allegato?.denominazione}}</span>
+        </div>
+        <upload-file [readOnly]="isStepInReadOnlyMode || !attach.uploadable"
+          [accept]="filesAccepted"
+          [maxsizeMB]="maxUploadFileSizeMB"
+          (discarded)="handleDiscardedUploads($event)"
+          
+          [maxfiles]="howManyAttachsAllowed(attach)" 
+          (delete)="delete(attach, $event)"
+          (upload)="upload(attach, $event)"
+          (download)="download(attach, $event)"
+          [files]="peekFilesData(attach)">
+        </upload-file>
+        <div *ngIf="attach.firma_obbligatoria" class="mandatoryMark m2-1 ">
+          * Inserire un allegato firmato con P7M
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="tabSubIndexSelected == 1">
+    <ng-container *ngFor="let attach of optionalAttachements">
+      <div *ngIf="isOptionalAttachToBeDisplayed(attach)" class="m-3 p-3 border">
+        <div class="row">
+          <div class="col">
+            <div class=" pb-2">
+              <strong>{{attach.categoria_allegato.descrizione_estesa_categoria_allegato}}: <em><span>{{attach.descrizione_breve_tipo_allegato}} </span></em></strong>
+            </div>
+            <div class="px-3">
+              <div class="mb-3 ">
+                {{attach.descrizione_tipo_allegato}}
+              </div>
+              <div *ngIf="attach.modello_allegato?.id" class="m2-1 mt-2">
+                <span class="btn-link" (click)="downloadModello(attach.modello_allegato?.id)">{{'scaricare il modello precompilato'}}: {{attach.modello_allegato?.denominazione}}</span>
+              </div>
+              <upload-file [readOnly]="isStepInReadOnlyMode"
+                [accept]="filesAccepted"
+                [maxsizeMB]="maxUploadFileSizeMB"
+                (discarded)="handleDiscardedUploads($event)"
+                    
+                [maxfiles]="howManyAttachsAllowed(attach)" 
+                (upload)="upload(attach, $event)"
+                (delete)="delete(attach, $event)"
+                (download)="download(attach, $event)"
+                [files]="peekFilesData(attach)">
+              </upload-file>
+              <div *ngIf="attach.firma_obbligatoria" class="mandatoryMark m2-1 ">
+                * Allegato firmato con P7M
+              </div>
+            </div>
+          </div>
+          <div class="col-1">
+            <button *ngIf="!attach.flag_ricorrente" class="delete-file" (click)="delete(attach)">
+              <em class="toggleButton fa fa-times-circle-o"></em>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="isThereAtLeastOneCategory && !readOnlyMode" class="d-flex">
+      <div *ngIf="isThereAnyOptionalAttach && (!openNewAttachDialog || (!openNewAttachDialog && optionalAttachements?.length))" class="ml-auto mr-3 linkDiv">
+        <span (click)="openNewAttachDialog = true">
+          <img alt="" src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI ALLEGATO FALCOLTATIVO</span>
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="readOnlyMode && !optionalAttachements?.length" class="m-3 mt-2">
+      <alert-box type="INFO" message="Non sono stati inseriti allegati facoltativi"></alert-box>
+    </div>
+    
+    <div *ngIf="!readOnlyMode && (!optionalAttachements?.length || openNewAttachDialog || !isThereAnyOptionalAttach)" class="pt-4 mx-2">
+      <title-section subtitle="">RICERCA E SELEZIONE ALLEGATI “FACOLTATIVI” DA AGGIUNGERE IN ELENCO</title-section>
+      <form [formGroup]="optionalAttachesForm" (ngSubmit)="addOptionalAttach()">
+        <div class="border narrowed-box pt-2 m-3 px-2">
+
+          <title-section subtitle="">Tipologia di allegato</title-section>
+          <div class="" formGroupName="attachCategory">
+            <it-select
+              [disabled]="!hasUploadPermission"
+              (valueChangedEvent)="categoryChanged($event)"
+              [parentFormGroup]="optionalAttachesForm"
+              controlName="id"
+              [object]="allCategories"
+              mode="showIdAndDescr"
+              label=""
+              selectedOption="Seleziona">
+            </it-select>
+          </div>
+
+          <title-section subtitle="">Allegato</title-section>
+          <div class="" formGroupName="attachType">
+            <it-select
+              [disabled]="!hasUploadPermission"
+              [parentFormGroup]="optionalAttachesForm"
+              controlName="id"
+              [data]="allAttachesTypes"
+              label=""
+              selectedOption="Seleziona">
+            </it-select>
+          </div>
+
+          <div *ngIf="hasUploadPermission" class="my-4">
+            <button type="submit" class="btn btn-outline-primary">AGGIUNGI ALLEGATO FACOLTATIVO</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+  </ng-container>
+</div>
+
+<app-stepper-footer
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onStepNext()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>
+

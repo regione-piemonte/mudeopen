@@ -1,0 +1,134 @@
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Dettagli TAB</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="p-4 mb-4">
+  <form [formGroup]="tabForm" (ngSubmit)="onSubmit(true)">
+
+    <title-section subtitle="Visualizzazione" faicon="fa-id-card-o"></title-section>
+
+    <!--
+      LAVEL / TAG
+    -->
+    <div class="row p-2">
+        <div class="col-6">
+            <it-input
+                [parentFormGroup]="tabForm"
+                controlName="label"
+                label="Etichetta"
+                placeholder="Inserisci l'etichetta">
+            </it-input>
+        </div>
+
+        <div class="col-6">
+            <it-input
+                [parentFormGroup]="tabForm"
+                controlName="tag"
+                label="Descr. breve"
+                placeholder="Inserisci la descrizione breve">
+            </it-input>
+        </div>
+    </div>
+
+    <!--
+      TITLE
+    -->
+    <div class="p-2">
+        <it-input
+            [parentFormGroup]="tabForm"
+            controlName="title"
+            label="Descrizione estesa"
+            placeholder="Inserisci la descrizione estesa">
+        </it-input>
+    </div>
+
+    
+
+    <!--
+      quadro type selection
+    -->
+    <div *ngIf="changeTypeAllowed" >
+      <title-section subtitle="Tipologia TAB" faicon="fa-folder-o"></title-section>
+      <div class="mx-0 mb-5">
+          <form>
+              <div class="form-row pl-3 mb-2">
+                  <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" (click)="!isReadonly && setTabType(1)">
+                      <input #pgRadio value="1" type="radio" id="quadroTypeChoice2" name="quadroTypeChoice" [checked]="tabType == 1" class="custom-control-input">
+                      <label class="custom-control-label checkbox-label-normal" for="quadroTypeChoice2">Quadro con sotto TAB</label>
+                  </div>
+                  <div class="mude-custom-radio custom-control mude-custom-checkbox mt-4 mr-4" (click)="!isReadonly && setTabType(0)">
+                    <input #pf value="1" type="radio" id="quadroTypeChoice1" name="quadroTypeChoice" [checked]="tabType == 0" class="custom-control-input">
+                    <label class="custom-control-label checkbox-label-normal" for="quadroTypeChoice1">Quadro semplice</label>
+                </div>
+              </div>
+          </form>
+      </div>
+    </div>
+
+    <div *ngIf="tabType == 0" class="rawQuadriTable">
+      <title-section subtitle="Contenuto del TAB" faicon="fa-cubes"></title-section>
+
+      <div class="mt-2">
+        <it-select
+            [parentFormGroup]="tabForm"
+            controlName="quadro"
+            [data]="quadriFomrioList"
+            label="Quadro FormIO"
+            selectedOption="Seleziona il quadro FormIO da associare al TAB">
+        </it-select>
+      </div>
+      <alert-box *ngIf="quadroRequired" (fadeaway)="quadroRequired = null" message="Seleziona il quadro FormIO da associare" timeout="5000" type="WARNING"></alert-box>
+
+      <div class="mt-2">
+        <title-section subtitle="Javascript di validazione del JData" faicon="fa-code"></title-section>
+        <div class="text-muted">Esempio: <span class="font-italic small">campo_formio_esempio == 'ABC' || TAB_ESEMPIO_2.campo_jdata_array.filter(x => x.sotto_campo_array == 123).length == 1</span></div>
+        <it-input
+            [parentFormGroup]="tabForm"
+            controlName="formValidation">
+        </it-input>
+      </div>
+
+      <div class="mt-2">
+        <title-section subtitle="Lista di chiavi di 'Tipo Quadro' da eliminare al submit" faicon="fa-code"></title-section>
+        <div class="text-muted">Esempio: <span class="font-italic small">[ 'TAB_ESEMPIO_1', 'TAB_ESEMPIO_2', campo_formio_esempio != 123 || 'TAB_ESEMPIO_3' ]</span></div>
+        <it-input
+            [parentFormGroup]="tabForm"
+            controlName="eraseKeysOnSubmit">
+        </it-input>
+      </div>
+
+      <div class="mt-2">
+        <title-section subtitle="Condizione per l'attivazione di questo TAB" faicon="fa-code"></title-section>
+        <div class="text-muted">Esempio: <span class="font-italic small">TAB_ALTRO_QUADRO.campo_formio == true</span></div>
+        <it-input
+            [parentFormGroup]="tabForm"
+            controlName="activationCheck">
+        </it-input>
+      </div>
+
+      <div class="mt-2">
+        <title-section subtitle="Lista messaggi condizionali" faicon="fa-code"></title-section>
+        <div class="text-muted">Esempio: <span class="font-italic small">[ {{'{'}} "check": "campo_formio == 'abc'", "message": "messaggio per l'utente!", "type": "INFO" {{'}'}} ]</span></div>
+        <it-input
+            [parentFormGroup]="tabForm"
+            controlName="dependencyCheck">
+        </it-input>
+      </div>
+
+    </div>
+
+    <div class="d-flex mt-4">
+      <div *ngIf="!isReadonly" class="my-4">
+          <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+      </div>
+      <div class="ml-auto my-4">
+          <button type="submit" class="btn btn-color-slim blue">{{isReadonly?'CHIUDI':'SALVA'}}</button>
+        </div>
+    </div>
+
+  </form>
+</div>

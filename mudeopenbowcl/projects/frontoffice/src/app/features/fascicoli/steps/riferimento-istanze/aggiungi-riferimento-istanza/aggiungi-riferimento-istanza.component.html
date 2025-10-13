@@ -1,0 +1,122 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Aggiungi istanza di riferimento</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="m-4">
+  <mude-tabs (changed)="typeSelected = $event">
+    <!-- Ricerca fascicoli -->
+    <mude-tab tabTitle="Istanze presenti nel fascicolo">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="mostraIstanzeFascicolo"></ng-container>
+      </div>
+    </mude-tab>
+    <!-- Ricerca istanze -->
+    <mude-tab tabTitle="Altro riferimento">
+      <div class="card-box">
+        <ng-container *ngTemplateOutlet="mostraIstanzaManuale; context: {formgroup: registratadapaForm}"></ng-container>
+      </div>
+    </mude-tab>
+  </mude-tabs>
+</div>
+
+
+
+
+
+<ng-template #mostraIstanzeFascicolo let-type="type" let-formgroup="formgroup">
+  <div class="py-3">
+    <title-section subtitle="Se presente, seleziona l'istanza nel fascicolo"></title-section>
+  </div>
+
+  <div class="datatable-container customdatatable">
+    <ngx-datatable #table
+        class="material expandable striped  datatable-style"
+        [rows]="rows"
+        [headerHeight]="'auto'"
+        [footerHeight]="50"
+        [columnMode]="'force'"
+        [scrollbarH]="'auto'"
+        [rowHeight]="'auto'"
+        [messages]="datatable.messages"
+        selectionType="single"
+
+        [count]="datatable.count"
+        [offset]="datatable.offset"
+        [limit]="datatable.limit"
+        [externalPaging]="true"
+        (page)="onSearch($event)"
+
+        [selected]="datatable.selected">
+
+      <ngx-datatable-column *ngFor="let col of columnsIstanze" 
+          [flexGrow]="0.5" [resizeable]="true" [sortable]="false" [draggable]="false"
+          [name]="col.name" [prop]="col.prop">
+      </ngx-datatable-column>
+
+    </ngx-datatable>    
+  </div>
+
+  <div class="my-2">
+    <alert-box *ngIf="noIstanzaSelected && !datatable.selected.length" type="WARNING" message="Seleziona un'istanza dalla lista"></alert-box>
+  </div>
+
+</ng-template>
+
+
+
+
+
+<ng-template #mostraIstanzaManuale let-type="type" let-formgroup="formgroup">
+  <title-section subtitle="Oppure inserisci il riferimento manuale ad un'altra istanza"></title-section>
+  <form #searchForm [formGroup]="formgroup" (ngSubmit)="onSubmit(true)">
+    <div class="row p-2">
+      <div class="col-12">
+        <it-input
+            [parentFormGroup]="registratadapaForm"
+            controlName="descrizione"
+            label="Descrizione pratica">
+        </it-input>
+      </div>
+    </div>
+    
+    <div class="row p-2">
+      <div class="col-4">
+        <it-input
+            [parentFormGroup]="registratadapaForm"
+            controlName="numero_protocollo_comune"
+            label="Protocollo/Repertorio pratica comunale"
+            placeholder="Inserisci protocollo">
+        </it-input>
+      </div>
+
+      <div class="col-4">
+        <it-datepicker [parentFormGroup]="registratadapaForm" 
+            controlName="data_protocollo_comune" 
+            label="Data Prot./Repertorio pratica comunale">
+        </it-datepicker>
+      </div>
+    </div>
+
+    <input type="hidden" [value]="!isInitialization || setFocusOnSubmit(hiddenFocus)">
+  </form>
+</ng-template>
+
+<div class="d-flex mt-4 mx-4">
+  <div class="my-4 px-2">
+    <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+  </div>
+  <div class="ml-auto my-4">
+    <button type="submit" class="btn btn-color-slim blue" (click)="onSubmit(true)">SALVA</button>
+  </div>
+</div>
+
+

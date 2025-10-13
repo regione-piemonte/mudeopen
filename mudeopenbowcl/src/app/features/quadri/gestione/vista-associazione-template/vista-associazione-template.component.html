@@ -1,0 +1,97 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Lista dei template da aggiornare</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div *ngIf="rows !== null && !rows?.length" class="my-4 mx-4">
+  <div class="mb-4">
+    Nessun template deve essere aggiornato. La versione precedente del quadro non è associata a nessun template.
+  </div>
+</div>
+
+<div *ngIf="rows?.length" class="my-4 mx-4">
+  <div class="mb-4">
+    In questa lista vengono mostrati i template che hanno la versione precedente del quadro selezionato. Facendo click sul pulsante  in basso "AGGIORNAMENTO", verranno aggiornati all'ultima versione tutti i template di seguito elencati.
+  </div>
+
+  <ngx-datatable #table
+          class="material expandable striped"
+          [rows]="rows"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [columnMode]="'force'"
+          [rowHeight]="'auto'"
+          [messages]="datatable.messages"
+
+          [selected]="datatable.selected">
+
+      <!-- "Istanza" Column 1 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Istanza">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <strong>{{row.tipo_istanza?.value}}</strong>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "Codice" Columns 2 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Codice">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.cod_template}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "Descrizione" Columns 3 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Descrizione">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.des_template}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "Versione" Columns 4 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Versione">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.num_versione}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "stato" Columns 5 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Attivo">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.flg_attivo? 'Si':'No'}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "Data inizio" Columns 6 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Data inizio">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.data_inizio_validita}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- "Data fine" Columns 7 -->
+      <ngx-datatable-column [flexGrow]="0.2" name="Data fine">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.data_cessazione}}
+        </ng-template>
+      </ngx-datatable-column>
+
+  </ngx-datatable>    
+
+</div>
+
+<div class="d-flex mt-4 mx-4">
+  <div class="my-4 px-2">
+      <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+  </div>
+  <div *ngIf="rows?.length" class="ml-auto my-4">
+      <button (click)="onSubmit(true)" class="btn btn-color-slim blue">AGGIORNAMENTO</button>
+    </div>
+</div>
+

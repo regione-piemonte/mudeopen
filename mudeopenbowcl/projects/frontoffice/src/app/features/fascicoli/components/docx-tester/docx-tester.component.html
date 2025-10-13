@@ -1,0 +1,98 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">MUDE docx tester tool</span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4 my-3">
+  Generare un PDF temporaneo specifico per il docx che selezioni, usando i dati di qusta istanza
+</div>
+
+<div class="mb-4">
+    <div class="p-4">
+
+      <div class="mx-2">
+        <title-section subtitle="Allega docx di test da associare al PDF di questo quadro" faicon="fa-file-word-o"></title-section>
+      </div>
+      <div class="my-4">
+        <upload-file
+            [maxfiles]="1"
+            [accept]="'.docx'"
+            (upload)="downloadDocxPdf($event)"
+            label="Trascina il .docx oppure fai click per selezionarlo"
+            [files]="docxFileList">
+        </upload-file>
+      </div>
+
+    </div>
+
+    <title-section subtitle="" faicon="fa-id-card-o"></title-section>
+    <div class="mx-4 my-3">
+      E' possibile scaricare la porzione di PDF dell'istanza, contenente il docx di questo quadro.
+    </div>
+    <div class="d-flex my-4">
+      <button type="submit" class="ml-auto mr-auto btn btn-outline-primary" (click)="downloadQuadroPDFIstanza()">GENERA PDF PARZIALE DAL DOCX DEL QUADRO</button>
+    </div>
+    <div class="d-flex my-4">
+      <button type="submit" class="ml-auto mr-auto btn btn-outline-primary" (click)="downloadQuadroDocx()">SCARICA DOCX DEL QUADRO</button>
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+        <div class="ml-auto my-4">
+          <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">CHIUDI</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="mx-4 card-box mb-4">
+
+  <div class="mt-2">
+    <span class="data-lbl">Versione quadro:&nbsp;</span>
+    <span class="data-val">{{quadro.num_versione}}</span>&nbsp;<span>({{quadro.ultima_versione? 'più recente' : 'non ultima'}})</span>
+  </div>
+  <div class="mt-2">
+    <span class="data-lbl">id_quadro:&nbsp;</span>
+    <span class="data-val">{{quadro.id_quadro}}</span>
+  </div>
+  <div class="mt-2">
+    <span class="data-lbl">Tipo quadro base / info:&nbsp;</span>
+    <span class="data-val">{{quadro.tipo_quadro.id_tipo_quadro}} - {{quadro.tipo_quadro.cod_tipo_quadro}}</span> / <span class="data-val">{{quadro.tipo_quadro?.des_tipo_quadro}}</span>
+  </div>
+  <div class="mt-2">
+    <span class="data-lbl">Cat. quadro modificabile da:&nbsp;</span>
+    <span class="data-val">{{quadro.tipo_quadro.funzioni_richieste}}</span>
+  </div>
+  <div class="mt-2">
+    <span class="data-lbl">Modello documentale (id - filename):&nbsp;</span>
+    <span class="data-val">{{quadro.modello_documentale?.id}}</span> - <span class="data-val">{{quadro.modello_documentale?.path_modello}}</span><span> ({{quadro.modello_documentale?.dimensione_file}} Bytes)</span>
+  </div>
+
+  <form>
+    <div class="mt-2">
+      <div class="custom-control mude-custom-checkbox">
+        <input type="checkbox" id="showAllFormIO" name="showAllFormIO" class="custom-control-input" [value]="true" [(ngModel)]="formsService.removeAllFormIOControls">
+        <label class="custom-control-label checkbox-label-normal" for="showAllFormIO">Mostra tutti gli elementi del FomrIO (ricarica sottoquadro)</label>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <div class="custom-control mude-custom-checkbox">
+        <input type="checkbox" id="showAllFormIOKeys" name="showAllFormIOKeys" class="custom-control-input" [value]="true" [(ngModel)]="formsService.showAllFormIOKeys">
+        <label class="custom-control-label checkbox-label-normal" for="showAllFormIOKeys">Mostra le chiavi degli elementi del FomrIO (ricarica sottoquadro)</label>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <div class="custom-control mude-custom-checkbox">
+        <input type="checkbox" id="doNotCheckFormIOModify" name="doNotCheckFormIOModify" class="custom-control-input" [value]="true" [(ngModel)]="formsService.doNotCheckFormIOModify">
+          <label class="custom-control-label checkbox-label-normal" for="doNotCheckFormIOModify">Consenti spostamento tra i sottotab anche in caso di modifiche</label>
+      </div>
+    </div>
+  </form>
+
+
+</div>

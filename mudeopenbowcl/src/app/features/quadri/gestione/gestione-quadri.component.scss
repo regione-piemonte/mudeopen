@@ -1,0 +1,45 @@
+.editarea {
+    width: 100%;
+}
+
+.searchDiv {
+    align-content: stretch;
+    flex: 999 999 auto;
+}
+
+.filterDiv {
+    background-color: #ffffd2;
+    display: flex;
+}
+.filterDiv div {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.filterDiv div input, .filterDiv div select {
+    width: 100%;
+}
+
+
+.actionDiv {
+    width: 90px;
+}
+
+
+::ng-deep .editing-row {
+    background-color: #fdf9e5;
+}
+
+.rawQuadriTable {
+    margin-left: 100px !important;
+    width: 60%;
+}
+
+.hiddenField {
+    visibility: hidden; ;
+}
+
+.selectSameWith {
+    flex-basis: 0;
+}
+

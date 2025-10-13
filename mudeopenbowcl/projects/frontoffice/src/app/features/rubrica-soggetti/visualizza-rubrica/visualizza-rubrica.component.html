@@ -1,0 +1,222 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<div class="mb-4">
+  <title-bar [breadcrumb]="subjectTypes[subjectTypeSelected]" title="Rubrica soggetti"></title-bar>
+</div>
+
+<!-- Corpo principale. -->
+
+<div class="row row-cols-auto px-0 py-3">
+
+  <!-- Inserimento/ricerca. -->
+  <div class="col searchCol">
+    <form [formGroup]="ricercaSoggettoForm" (ngSubmit)="onSubmit()">
+      
+      <!--
+        tabPersonaFisica
+      -->
+      <mude-tabs (changed)="onChangeTipologiaSoggettoRicerca($event)">
+        <mude-tab [tabTitle]="subjectTypes[0]">
+          <div *ngIf="subjectTypeSelected == 0">
+            <div class="card-box">
+              <div class="row">
+                <div class="form-group col">
+                  <label for="nome">Nome</label>
+                  <input type="search" id="nome" class="form-control" formControlName="nome" placeholder="nome">
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="form-group col">
+                  <label for="cognome">Cognome</label>
+                  <input type="search" id="cognome" class="form-control" formControlName="cognome" placeholder="cognome">
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="form-group col">
+                  <label for="codiceFiscale">Codice fiscale</label>
+                  <input type="search" id="codiceFiscale" class="form-control" formControlName="codiceFiscale" placeholder="Codice fiscale">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col">
+                  <label>Tipologia di appartenenza</label>
+                </div>
+              </div>
+
+              <!-- TODO:TIPOTITOLO -->
+              <div class="row pl-3">
+                <div class="d-flex">
+                  <div class="mr-4">
+                    <it-input
+                        type="checkbox"
+                        parentFormGroup="ricercaSoggettoForm"
+                        controlName="titolare"
+                        label="Clienti">
+                    </it-input>
+                  </div>
+                  <div class="mr-4">
+                    <it-input
+                      type="checkbox"
+                      parentFormGroup="ricercaSoggettoForm"
+                      controlName="professionista"
+                      label="Professionisti">
+                    </it-input>
+                  </div>
+                  <div class="mr-4">
+                    <it-input
+                      type="checkbox"
+                      parentFormGroup="ricercaSoggettoForm"
+                      controlName="impresa_lavori"
+                      label="Imprese lavori">
+                    </it-input>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="row py-4">
+                <div class="col">
+                  <button type="submit" class="btn btn-outline-primary">Cerca</button>
+                </div>
+              </div>
+            </div>
+            <div class="linkDiv" (click)="openInserisciSoggetto()">
+              <img alt=""  src="assets/images/plus.png" class="plusIcon" /><span class="linkedText">AGGIUNGI NUOVA PERSONA FISICA</span>
+            </div>
+          </div>
+        </mude-tab>
+
+        <!--
+          tabPersonaGiuridica
+        -->
+        <mude-tab [tabTitle]="subjectTypes[1]">
+          <div *ngIf="subjectTypeSelected == 1">
+            <div class="card-box">
+              <div class="row">
+                <div class="form-group col">
+                  <label for="ragioneSociale">Ragione sociale</label>
+                  <input type="search" id="ragioneSociale" class="form-control" formControlName="ragioneSociale" placeholder="Ragione sociale">
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="form-group col">
+                  <label for="partitaIva">Partita IVA</label>
+                  <input type="search" id="partitaIva" class="form-control" formControlName="partitaIva" placeholder="Partita IVA">
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="form-group col">
+                  <label for="partitaIvaComunitaria">Partita IVA comunit./estera</label>
+                  <input type="search" id="partitaIvaComunitaria" class="form-control" formControlName="partitaIvaComunitaria" placeholder="Partita IVA estera">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col">
+                  <label>Tipologia di appartenenza</label>
+                </div>
+              </div>
+              <div class="row pl-3">
+                <div class="d-flex">
+                  <div class="mr-4">
+                    <it-input
+                        type="checkbox"
+                        parentFormGroup="ricercaSoggettoForm"
+                        controlName="titolare"
+                        label="Clienti">
+                    </it-input>
+                  </div>
+                  <div class="mr-4">
+                    <it-input
+                      type="checkbox"
+                      parentFormGroup="ricercaSoggettoForm"
+                      controlName="professionista"
+                      label="Professionisti">
+                    </it-input>
+                  </div>
+                  <div class="mr-4">
+                    <it-input
+                      type="checkbox"
+                      parentFormGroup="ricercaSoggettoForm"
+                      controlName="impresa_lavori"
+                      label="Imprese lavori">
+                    </it-input>
+                  </div>
+                </div>
+              </div>
+
+          
+              <div class="row py-4">
+                <div class="col">
+                  <button type="submit" class="btn btn-outline-primary">Cerca</button>
+                </div>
+              </div>
+            </div>
+            <div class="linkDiv" (click)="openInserisciSoggetto()">
+              <img alt=""  src="assets/images/plus.png" class="plusIcon " /><span class="linkedText">AGGIUNGI NUOVA PERSONA GIURIDICA</span>
+            </div>
+          </div>
+        </mude-tab>
+      </mude-tabs>
+    </form>
+
+  </div>
+  <div class="col rubrica-table" *ngIf="getSoggetti().length > 0">
+    <form>
+      <div class="d-flex flex-row-reverse pt-2">
+        <div class="py-2">
+          <span class="sortLabel">Ordina per&nbsp;&nbsp;</span>
+           <select name="sorting" class="sortSelect" [(ngModel)]="sorting">
+              <option *ngFor="let sort of subjectSorts[subjectTypeSelected] | keyvalue" [value]="sort.key">{{sort.value}}</option>
+            </select>
+        </div>      
+      </div>
+
+      <div *ngFor="let soggetto of getSoggetti()" class="pb-3">
+        <card-rubrica [isPersonaFisica]="isPersonaFisica()" [soggetto]="soggetto" (deleteEvent)="onEdit()" (editEvent)="onEdit()"></card-rubrica>
+      </div>
+
+      <ngx-datatable #soggettiTable
+          class="material expandable datatable-style"
+          [rows]="getSoggetti()"
+          [columns]="[ { name: 'list'} ]"
+          [headerHeight]="0"
+          [footerHeight]="50"
+          [columnMode]="'flex'"
+          [rowHeight]="0"
+          [messages]="datatable.messages"
+
+          [limit]="datatable.limit"
+          [count]="datatable.count"
+          [offset]="datatable.offset"
+
+          [selected]="datatable.selected"
+
+          [limit]="datatable.limit"
+          [externalPaging]="true"
+          (page)="goSearch($event)">
+
+        <ngx-datatable-column name="Elenco istanze" width="800"  [canAutoResize]="true">
+
+        </ngx-datatable-column>
+      </ngx-datatable>    
+
+      <ng-container *ngTemplateOutlet="paginationBlock"></ng-container>
+  </form>
+</div>
+  
+</div>
+ 
+
+
+
+
+<ng-template #paginationBlock>
+</ng-template>

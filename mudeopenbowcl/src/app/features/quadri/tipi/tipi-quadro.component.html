@@ -1,0 +1,166 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<title-bar title="Gestione tipologie quadro"></title-bar>
+
+<div class="my-5">
+  <div class="py-3">
+    <title-section subtitle="Lista delle tipologie quadri"></title-section>
+    <div class="mx-2">
+      Qui è possibile gestire le tipologie dei quadri e tutte le dipendenze con le varie versioni di quadro associate.
+    </div>
+  </div>
+
+  <div class="my-2">
+    <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+  </div>
+  
+  <div class="noscrollcustomdatatable datatable-style customdatatable">
+    <div class=" editarea">
+      <div *ngIf="!isFilterOn" class="linkDiv d-flex my-2">
+        <span class="ml-auto linkedText small-text" (click)="showFilter()">{{isFilterOn?'CHIUDI FILTRO DI RICERCA':'FILTRO DI RICERCA'}}</span>
+      </div>
+      <div *ngIf="isFilterOn" class="filterDiv py-2">
+        <div class="px-3 actionDiv" style="width: 430px">
+          <!-- search -->
+          <em class="fa-button-icon fa fa-search mr-2" title="Applica filtro" (click)="isEditingIndex === null && onSearch()"></em>
+          <!-- cancel search -->
+          <em class="fa-button-icon fa fa-times" title="Elimina filtro" (click)="isEditingIndex === null && hideFilter()"></em>
+        </div>
+        <div class="px-2">
+          <input #searchCol1 [(ngModel)]="searchCode" class="editarea" maxlength="20" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="px-2">
+          <input [(ngModel)]="searchDescr" class="editarea" maxlength="50" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="pr-2 pl-1">
+          <select [(ngModel)]="searchCategoriaTipoQuadri" class="px-2 editarea">
+            <option value=""></option>
+            <option *ngFor="let opt of listaCategoriaTipoQuadri" [value]="opt.id_categoria_quadro">{{opt.desc_categoria_quadro}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <ngx-datatable *ngIf="rows" #table
+        class="material expandable striped"
+        [rowClass]="getRowClass"
+        [rows]="this.rows"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [columnMode]="'force'"
+        [scrollbarH]="true"
+        [rowHeight]="'auto'"
+        [messages]="datatable.messages"
+
+        [count]="datatable.count"
+        [offset]="datatable.offset"
+        [limit]="datatable.limit"
+        [externalPaging]="true"
+        (page)="onSearch($event)"
+
+        [selected]="datatable.selected">
+
+<!-- Column: Editing Mode-->
+      <ngx-datatable-column name="Azione" maxWidth="100" width="100" [cellClass]="'ng-custom-action-cell'">
+        <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+          <!-- Pencil icon -->
+          <em *ngIf="row.modificabile && isEditingIndex != rowIndex" class="fa-button-icon fa fa-pencil mr-2" title="modifica" (click)="startEditing(row, rowIndex)"></em>
+          <!-- Delete icon -->
+          <em *ngIf="row.modificabile && isEditingIndex != rowIndex" class="fa-button-icon fa fa-trash-o mr-2" title="elimina" (click)="deleteRow(row, rowIndex)"></em>
+          <!-- Save icons -->
+          <em *ngIf="isEditingIndex == rowIndex" class="fa-button-icon fa fa-check mr-2" title="salva" (click)="saveRow(row, rowIndex)"></em>
+          <!-- Cancel icons -->
+          <em *ngIf="isEditingIndex == rowIndex" class="fa-button-icon fa fa-close mr-2" title="annulla" (click)="cancelEditing(row, rowIndex)" ></em>
+          <!-- inherit icons -->
+          <em *ngIf="isEditingIndex != rowIndex && row.id_tipo_quadro && !row.tipo_quadro_padre" style="margin-top: 1px; color: darkgray" class="position-absolute fa-button-icon fa fa-code-fork mr-2" title="aggiungi nuovo tipo quadro collegato" (click)="addNew(row)"></em>
+        </ng-template>
+      </ngx-datatable-column>
+
+    <!-- Column: Open Panel-->
+    <ngx-datatable-column [flexGrow]="0.8" [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false">
+      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+        <a class="table-icons" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" title="apri / chiudi sezione" (click)="toggleExpandRow(row, expanded)"></a>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Column 1 -->
+    <ngx-datatable-column [flexGrow]="0.5" name="Codice tipo quadro" prop="cod_tipo_quadro">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <div *ngIf="row && isEditingIndex != rowIndex"><strong>{{row.cod_tipo_quadro}}</strong></div>
+        <input *ngIf="isEditingIndex == rowIndex" [(ngModel)]="edtCode" class="editarea ml-0" maxlength="50">
+        <div *ngIf="isEditingIndex == rowIndex && errCol1" class="invalid-feedback d-block">{{errCol1}}</div>
+        <div *ngIf="row.tipo_quadro_padre" class="small text-muted">(estende: <em>{{ row.tipo_quadro_padre?.cod_tipo_quadro}}</em>)</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- Columns 2 -->
+    <ngx-datatable-column [flexGrow]="0.5" name="Descrizione" prop="des_tipo_quadro">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <div *ngIf="row && isEditingIndex != rowIndex">{{row.des_tipo_quadro}}</div>
+        <div *ngIf="isEditingIndex == rowIndex"><textarea maxlength="255" [(ngModel)]="edtDescr" class="editarea ml-0"></textarea></div>
+        <div *ngIf="isEditingIndex == rowIndex && errCol2" class="invalid-feedback d-block">{{errCol2}}</div>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <!-- "lista" Column 3 -->
+    <ngx-datatable-column [flexGrow]="0.2" name="Categoria quadro">
+      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+        <div *ngIf="row && isEditingIndex != rowIndex">{{getCategoriaQuadro(row.id_categoria_quadro)}}</div>
+        <select *ngIf="isEditingIndex == rowIndex" [(ngModel)]="edtCategoriaTipoQuadri" class="editarea pl-0">
+          <option value=""></option>
+          <option *ngFor="let opt of listaCategoriaTipoQuadri" [value]="opt.id_categoria_quadro">{{opt.desc_categoria_quadro}}</option>
+        </select>
+      </ng-template>
+    </ngx-datatable-column>
+
+<!-- Row Panel Template -->
+      <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
+        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+          <table class="table rawQuadriTable" summary="just rawQuadriTable table !">
+            <thead>
+              <tr>
+                <th scope="col" class="quadri-action-div"></th>
+                <th scope="col" class="quadro-head">Tipo gestione</th>
+                <th scope="col" class="quadro-head">Etichetta</th>
+                <th scope="col" class="quadro-head">Versione</th>
+                <th scope="col" class="quadro-head">Attivo</th>
+              </tr>
+            </thead>
+            <tbody class="crollableTableContent">
+              <tr *ngFor="let quadro of ((row?.quadri?.length && row.quadri) || _CREATE_NEW); let i = index">
+                <td class="ng-custom-action-cell quadri-action-div">
+                  <!-- view -->
+                  <em *ngIf="!quadro._CREATE_NEW && !quadro.flg_modificabile" class="fa-button-icon fa fa-eye mr-1" title="visualizza dettaglio" (click)="quadroView(quadro)"></em>
+                  <!-- create -->
+                  <em *ngIf="quadro._CREATE_NEW" class="fa-button-icon fa fa-file-text-o mr-2" title="crea quadro" (click)="quadroCreate(row)"></em>
+                  <!-- new ver -->
+                  <em *ngIf="quadro.flg_creabile" class="fa-button-icon fa fa-plus-square-o mr-2" title="crea nuova versione" (click)="quadroCreateNewVersion(quadro)"></em>
+                  <!-- modify -->
+                  <em *ngIf="quadro.flg_modificabile" class="fa-button-icon fa fa-pencil mr-2" title="modifica" (click)="quadroModify(quadro)"></em>
+                  <!-- delete -->
+                  <em *ngIf="quadro.flg_eliminabile" class="fa-button-icon fa fa-trash-o" title="elimina" (click)="quadroDelete(row.quadri, quadro, i)"></em>
+                  <!-- TODO: flg_associabile -->
+                </td>
+                <td class="quadro-td">{{quadro._CREATE_NEW?'Non sono stati ancora associati quadri a questa tipologia.':quadriService.getTipoGestione(quadro.flg_tipo_gestione)}}</td>
+                <td class="quadro-td">{{quadriService.getQuadroLabel(quadro)}}</td>
+                <td class="quadro-td">{{quadro.num_versione}}</td>
+                <td class="quadro-td">{{quadro.flg_attivo? 'Si':'No'}}</td>
+              </tr>
+            </tbody>
+          </table>          
+        </ng-template>
+      </ngx-datatable-row-detail>
+
+    </ngx-datatable>    
+  </div>
+
+  <div *ngIf="isEditingIndex === null" class="linkDiv my-2 d-flex">
+    <span (click)="addNew()">
+      <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI NUOVO TIPO QUADRO</span>
+    </span>    
+  </div>
+
+</div>

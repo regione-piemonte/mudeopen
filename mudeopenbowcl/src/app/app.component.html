@@ -1,0 +1,147 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<!--
+MAIN PAGE STRUCTURE
+-->
+
+
+<body class="fixed-sn light-blue-skin">
+  <!--Top Navigation-->
+  <header>
+    <!--Navbar-->
+    <nav class="navbar navbar-expand bg-primary navbar-dark backoffice">
+      <div class="container-fluid">
+        <!-- Toggler/collapsibe Button -->
+        <button *ngIf="selected !== 'home'"
+                type="button"
+                class="btn menu-button"
+                (click)="toggleOpen()">
+          <em class="fa fa-bars" aria-hidden="true"></em>
+        </button>
+
+        <!-- Brand -->
+        <span (click)="navigateToHome()">
+          <img alt=""  src="assets/images/home-icon.png" class="homeIcon align-baseline" />
+        </span>
+        <a class="navbar-brand" href="javascript:;">
+          Mudeopen backoffice
+        </a>
+
+        <!-- Navbar links -->
+        <div class="nav-button-group">
+          <span>
+            <img alt=""  src="assets/icon-navbar-info.svg" width="21px" />
+          </span>
+          <span>
+            <img alt=""  src="assets/icon-navbar-campanella.svg" height="26px" />
+          </span>
+          <span class="user-circle" (click)="doLogout()">
+              {{getUserName()}}
+          </span>
+        </div>
+      </div>
+
+    </nav>
+  </header>
+  <div *ngIf="selected === 'home'" class="row homeHeader">
+    <div class="col align-self-center headHomeTitle container-fluid">
+      <img alt=""  class="headImage" />
+      <!-- <div>
+        Modello unico digitale per l'edilizia
+      </div> -->
+    </div>
+  </div>
+  <!--/Top Navigation-->
+
+
+  <!-- Side Navbar -->
+  <div class="container-fluid page-content">
+    <ng-sidebar-container>
+      <ng-sidebar
+        [(opened)]="selected !== 'home' && opened"
+        [mode]="sidebarMode"
+        [position]="sidebarPosition"
+        [closeOnClickOutside]="closeOnClickOutside"
+        [closeOnClickBackdrop]="closeOnClickBackdrop"
+        [showBackdrop]="showBackdrop"
+        [animate]="animate"
+        [trapFocus]="trapFocus"
+        [autoFocus]="autoFocus"
+        [autoCollapseHeight]="autoCollapseHeight"
+        [autoCollapseWidth]="autoCollapseWidth"
+        [ariaLabel]="ariaLabel"
+        [keyClose]="false"
+        [dock]="dock"
+        [dockedSize]="'60px'"
+      >
+        <div class="card" [ngClass]="{ docked: dock, 'mobile-bar': sidebarMode === 'over' }">
+          <div *ngIf="sidebarMode !== 'over'" class="sidebar-item" style="margin-left: auto" (click)="toggleExpansion()">
+            <span *ngIf="!dock" class="sidebar-icon">
+              <img alt=""  src="assets/icon-sidebar-riduci.svg" />
+            </span>
+            <span *ngIf="dock" class="sidebar-icon">
+              <img alt=""  src="assets/icon-sidebar-espandi.svg" />
+            </span>
+          </div>
+
+          <div *ngFor="let item of sidebarMenuItems">
+            <div
+              *appNgHasPermissions='item.tagAcl'
+              class="sidebar-item"
+              [ngClass]="{ selected: selected === item.id }"
+              (click)="selectItem( item.link)"
+            >
+            <span class="sidebar-icon"><img alt="" [src]="item.icon" /></span>
+            <span *ngIf="!dock">{{ item.label }}</span>
+            </div>
+          </div>
+
+        </div>
+      </ng-sidebar>
+
+
+      <div ng-sidebar-content class="sidebarContent">
+          <!--Main layout-->
+        <main id="main"
+            class="mainContext"
+            [ngClass]="'home' === selected? 'mainNormalHome' : 'mainNormal'">
+          <router-outlet></router-outlet>
+        </main>
+        <!--/Main layout-->
+      </div>
+    </ng-sidebar-container>
+    <!-- /Side Navbar -->
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-primary backoffice">
+    <div class="container-fluid">
+      <div class="row footer-logo">
+        <div class="col-4">
+          <img alt=""  src="assets/icon-footer-regione.svg" class="logo-left" />
+        </div>
+        <div class="col-4 text-center">
+          <img alt=""  src="assets/icon-footer-europa-2x.png" class="logo-center" />
+        </div>
+        <div class="col-4 text-right">
+          <img alt=""  src="assets/icon-footer-piemonte-ccc.png" class="logo-right" />
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <footer class="bg-second-blue backoffice">
+    <div class="container-fluid">
+      <div class="row footer-link-group">
+        <div class="col-xs-4">Accessibilità</div>
+        <div class="col-xs-4">Note legali e privacy</div>
+        <div class="col-xs-4">Cookie policy</div>
+      </div>
+    </div>
+  </footer>
+  <!-- /Footer -->
+</body>
+<ngx-spinner></ngx-spinner>

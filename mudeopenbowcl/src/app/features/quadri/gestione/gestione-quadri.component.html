@@ -1,0 +1,116 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+<title-bar title="Lista quadri"></title-bar>
+
+<div class="my-5">
+  <div class="py-3">
+    <title-section subtitle="Lista di tutte le versioni dei quadri"></title-section>
+    <div class="mx-2">
+      In questa lista si trovano tutti i quadri con le relative versioni create.
+    </div>
+  </div>
+
+  <div class="my-2">
+    <alert-box *ngIf="saveMessage" type="SUCCESS" message="Dati salvati con successo" timeout="5000" (fadeaway)="saveMessage = false"></alert-box>
+  </div>
+  
+  <div class="noscrollcustomdatatable datatable-style customdatatable">
+    <div class="editarea">
+      <div *ngIf="!isFilterOn" class="linkDiv d-flex my-2 ">
+        <span class="ml-auto linkedText small-text" (click)="showFilter()">{{isFilterOn?'CHIUDI FILTRO DI RICERCA':'FILTRO DI RICERCA'}}</span>
+      </div>
+      <div *ngIf="isFilterOn" class="filterDiv py-2">
+        <div class="px-3 actionDiv" style="width: 250px">
+          <!-- Pencil icon -->
+          <em class="fa-button-icon fa fa-search mr-2" title="Applica filtro" (click)="onSearch()"></em>
+          <!-- Delete icon -->
+          <em class="fa-button-icon fa fa-times" title="Elimina filtro" (click)="hideFilter()"></em>
+        </div>
+        <div class="px-2">
+          <input #searchCol1 [(ngModel)]="searchTipoQuadro" class="editarea" maxlength="20" id="searchTipoQuadro" name="searchTipoQuadro" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+        </div>
+        <div class="px-2">
+          <!--input [(ngModel)]="searchTipoGestione" class="editarea" maxlength="50"-->
+          <select size="1" class="selectSameWith" [(ngModel)]="searchTipoGestione" id="searchTipoGestione" name="searchTipoGestione">
+            <option value=""></option>
+            <option *ngFor="let comp of componentNanmes" [value]="comp.id">{{comp.value}}</option>
+          </select>
+        </div>
+        <div class="px-2">
+          <div class="custom-control mude-custom-checkbox">
+            <input id="searchVersione" name="searchVersione" [(ngModel)]="searchVersione" type="checkbox" [value]="true" class="custom-control-input" (keyup)="($event.which == 13 || $event.keyCode == 13) && onSearch()">
+            <label for="searchVersione" class="custom-control-label checkbox-label-normal">Mostra solo ultime versioni</label>
+          </div>
+        </div>
+        <div class="px-2">
+          <div class="hiddenField"><input [(ngModel)]="searchStato" class="editarea" maxlength="50"></div>
+        </div>
+      </div>
+    </div>
+  
+    <ngx-datatable *ngIf="rows" #table
+        class="material expandable striped"
+        [rows]="rows"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [columnMode]="'force'"
+        [scrollbarH]="true"
+        [rowHeight]="'auto'"
+        [messages]="datatable.messages"
+
+        [count]="datatable.count"
+        [offset]="datatable.offset"
+        [limit]="datatable.limit"
+        [externalPaging]="true"
+        (page)="onSearch($event)"
+
+        [selected]="datatable.selected">
+
+      <!-- Column: Editing Mode-->
+      <ngx-datatable-column name="Azione" maxWidth="90">
+        <ng-template ngx-datatable-cell-template let-value="value" let-row="row" let-rowIndex="rowIndex">
+          <!-- view -->
+          <em *ngIf="!row.flg_modificabile" class="fa-button-icon fa fa-eye mr-1" title="visualizza dettaglio" (click)="quadroView(row)"></em>
+          <!-- new ver -->
+          <em *ngIf="row.flg_creabile" class="fa-button-icon fa fa-plus-square-o mr-1" title="crea nuova versione" (click)="quadroCreateNewVersion(row)"></em>
+          <!-- modify -->
+          <em *ngIf="row.flg_modificabile" class="fa-button-icon fa fa-pencil mr-1" title="modifica" (click)="quadroModify(row)"></em>
+          <!-- delete -->
+          <em *ngIf="row.flg_eliminabile" class="fa-button-icon fa fa-trash-o mr-1" title="elimina" (click)="quadroDelete(rows, row, rowIndex)"></em>
+          <!-- associabile -->
+          <em *ngIf="row.ultima_versione && row.num_versione > 1"  style="margin-top: 1px; color: darkgray" class="position-absolute fa-button-icon fa fa-link" title="associazione massiva quadro" (click)="quadroUpdateAllTemplates(rows, row, rowIndex)"></em>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- Column 1 -->
+      <ngx-datatable-column [flexGrow]="0.0" name="Tipo quadro" prop="tipo_quadro.cod_tipo_quadro"></ngx-datatable-column>
+
+      <!-- Columns 2 -->
+      <ngx-datatable-column [flexGrow]="0.5" name="Tipo gestione" prop="flg_tipo_gestione">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{quadriService.getTipoGestione(row.flg_tipo_gestione)}} {{quadriService.getQuadroLabel(row)? ('('+quadriService.getQuadroLabel(row)+')') : null}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <!-- Columns 3 -->
+      <ngx-datatable-column [flexGrow]="0.5" name="Numero versione" prop="num_versione"></ngx-datatable-column>
+
+      <!-- Columns 4 -->
+      <ngx-datatable-column [flexGrow]="0.5" name="Attivo">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          {{row.flg_attivo? 'Si':'No'}}
+        </ng-template>
+      </ngx-datatable-column>
+
+    </ngx-datatable>    
+
+
+    <div class="linkDiv my-2 d-flex">
+      <span (click)="quadroCreate()"><img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">AGGIUNGI NUOVO QUADRO</span></span>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,346 @@
+<title-bar title="Dettaglio istanza"></title-bar>
+
+<div class="mt-5">
+  <mude-tabs (changed)="selectForm($event)">
+
+    <!-- Dattagli istanza -->
+    <mude-tab tabTitle="Informazioni istanza" [active]="searchSelected == 0">
+        <ng-container *ngTemplateOutlet="istanzaDetails; context: {type:'istanza'}"></ng-container>
+    </mude-tab>
+
+    <!-- Ricerca extra -->
+    <ng-container *ngFor="let tab of additionalTabs; index as i">
+      <mude-tab [tabTitle]="tab.label" [active]="searchSelected == i+1">
+        <ng-container *ngTemplateOutlet="additionalTabDetails; context: {type: tab.type, label: tab.label}"></ng-container>
+      </mude-tab>
+    </ng-container>
+  </mude-tabs>
+</div>
+
+<ng-template #istanzaDetails let-type="type">
+  <div class="card-box">
+    <div class="row ml-2">
+      <!-- first col -->
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Numero istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.codice_istanza }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Tipo istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.tipologia_istanza.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Stato istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.stato_istanza?.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Istanza di riferimento"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.istanza_riferimento?.codice_istanza }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Data stato istanza"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.data_stato }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Comune"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.comune?.value }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Intestatario"></title-section>
+        </div>
+        <div class="pb-3">
+          <label
+            >{{ istanza?.intestatario?.anagrafica?.nome }}
+            {{
+              istanza?.intestatario?.anagrafica?.cognome
+                ? istanza?.fascicolo?.intestatario?.anagrafica?.cognome
+                : istanza?.fascicolo?.intestatario?.anagrafica?.ragioneSociale
+            }}
+          </label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class='my-2 label'>
+          <title-section subtitle='Numero pratica'></title-section>
+        </div>
+        <div class='pb-3'>
+          <label>{{ istanza?.numero_pratica }}</label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="my-2 label">
+          <title-section subtitle="Professionista di Riferimento"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.pm }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Responsabile procedimento"></title-section>
+        </div>
+        <div class="pb-3" style="max-width: 100%">
+          <label class="respProc">{{ istanza?.responsabile_procedimento }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Numero Protocollo"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.numero_protocollo }}</label>
+        </div>
+      </div>
+
+      <div class="col-4" *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1">
+        <div class="my-2 label">
+          <title-section subtitle="Data Protocollo"></title-section>
+        </div>
+        <div class="pb-3">
+          <label>{{ istanza?.data_protocollo }}</label>
+        </div>
+      </div>
+
+      <ng-container *ngIf="isIdfPresent(istanza)">
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="Autorizzazione vincolo idrogeologico"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ isIdfApproved(istanza) }}</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="Numero determina esito autorizzazione vincolo"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ istanza?.idf_numero_determina_esito_aut }}</label>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="my-2 label">
+            <title-section subtitle="Data determina esito autorizzazione vincolo"></title-section>
+          </div>
+          <div class="pb-3">
+            <label>{{ istanza?.idf_data_scadenza_autorizzazione }}</label>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+
+  
+  <ng-container *ngIf="isIstanzaPDFDownaloadable">
+    <button
+      *appNgHasPermissionsOnIstance="[
+        Permissions.DOWNLOAD_ISTANZA,
+        this.istanza.funzioniUtente
+      ]"
+      class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      (click)="downloadIstanzaFirma(true)"
+    >
+      Scarica Istanza con Firma
+    </button>
+
+    <button
+      *appNgHasPermissionsOnIstance="[
+        Permissions.DOWNLOAD_ISTANZA,
+        this.istanza.funzioniUtente
+      ]"
+      class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      (click)="downloadIstanzaFirma(false)"
+    >
+      Scarica Istanza senza Firma
+    </button>
+  </ng-container>
+
+  <ng-container *appNgHasPermissionsOnIstance="[ Permissions.GENERA_TRACCIATO, this.istanza.funzioniUtente ]">
+    <button *ngIf="istanza.genera_tracciato" class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue" (click)="generaTracciato()">
+      Genera Tracciato
+    </button>
+  </ng-container>
+
+  <ng-container *ngIf="this.istanza.fonte == 'FO'">
+    <button *appNgHasPermissionsOnIstance="[ Permissions.CONSULTA_IST, this.istanza.funzioniUtente ]" class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue" (click)="navigateToStepperInstance()">
+      Visualizza stepper
+    </button>
+    <button class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue" (click)="onOpenListaStati()">
+      Lista cambio stato
+    </button>
+  </ng-container>
+  
+  <div class="mb-4 mx-2">
+    <div class="my-2">
+      <alert-box *ngIf="rigeneraOK" type="SUCCESS" message="Tracciato rigenerato con successo" timeout="10000" (fadeaway)="rigeneraOK = false"></alert-box>
+    </div>
+  </div>
+
+  <ng-template #actionsTemplate ngx-datatable-cell-template let-row="row">
+    <a
+      class="expand-link"
+      *appNgHasPermissionsOnIstance="[
+        Permissions.DOWNLOAD_ALLEGATO_ISTANZA,
+        this.istanza.funzioniUtente
+      ]"
+      href="javascript:void(0)"
+    >
+      <img
+        alt="NonFirmato"
+        placement="bottom"
+        ngbTooltip="Scarica allegato"
+        container="body"
+        src="assets/images/file-arrow-down-solid.svg"
+        (click)="downloadAllegato(false, row)"
+        class="plusIcon"
+      />
+    </a>
+    <a
+      class="expand-link"
+      *appNgHasPermissionsOnIstance="[
+        Permissions.DOWNLOAD_ALLEGATO_ISTANZA,
+        this.istanza.funzioniUtente
+      ]"
+      href="javascript:void(0)"
+    >
+      <img
+        alt="Firmato"
+        src="assets/images/file-signature-solid.svg"
+        placement="bottom"
+        ngbTooltip="Scarica con firma"
+        container="body"
+        (click)="downloadAllegato(true, row)"
+        style="width: 21px"
+      />
+    </a>
+  </ng-template>
+
+  <div>
+    <button
+      *appNgHasPermissionsOnIstance="[
+        Permissions.CAMBIO_STATO,
+        this.istanza.funzioniUtente
+      ]"
+      [disabled]="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1"
+      class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      (click)="cambiaStato()"
+    >
+      Cambia stato
+    </button>
+
+    <button
+      *ngIf="'APA,SAI,ASR,ITS,ARC,ANN,ACO,CON,ACC,ICI,AIC,SIC,VIG,IAI,INC,ATI,INT,AFL,ICO,COC,RES,RSU,COL,DRE,SIA'.indexOf(istanza?.stato_istanza?.id ||'-') > -1"
+      class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      (click)="ricevutaRegistrazione()"
+    >
+      Genera ricevuta registrazione istanza
+    </button>
+
+    <button
+      *appNgHasPermissionsOnIstance="[
+        Permissions.NOTIFICHE,
+        this.istanza.funzioniUtente
+      ]"
+      class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+      (click)="notifica()"
+    >
+      Notifiche
+    </button>
+    <button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">
+      Indietro
+    </button>
+  </div>
+</ng-template>
+
+
+<title-section subtitle="Elenco allegati"></title-section>
+<button
+  *appNgHasPermissionsOnIstance="[
+    Permissions.EXCEL_ISTANZE,
+    this.istanza.funzioniUtente
+  ]"
+  class="btn btn-rounded btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+  (click)="downloadAllegatiExcel()"
+>
+  Scarica lista Allegati
+</button>
+
+<app-mude-table
+  [rows]="rows"
+  [datatable]="datatable"
+  [columns]="columns"
+  (pageChanged)="onSearch($event)"
+>
+</app-mude-table>
+
+<div class="pb-5 d-flex flex-row">
+  <button class="btn btn-link mr-3 m-2 blue" (click)="goBack()">
+    Indietro
+  </button>
+  <button *appNgHasPermissionsOnIstance="[ Permissions.EXCEL_ISTANZE, this.istanza.funzioniUtente ]"
+            class="ml-auto btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue"
+            (click)="downloadAllegatiExcel()">
+    Scarica lista Allegati
+  </button>
+</div>
+
+
+<ng-template #additionalTabDetails let-label="label" let-type="type">
+  <div class="card-box">
+    <div class="row ml-2">
+      <div *ngFor="let column of getColumns(type)  | keyvalue" class="col-md-4">
+        <ng-container *ngIf="column.key.substring(column.key.indexOf(':')+1) != 'VOID' ">
+          <div class="my-2 label">
+            <title-section subtitle="{{ column.key.substring(column.key.indexOf(':')+1) }}"></title-section>
+          </div>
+          <div class="pb-3" [innerHtml]="column.value"></div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex" *ngIf="this.istanza.fonte == 'AEOS'">
+    <div class="ml-auto">
+      <button *appNgHasPermissionsOnIstance="[ Permissions.MOD_INFO_IST, this.istanza.funzioniUtente ]" 
+            class="btn btn-outline-fixed-slim mr-3 m-2 btn-color-slim blue" 
+            (click)="onModificaDatiExtra()">
+        Modifica dati
+      </button>
+    </div>
+  </div>
+</ng-template>

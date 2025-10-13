@@ -1,0 +1,61 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+
+
+<div class="card-box mb-4 pt-0 pb-4 px-0">
+
+  <div class="py-4 px-4">
+    <title-section subtitle="">Da questa pagina è possibile verificare tutte le informazioni inserite nell'istanza.</title-section>
+
+    <div class="my-5">
+      <alert-box *ngIf="!isIstanzaDepositata" type="INFO">Tutte le informazione relative all'istanza sono state compilate. E' necessario scaricare il pdf contenente tutte le informazioni prima di procede all'invio dell'istanza.</alert-box>
+      <alert-box *ngIf="isIstanzaDepositata" type="SUCCESS">Le informazioni dell'istanza sono state depositate.</alert-box>
+    </div>
+
+    <div *ngIf="getStatoIstanza() == 'BZZ' || getStatoIstanza() == 'RPA' || getStatoIstanza() == 'DFR'" class="d-flex my-4">
+      <button type="submit" class="ml-auto mr-auto btn btn-outline-primary" (click)="downloadPdf()">SCARICA PDF PRECOMPILATO DELL'ISTANZA </button>
+    </div>
+
+    <div *ngIf="formsService.canConsolidateInstance()" class="narrowed-box">
+      <alert-box type="WARNING">Per procedere con la firma e la successiva presentazione dell'istanza, devi prima consolidarla mettendola in stato 'DA FIRMARE' con il pulsate qui sotto.</alert-box>
+      <button (click)="consolidateInstance()" class="linkedText" title="Blocca istanza per metterla in stato DA FIRMARE">CONSOLIDA ISTANZA</button>
+    </div>
+  
+    <div *ngIf="isIstanzaDepositata || getStatoIstanza() == 'DFR' || getStatoIstanza() == 'FRM'" class="my-4">
+      <title-section *ngIf="!_isStepInReadOnlyMode" subtitle="">Allegare il file dell'istanza dopo averlo firmato digitalmente</title-section>
+      <title-section *ngIf="_isStepInReadOnlyMode" subtitle="">File allegato all'istanza firmato digitalmente</title-section>
+
+      <upload-file
+          [accept]="filesAccepted"
+          [maxsizeMB]="maxUploadFileSizeMB"
+          (discarded)="handleDiscardedUploads($event)"
+
+          [readOnly]="_isStepInReadOnlyMode"
+          [maxfiles]="1"
+          (delete)="delete($event)"
+          (upload)="uploadPPdfIstanza($event)"
+          (download)="download($event)"
+          [files]="istanzaAttach">
+      </upload-file>
+
+      <div *ngIf="showNewAddress" class="pt-4 custom-control mude-custom-checkbox">
+        <input id="searchVersione" name="searchVersione" [(ngModel)]="updateAddress" type="checkbox" [value]="true" class="custom-control-input">
+        <label for="searchVersione" class="custom-control-label checkbox-label-normal">L'indirizzo principale inserito in questa istanza differisce da quello del fascicolo. Vuoi aggiornare l'indirizzo del fascicolo una volta depositata l'istanza?</label>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<app-stepper-footer
+  showNextLabel="DEPOSITA ISTANZA"
+  [showNext]="isStepValidationOK"
+  [showPrevious]="showButtonPrevious"
+  (avanti)="onSendInstance()"
+  (indietro)="onStepBack()">
+</app-stepper-footer>
+

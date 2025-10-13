@@ -1,0 +1,99 @@
+<!--
+* SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+* SPDX-License-Identifier: EUPL-1.2
+-->
+<div class="dialogTitle py-3 pl-4 pr-3">
+  <span class="title-col1">Quadro FormIO <div class="darkTitle">({{messageAction}})</div></span>
+  <span class="close-col2" ><em class="fa fa-times" (click)="onSubmit()"></em></span>
+</div>
+<div class="mx-4">
+  <span class="form-text text-muted">* inserire i campi obbligatori</span>
+</div>
+
+<div class="mb-4">
+  <form [formGroup]="mainForm">
+    <div class="p-4">
+
+      <title-section subtitle="Visualizzazione" faicon="fa-id-card-o"></title-section>
+      <div class="mt-3 mb-5">
+          <it-input
+              [parentFormGroup]="mainForm"
+              controlName="label"
+              label="Etichetta (da mostrare nel wizard)"
+              placeholder="Inserisci il nome del quadro">
+          </it-input>
+      </div>
+
+      <!--
+      <title-section subtitle="Impostazioni" faicon="fa-gear"></title-section>
+      <div class="form-group col">
+        <div class="custom-control mude-custom-checkbox agree-checkbox">
+          <input id="attivo" 
+                class="custom-control-input" 
+                type="checkbox" 
+                [checked]="data.flg_attivo !== 0"
+                [value]="1">
+          <label class="custom-control-label checkbox-label-normal" for="attivo">Quadro attivo</label>
+        </div>
+      </div>
+      -->
+
+      <title-section subtitle="Template FormIO" faicon="fa-code"></title-section>
+      <div class="mt-3 mb-5">
+        <it-input type="textarea"
+            [length]="10"
+            [parentFormGroup]="mainForm"
+            controlName="formio"
+            label="JSON - FormIO">
+        </it-input>
+        <div class="linkDiv my-2 d-flex">
+          <span (click)="openBuilder()">
+            <img alt="" src="assets/images/plus.png" class="ml-auto plusIcon" /><span class="linkedText">EDITOR FORMIO</span>
+          </span>
+        </div>
+      </div>
+      <div class="my-2">
+        <alert-box *ngIf="noValidFormIO" type="WARNING" message="Il campo `JSON - FormIO` non contiene un json valido" timeout="5000" (fadeaway)="noValidFormIO = false"></alert-box>
+      </div>
+      
+      <div class="mt-3 mb-5">
+        <it-input type="textarea"
+            [length]="5"
+            [parentFormGroup]="mainForm"
+            controlName="submission"
+            label="FormIO submission">
+        </it-input>
+      </div>
+      <div class="my-2">
+        <alert-box *ngIf="noValidFormIOsubmission" type="WARNING" message="Il campo `FormIO submission` non contiene un json valido" timeout="5000" (fadeaway)="noValidFormIOsubmission = false"></alert-box>
+      </div>
+
+      <title-section subtitle="Template stampa (.docx)" faicon="fa-file-word-o"></title-section>
+      <div class="my-4">
+        <upload-file
+            [maxfiles]="1"
+            [accept]="'.docx'"
+            (delete)="removeDocx(data, $event)"
+            (upload)="selectDocx(data, $event)"
+            (download)="downloadDocx(data, $event, 'modello_documentale')"
+            label="Trascina il file oppure fai click per selezionarlo"
+            [readOnly]="isReadonly"
+            [files]="docxFileList">
+        </upload-file>
+      </div>
+  
+    </div>
+
+    <div class="d-flex mt-4 mx-4">
+      <div *ngIf="!isReadonly" class="my-4 px-2">
+        <button #hiddenFocus class="btn btn-link" (click)="onSubmit()">ANNULLA</button>
+      </div>
+      <div class="ml-auto my-4">
+        <button type="submit" class="btn btn-color-slim blue" (click)="onSubmit(true)">{{isReadonly?'CHIUDI':'SALVA QUADRO'}}</button>
+      </div>
+  </div>
+
+    <!--<input type="hidden" [value]="!isInitialization || hiddenFocus.focus()">-->
+  </form>
+</div>
+
