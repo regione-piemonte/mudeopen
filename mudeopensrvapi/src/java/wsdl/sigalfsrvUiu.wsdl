@@ -1,0 +1,3222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:sigalfsrvUiu" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:sigalfsrvUiu" xmlns:intf="urn:sigalfsrvUiu" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Nov 13, 2013 (09:13:21 GMT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="urn:sigalfsrvUiu" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="cercaElencoSubalterniGraffatiConIstatESezione">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConIstatESezioneResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConIstatESezioneReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentificativoCatastaleFabbricato">
+    <sequence>
+     <element name="codComuneBelfiore" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="foglio" nillable="true" type="xsd:string"/>
+     <element name="mappale" nillable="true" type="xsd:string"/>
+     <element name="sezione" nillable="true" type="xsd:string"/>
+     <element name="sezioneUrbana" nillable="true" type="xsd:string"/>
+     <element name="subalterno" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="ArrayOfIdentificativoCatastaleFabbricato">
+    <sequence>
+     <element maxOccurs="unbounded" minOccurs="0" name="item" type="impl:IdentificativoCatastaleFabbricato"/>
+    </sequence>
+   </complexType>
+   <complexType name="Graffato">
+    <sequence>
+     <element name="identificativiCatastali" nillable="true" type="impl:ArrayOfIdentificativoCatastaleFabbricato"/>
+    </sequence>
+   </complexType>
+   <complexType name="CSIException">
+    <sequence>
+     <element name="nestedExcClassName" nillable="true" type="xsd:string"/>
+     <element name="nestedExcMsg" nillable="true" type="xsd:string"/>
+     <element name="stackTraceMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="fault" type="impl:CSIException"/>
+   <complexType name="SystemException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault1" type="impl:SystemException"/>
+   <complexType name="UnrecoverableException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault2" type="impl:UnrecoverableException"/>
+   <complexType name="UserException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <complexType name="AutorizzMancanteEnteException">
+    <complexContent>
+     <extension base="impl:UserException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault3" type="impl:AutorizzMancanteEnteException"/>
+   <complexType name="OutputException">
+    <complexContent>
+     <extension base="impl:UserException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault4" type="impl:OutputException"/>
+   <complexType name="ParInputObblMancantiException">
+    <complexContent>
+     <extension base="impl:UserException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault5" type="impl:ParInputObblMancantiException"/>
+   <complexType name="ParInputValNonCorrettoException">
+    <complexContent>
+     <extension base="impl:UserException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault6" type="impl:ParInputValNonCorrettoException"/>
+   <complexType name="PermissionException">
+    <complexContent>
+     <extension base="impl:UserException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault7" type="impl:PermissionException"/>
+   <element name="cercaElencoSubalterniGraffatiConBelfioreESezione">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConBelfioreESezioneResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConBelfioreESezioneReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConIstat">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConIstatResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConIstatReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConBelfiore">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConBelfioreResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConBelfioreReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstatESezione">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstatESezioneResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConIstatESezioneReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfioreESezione">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfioreESezioneResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConBelfioreESezioneReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstat">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstatResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConIstatReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfiore">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfioreResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConBelfioreReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbana">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+      <element minOccurs="0" name="in5" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbana">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+      <element minOccurs="0" name="in5" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstatSezioneESezioneUrbana">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+      <element minOccurs="0" name="in5" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbana">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+      <element minOccurs="0" name="in3" type="xsd:string"/>
+      <element minOccurs="0" name="in4" type="xsd:string"/>
+      <element minOccurs="0" name="in5" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIndirizziPerIdentificativoCatastale">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIndirizziPerIdentificativoCatastaleResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoIndirizziPerIdentificativoCatastaleReturn" type="impl:Indirizzo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Indirizzo">
+    <sequence>
+     <element name="codBelfioreComune" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="indirizzo" nillable="true" type="xsd:string"/>
+     <element name="numeroCivico" nillable="true" type="xsd:string"/>
+     <element name="toponimo" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaElencoSezioniUrbaneDiUnComuneByIstat">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSezioniUrbaneDiUnComuneByIstatResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSezioniUrbaneDiUnComuneByIstatReturn" type="impl:SezioneUrbana"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SezioneUrbana">
+    <sequence>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="sezioneUrbana" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaElencoSezioniUrbaneDiUnComuneByBelfiore">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreReturn" type="impl:SezioneUrbana"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniPerIdentitaPersonaFisica">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaFisica"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentitaPersonaFisica">
+    <sequence>
+     <element name="codBelfioreComuneDiNascita" nillable="true" type="xsd:string"/>
+     <element name="codBelfioreComuneDiRicerca" nillable="true" type="xsd:string"/>
+     <element name="codFiscale" nillable="true" type="xsd:string"/>
+     <element name="cognome" nillable="true" type="xsd:string"/>
+     <element name="dataNascita" nillable="true" type="xsd:string"/>
+     <element name="nome" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaElencoSubalterniPerIdentitaPersonaFisicaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniPerIdentitaPersonaFisicaReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisica">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaFisica"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniPerIdentitaPersonaGiuridica">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaGiuridica"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentitaPersonaGiuridica">
+    <sequence>
+     <element name="codBelfioreComuneDiRicerca" nillable="true" type="xsd:string"/>
+     <element name="codBelfioreSede" nillable="true" type="xsd:string"/>
+     <element name="denominazione" nillable="true" type="xsd:string"/>
+     <element name="partitaIva" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaReturn" type="impl:IdentificativoCatastaleFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridica">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaGiuridica"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaReturn" type="impl:Graffato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantina">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:long"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaReturn" type="xsd:base64Binary"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaIndirizziPerIdentificativoCatastaleFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaIndirizziPerIdentificativoCatastaleFabbricatoReturn" type="impl:Indirizzo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaDettaglioDatiFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaDettaglioDatiFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="cercaDettaglioDatiFabbricatoReturn" type="impl:DettaglioDatiFabbricato"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DettaglioDatiFabbricato">
+    <sequence>
+     <element name="annoNota" nillable="true" type="xsd:string"/>
+     <element name="annotazione" nillable="true" type="xsd:string"/>
+     <element name="categoria" nillable="true" type="xsd:string"/>
+     <element name="classe" nillable="true" type="xsd:string"/>
+     <element name="codCausale" nillable="true" type="xsd:string"/>
+     <element name="codComuneBelfiore" nillable="true" type="xsd:string"/>
+     <element name="consistenza" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="dataEfficacia" nillable="true" type="xsd:string"/>
+     <element name="dataRegistrazione" nillable="true" type="xsd:string"/>
+     <element name="descrCategoria" nillable="true" type="xsd:string"/>
+     <element name="descrCausale" nillable="true" type="xsd:string"/>
+     <element name="descrNota" nillable="true" type="xsd:string"/>
+     <element name="descrPartitaSpeciale" nillable="true" type="xsd:string"/>
+     <element name="edificio" nillable="true" type="xsd:string"/>
+     <element name="flagClassamento" nillable="true" type="xsd:string"/>
+     <element name="infoSupplementariCausale" nillable="true" type="xsd:string"/>
+     <element name="interno1" nillable="true" type="xsd:string"/>
+     <element name="interno2" nillable="true" type="xsd:string"/>
+     <element name="lotto" nillable="true" type="xsd:string"/>
+     <element name="numeroNota" nillable="true" type="xsd:string"/>
+     <element name="numeroRiserve" type="xsd:int"/>
+     <element name="partita" nillable="true" type="xsd:string"/>
+     <element name="piano1" nillable="true" type="xsd:string"/>
+     <element name="piano2" nillable="true" type="xsd:string"/>
+     <element name="piano3" nillable="true" type="xsd:string"/>
+     <element name="piano4" nillable="true" type="xsd:string"/>
+     <element name="progNota" nillable="true" type="xsd:string"/>
+     <element name="rendita" nillable="true" type="xsd:string"/>
+     <element name="scala" nillable="true" type="xsd:string"/>
+     <element name="sezione" nillable="true" type="xsd:string"/>
+     <element name="superficie" nillable="true" type="xsd:string"/>
+     <element name="tipoNota" nillable="true" type="xsd:string"/>
+     <element name="zonaCensuaria" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaDettaglioDatiRiserveFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaDettaglioDatiRiserveFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaDettaglioDatiRiserveFabbricatoReturn" type="impl:DettaglioDatiRiserva"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DettaglioDatiRiserva">
+    <sequence>
+     <element name="codice" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="descrizione" nillable="true" type="xsd:string"/>
+     <element name="partitaIscrizione" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaSchedePlanimetrichePerIdentificativoCatastale">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaSchedePlanimetrichePerIdentificativoCatastaleResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaSchedePlanimetrichePerIdentificativoCatastaleReturn" type="impl:Planimetria"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="Planimetria">
+    <sequence>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="dataPresentazione" nillable="true" type="xsd:string"/>
+     <element name="formato" nillable="true" type="xsd:string"/>
+     <element name="idImmaginePiantina" type="xsd:long"/>
+     <element name="nomeFile" nillable="true" type="xsd:string"/>
+     <element name="numScheda" type="xsd:long"/>
+     <element name="scala" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="cercaDettaglioDatiRiserveFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaDettaglioDatiRiserveFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstatResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaDettaglioDatiFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaDettaglioDatiFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="OutputException">
+
+      <wsdl:part element="impl:fault4" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse">
+
+      <wsdl:part element="impl:estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatESezioneRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstatESezione" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniPerIdentitaPersonaFisicaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniPerIdentitaPersonaFisicaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfioreResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatESezioneResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstatESezioneResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="UnrecoverableException">
+
+      <wsdl:part element="impl:fault2" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfioreResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniPerIdentitaPersonaFisicaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniPerIdentitaPersonaFisica" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbana" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSezioniUrbaneDiUnComuneByIstatResponse">
+
+      <wsdl:part element="impl:cercaElencoSezioniUrbaneDiUnComuneByIstatResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreESezioneRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfioreESezione" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CSIException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbana" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniPerIdentitaPersonaGiuridica" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfioreSezioneESezioneUrbana" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaFisica" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ParInputValNonCorrettoException">
+
+      <wsdl:part element="impl:fault6" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaDettaglioDatiRiserveFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaDettaglioDatiRiserveFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaSchedePlanimetrichePerIdentificativoCatastaleRequest">
+
+      <wsdl:part element="impl:cercaSchedePlanimetrichePerIdentificativoCatastale" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIndirizziPerIdentificativoCatastaleResponse">
+
+      <wsdl:part element="impl:cercaElencoIndirizziPerIdentificativoCatastaleResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaRequest">
+
+      <wsdl:part element="impl:estraiPlanimetriaPerBelfioreEdIdImmaginePiantina" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaDettaglioDatiFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaDettaglioDatiFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatESezioneResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstatESezioneResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIndirizziPerIdentificativoCatastaleFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaIndirizziPerIdentificativoCatastaleFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreESezioneRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfioreESezione" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstat" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="SystemException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstatResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaSchedePlanimetrichePerIdentificativoCatastaleResponse">
+
+      <wsdl:part element="impl:cercaSchedePlanimetrichePerIdentificativoCatastaleResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="PermissionException">
+
+      <wsdl:part element="impl:fault7" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSezioniUrbaneDiUnComuneByIstatRequest">
+
+      <wsdl:part element="impl:cercaElencoSezioniUrbaneDiUnComuneByIstat" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfiore" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="ParInputObblMancantiException">
+
+      <wsdl:part element="impl:fault5" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstat" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstatSezioneESezioneUrbana" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreESezioneResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfioreESezioneResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConIstatESezioneRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConIstatESezione" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="AutorizzMancanteEnteException">
+
+      <wsdl:part element="impl:fault3" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIndirizziPerIdentificativoCatastaleRequest">
+
+      <wsdl:part element="impl:cercaElencoIndirizziPerIdentificativoCatastale" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse">
+
+      <wsdl:part element="impl:cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreRequest">
+
+      <wsdl:part element="impl:cercaElencoSezioniUrbaneDiUnComuneByBelfiore" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiConBelfioreESezioneResponse">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiConBelfioreESezioneResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniConBelfioreRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniConBelfiore" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaRequest">
+
+      <wsdl:part element="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridica" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="sigalfsrvUiu">
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstatESezione">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConIstatESezioneRequest" name="cercaElencoSubalterniGraffatiConIstatESezioneRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConIstatESezioneResponse" name="cercaElencoSubalterniGraffatiConIstatESezioneResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfioreESezione">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConBelfioreESezioneRequest" name="cercaElencoSubalterniGraffatiConBelfioreESezioneRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConBelfioreESezioneResponse" name="cercaElencoSubalterniGraffatiConBelfioreESezioneResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstat">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConIstatRequest" name="cercaElencoSubalterniGraffatiConIstatRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConIstatResponse" name="cercaElencoSubalterniGraffatiConIstatResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfiore">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConBelfioreRequest" name="cercaElencoSubalterniGraffatiConBelfioreRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConBelfioreResponse" name="cercaElencoSubalterniGraffatiConBelfioreResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstatESezione">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConIstatESezioneRequest" name="cercaElencoSubalterniConIstatESezioneRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConIstatESezioneResponse" name="cercaElencoSubalterniConIstatESezioneResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfioreESezione">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConBelfioreESezioneRequest" name="cercaElencoSubalterniConBelfioreESezioneRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConBelfioreESezioneResponse" name="cercaElencoSubalterniConBelfioreESezioneResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstat">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConIstatRequest" name="cercaElencoSubalterniConIstatRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConIstatResponse" name="cercaElencoSubalterniConIstatResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfiore">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConBelfioreRequest" name="cercaElencoSubalterniConBelfioreRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConBelfioreResponse" name="cercaElencoSubalterniConBelfioreResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbana">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaRequest" name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse" name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbana">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaRequest" name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse" name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstatSezioneESezioneUrbana">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConIstatSezioneESezioneUrbanaRequest" name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse" name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbana">
+
+         <wsdl:input message="impl:cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaRequest" name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse" name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricato">
+
+         <wsdl:input message="impl:cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoRequest" name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse" name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIndirizziPerIdentificativoCatastale">
+
+         <wsdl:input message="impl:cercaElencoIndirizziPerIdentificativoCatastaleRequest" name="cercaElencoIndirizziPerIdentificativoCatastaleRequest"/>
+
+         <wsdl:output message="impl:cercaElencoIndirizziPerIdentificativoCatastaleResponse" name="cercaElencoIndirizziPerIdentificativoCatastaleResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSezioniUrbaneDiUnComuneByIstat">
+
+         <wsdl:input message="impl:cercaElencoSezioniUrbaneDiUnComuneByIstatRequest" name="cercaElencoSezioniUrbaneDiUnComuneByIstatRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSezioniUrbaneDiUnComuneByIstatResponse" name="cercaElencoSezioniUrbaneDiUnComuneByIstatResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSezioniUrbaneDiUnComuneByBelfiore">
+
+         <wsdl:input message="impl:cercaElencoSezioniUrbaneDiUnComuneByBelfioreRequest" name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse" name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniPerIdentitaPersonaFisica">
+
+         <wsdl:input message="impl:cercaElencoSubalterniPerIdentitaPersonaFisicaRequest" name="cercaElencoSubalterniPerIdentitaPersonaFisicaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniPerIdentitaPersonaFisicaResponse" name="cercaElencoSubalterniPerIdentitaPersonaFisicaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisica">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaRequest" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniPerIdentitaPersonaGiuridica">
+
+         <wsdl:input message="impl:cercaElencoSubalterniPerIdentitaPersonaGiuridicaRequest" name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse" name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridica">
+
+         <wsdl:input message="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaRequest" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse" name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantina">
+
+         <wsdl:input message="impl:estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaRequest" name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaRequest"/>
+
+         <wsdl:output message="impl:estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse" name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIndirizziPerIdentificativoCatastaleFabbricato">
+
+         <wsdl:input message="impl:cercaIndirizziPerIdentificativoCatastaleFabbricatoRequest" name="cercaIndirizziPerIdentificativoCatastaleFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse" name="cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaDettaglioDatiFabbricato">
+
+         <wsdl:input message="impl:cercaDettaglioDatiFabbricatoRequest" name="cercaDettaglioDatiFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaDettaglioDatiFabbricatoResponse" name="cercaDettaglioDatiFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaDettaglioDatiRiserveFabbricato">
+
+         <wsdl:input message="impl:cercaDettaglioDatiRiserveFabbricatoRequest" name="cercaDettaglioDatiRiserveFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaDettaglioDatiRiserveFabbricatoResponse" name="cercaDettaglioDatiRiserveFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaSchedePlanimetrichePerIdentificativoCatastale">
+
+         <wsdl:input message="impl:cercaSchedePlanimetrichePerIdentificativoCatastaleRequest" name="cercaSchedePlanimetrichePerIdentificativoCatastaleRequest"/>
+
+         <wsdl:output message="impl:cercaSchedePlanimetrichePerIdentificativoCatastaleResponse" name="cercaSchedePlanimetrichePerIdentificativoCatastaleResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:PermissionException" name="PermissionException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:AutorizzMancanteEnteException" name="AutorizzMancanteEnteException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+         <wsdl:fault message="impl:ParInputValNonCorrettoException" name="ParInputValNonCorrettoException"/>
+
+         <wsdl:fault message="impl:OutputException" name="OutputException"/>
+
+         <wsdl:fault message="impl:ParInputObblMancantiException" name="ParInputObblMancantiException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="sigalfsrvUiuSoapBinding" type="impl:sigalfsrvUiu">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstatESezione">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConIstatESezioneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConIstatESezioneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfioreESezione">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConBelfioreESezioneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConBelfioreESezioneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstat">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConIstatRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConIstatResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfiore">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConBelfioreRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConBelfioreResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstatESezione">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConIstatESezioneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConIstatESezioneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfioreESezione">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConBelfioreESezioneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConBelfioreESezioneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstat">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConIstatRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConIstatResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfiore">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConBelfioreRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConBelfioreResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbana">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConIstatSezioneESezioneUrbanaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbana">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiConBelfioreSezioneESezioneUrbanaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConIstatSezioneESezioneUrbana">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConIstatSezioneESezioneUrbanaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbana">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniConBelfioreSezioneESezioneUrbanaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoGraffatiDiUnIdentificativoCatastaleFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIndirizziPerIdentificativoCatastale">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoIndirizziPerIdentificativoCatastaleRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoIndirizziPerIdentificativoCatastaleResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSezioniUrbaneDiUnComuneByIstat">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSezioniUrbaneDiUnComuneByIstatRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSezioniUrbaneDiUnComuneByIstatResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSezioniUrbaneDiUnComuneByBelfiore">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSezioniUrbaneDiUnComuneByBelfioreResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniPerIdentitaPersonaFisica">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniPerIdentitaPersonaFisicaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniPerIdentitaPersonaFisicaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisica">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiPerIdentitaPersonaFisicaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniPerIdentitaPersonaGiuridica">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniPerIdentitaPersonaGiuridicaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridica">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoSubalterniGraffatiPerIdentitaPersonaGiuridicaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantina">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="estraiPlanimetriaPerBelfioreEdIdImmaginePiantinaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIndirizziPerIdentificativoCatastaleFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaIndirizziPerIdentificativoCatastaleFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaIndirizziPerIdentificativoCatastaleFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaDettaglioDatiFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaDettaglioDatiFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaDettaglioDatiFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaDettaglioDatiRiserveFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaDettaglioDatiRiserveFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaDettaglioDatiRiserveFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaSchedePlanimetrichePerIdentificativoCatastale">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaSchedePlanimetrichePerIdentificativoCatastaleRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaSchedePlanimetrichePerIdentificativoCatastaleResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="PermissionException">
+
+            <wsdlsoap:fault name="PermissionException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="AutorizzMancanteEnteException">
+
+            <wsdlsoap:fault name="AutorizzMancanteEnteException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputValNonCorrettoException">
+
+            <wsdlsoap:fault name="ParInputValNonCorrettoException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="OutputException">
+
+            <wsdlsoap:fault name="OutputException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="ParInputObblMancantiException">
+
+            <wsdlsoap:fault name="ParInputObblMancantiException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="sigalfsrvUiuService">
+
+      <wsdl:port binding="impl:sigalfsrvUiuSoapBinding" name="sigalfsrvUiu">
+
+         <wsdlsoap:address location="http://tst-applogic.reteunitaria.piemonte.it/sigalfsrvApplUiuWsfad/services/sigalfsrvUiu"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

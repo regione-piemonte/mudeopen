@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:sigalfsrvTitolari" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:sigalfsrvTitolari" xmlns:intf="urn:sigalfsrvTitolari" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Nov 13, 2013 (09:13:21 GMT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="urn:sigalfsrvTitolari" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentificativoCatastaleFabbricato">
+    <sequence>
+     <element name="codComuneBelfiore" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="foglio" nillable="true" type="xsd:string"/>
+     <element name="mappale" nillable="true" type="xsd:string"/>
+     <element name="sezione" nillable="true" type="xsd:string"/>
+     <element name="sezioneUrbana" nillable="true" type="xsd:string"/>
+     <element name="subalterno" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoReturn" type="impl:Titolarita"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="SoggettoFisico">
+    <sequence>
+     <element name="codComuneBelfioreNascita" nillable="true" type="xsd:string"/>
+     <element name="codComuneBelfioreTitolarita" nillable="true" type="xsd:string"/>
+     <element name="codFiscale" nillable="true" type="xsd:string"/>
+     <element name="cognome" nillable="true" type="xsd:string"/>
+     <element name="dataNascita" nillable="true" type="xsd:string"/>
+     <element name="nome" nillable="true" type="xsd:string"/>
+     <element name="sesso" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="SoggettoGiuridico">
+    <sequence>
+     <element name="codComuneBelfioreSedeOperativa" nillable="true" type="xsd:string"/>
+     <element name="codComuneBelfioreTitolarita" nillable="true" type="xsd:string"/>
+     <element name="denominazione" nillable="true" type="xsd:string"/>
+     <element name="partitaIva" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="IdentitaPersonaFisica">
+    <sequence>
+     <element name="codBelfioreComuneDiNascita" nillable="true" type="xsd:string"/>
+     <element name="codBelfioreComuneDiRicerca" nillable="true" type="xsd:string"/>
+     <element name="codFiscale" nillable="true" type="xsd:string"/>
+     <element name="cognome" nillable="true" type="xsd:string"/>
+     <element name="dataNascita" nillable="true" type="xsd:string"/>
+     <element name="nome" nillable="true" type="xsd:string"/>
+     <element name="sesso" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="Titolarita">
+    <sequence>
+     <element name="annoNota" nillable="true" type="xsd:string"/>
+     <element name="codCausale" nillable="true" type="xsd:string"/>
+     <element name="codComuneBelfioreTitolarita" nillable="true" type="xsd:string"/>
+     <element name="codDiritto1" nillable="true" type="xsd:string"/>
+     <element name="codDiritto2" nillable="true" type="xsd:string"/>
+     <element name="codRegime" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="dataEfficacia" nillable="true" type="xsd:string"/>
+     <element name="dataRegistrazione" nillable="true" type="xsd:string"/>
+     <element name="descrCausale" nillable="true" type="xsd:string"/>
+     <element name="descrDiritto" nillable="true" type="xsd:string"/>
+     <element name="descrNota" nillable="true" type="xsd:string"/>
+     <element name="descrRegime" nillable="true" type="xsd:string"/>
+     <element name="infoSupplementariCausale" nillable="true" type="xsd:string"/>
+     <element name="numeroNota" nillable="true" type="xsd:string"/>
+     <element name="partita" nillable="true" type="xsd:string"/>
+     <element name="progNota" nillable="true" type="xsd:string"/>
+     <element name="quotaDenominatore" type="xsd:long"/>
+     <element name="quotaNumeratore" type="xsd:long"/>
+     <element name="sezione" nillable="true" type="xsd:string"/>
+     <element name="soggettoFisico" nillable="true" type="impl:SoggettoFisico"/>
+     <element name="soggettoGiuridico" nillable="true" type="impl:SoggettoGiuridico"/>
+     <element name="soggettoRiferimentoRegime" nillable="true" type="impl:IdentitaPersonaFisica"/>
+     <element name="tipoNota" nillable="true" type="xsd:string"/>
+     <element name="titolaritaNonCodificata" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="CSIException">
+    <sequence>
+     <element name="nestedExcClassName" nillable="true" type="xsd:string"/>
+     <element name="nestedExcMsg" nillable="true" type="xsd:string"/>
+     <element name="stackTraceMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="fault" type="impl:CSIException"/>
+   <complexType name="SystemException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault1" type="impl:SystemException"/>
+   <complexType name="UnrecoverableException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault2" type="impl:UnrecoverableException"/>
+   <element name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerreno">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentificativoCatastaleTerreno"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentificativoCatastaleTerreno">
+    <sequence>
+     <element name="codComuneBelfiore" nillable="true" type="xsd:string"/>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="foglio" type="xsd:long"/>
+     <element name="mappale" nillable="true" type="xsd:string"/>
+     <element name="sezione" nillable="true" type="xsd:string"/>
+     <element name="subalterno" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoReturn" type="impl:Titolarita"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricato">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaFisica"/>
+      <element minOccurs="0" name="in1" type="impl:IdentificativoCatastaleFabbricato"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoReturn" type="impl:IntervalloValiditaTitolarita"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IntervalloValiditaTitolarita">
+    <sequence>
+     <element name="dataAggiornamento" nillable="true" type="xsd:string"/>
+     <element name="dataFineValidita" nillable="true" type="xsd:string"/>
+     <element name="dataInizioValidita" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="cercaIntervalloValiditaUltimaTitolaritaSuTerreno">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="impl:IdentitaPersonaFisica"/>
+      <element minOccurs="0" name="in1" type="impl:IdentificativoCatastaleTerreno"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoReturn" type="impl:IntervalloValiditaTitolarita"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse">
+
+      <wsdl:part element="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaIntervalloValiditaUltimaTitolaritaSuFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse">
+
+      <wsdl:part element="impl:cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="SystemException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoRequest">
+
+      <wsdl:part element="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerreno" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse">
+
+      <wsdl:part element="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CSIException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoRequest">
+
+      <wsdl:part element="impl:cercaIntervalloValiditaUltimaTitolaritaSuTerreno" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoRequest">
+
+      <wsdl:part element="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricato" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="UnrecoverableException">
+
+      <wsdl:part element="impl:fault2" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="sigalfsrvTitolari">
+
+      <wsdl:operation name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricato">
+
+         <wsdl:input message="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoRequest" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerreno">
+
+         <wsdl:input message="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoRequest" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoRequest"/>
+
+         <wsdl:output message="impl:cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse" name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricato">
+
+         <wsdl:input message="impl:cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoRequest" name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoRequest"/>
+
+         <wsdl:output message="impl:cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse" name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIntervalloValiditaUltimaTitolaritaSuTerreno">
+
+         <wsdl:input message="impl:cercaIntervalloValiditaUltimaTitolaritaSuTerrenoRequest" name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoRequest"/>
+
+         <wsdl:output message="impl:cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse" name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="sigalfsrvTitolariSoapBinding" type="impl:sigalfsrvTitolari">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerreno">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaTitolaritaESoggettiAssociatiDiUnIdentificativoCatastaleTerrenoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricato">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaIntervalloValiditaUltimaTitolaritaSuFabbricatoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaIntervalloValiditaUltimaTitolaritaSuTerreno">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaIntervalloValiditaUltimaTitolaritaSuTerrenoResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="sigalfsrvTitolariService">
+
+      <wsdl:port binding="impl:sigalfsrvTitolariSoapBinding" name="sigalfsrvTitolari">
+
+         <wsdlsoap:address location="http://tst-applogic.reteunitaria.piemonte.it/sigalfsrvApplTitolariWsfad/services/sigalfsrvTitolari"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

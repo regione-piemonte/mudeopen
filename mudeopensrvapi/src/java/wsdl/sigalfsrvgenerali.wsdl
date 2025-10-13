@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="urn:sigalfsrvGenerali" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="urn:sigalfsrvGenerali" xmlns:intf="urn:sigalfsrvGenerali" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Nov 13, 2013 (09:13:21 GMT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="urn:sigalfsrvGenerali" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="cercaElencoComuniPerCodIstatProvincia">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoComuniPerCodIstatProvinciaResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoComuniPerCodIstatProvinciaReturn" type="impl:IdentificativoComune"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="IdentificativoComune">
+    <sequence>
+     <element name="codComuneBelfiore" nillable="true" type="xsd:string"/>
+     <element name="codComuneIstat" nillable="true" type="xsd:string"/>
+     <element name="codProvincia" nillable="true" type="xsd:string"/>
+     <element name="codRegione" nillable="true" type="xsd:string"/>
+     <element name="nomeComune" nillable="true" type="xsd:string"/>
+     <element name="nomeProvincia" nillable="true" type="xsd:string"/>
+     <element name="nomeRegione" nillable="true" type="xsd:string"/>
+     <element name="siglaProvincia" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <complexType name="CSIException">
+    <sequence>
+     <element name="nestedExcClassName" nillable="true" type="xsd:string"/>
+     <element name="nestedExcMsg" nillable="true" type="xsd:string"/>
+     <element name="stackTraceMessage" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="fault" type="impl:CSIException"/>
+   <complexType name="SystemException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault1" type="impl:SystemException"/>
+   <complexType name="UnrecoverableException">
+    <complexContent>
+     <extension base="impl:CSIException">
+      <sequence/>
+     </extension>
+    </complexContent>
+   </complexType>
+   <element name="fault2" type="impl:UnrecoverableException"/>
+   <element name="cercaElencoComuni">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoComuniResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoComuniReturn" type="impl:IdentificativoComune"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isComuneAventeCodiceBelfioreAbilitatoSigmater">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse">
+    <complexType>
+     <sequence>
+      <element name="isComuneAventeCodiceBelfioreAbilitatoSigmaterReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isComuneAventeCodiceIstatAbilitatoSigmater">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isComuneAventeCodiceIstatAbilitatoSigmaterResponse">
+    <complexType>
+     <sequence>
+      <element name="isComuneAventeCodiceIstatAbilitatoSigmaterReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIdentificativiComunePerCodiceIstat">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element minOccurs="0" name="in1" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIdentificativiComunePerCodiceIstatResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoIdentificativiComunePerCodiceIstatReturn" type="impl:IdentificativoComune"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIdentificativiComunePerNomeComune">
+    <complexType>
+     <sequence>
+      <element minOccurs="0" name="in0" type="xsd:string"/>
+      <element name="in1" type="xsd:boolean"/>
+      <element minOccurs="0" name="in2" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cercaElencoIdentificativiComunePerNomeComuneResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" name="cercaElencoIdentificativiComunePerNomeComuneReturn" type="impl:IdentificativoComune"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="cercaElencoComuniRequest">
+
+      <wsdl:part element="impl:cercaElencoComuni" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoComuniPerCodIstatProvinciaRequest">
+
+      <wsdl:part element="impl:cercaElencoComuniPerCodIstatProvincia" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse">
+
+      <wsdl:part element="impl:isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="SystemException">
+
+      <wsdl:part element="impl:fault1" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isComuneAventeCodiceBelfioreAbilitatoSigmaterRequest">
+
+      <wsdl:part element="impl:isComuneAventeCodiceBelfioreAbilitatoSigmater" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoComuniPerCodIstatProvinciaResponse">
+
+      <wsdl:part element="impl:cercaElencoComuniPerCodIstatProvinciaResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isComuneAventeCodiceIstatAbilitatoSigmaterResponse">
+
+      <wsdl:part element="impl:isComuneAventeCodiceIstatAbilitatoSigmaterResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="UnrecoverableException">
+
+      <wsdl:part element="impl:fault2" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="CSIException">
+
+      <wsdl:part element="impl:fault" name="fault"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoComuniResponse">
+
+      <wsdl:part element="impl:cercaElencoComuniResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIdentificativiComunePerNomeComuneResponse">
+
+      <wsdl:part element="impl:cercaElencoIdentificativiComunePerNomeComuneResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIdentificativiComunePerNomeComuneRequest">
+
+      <wsdl:part element="impl:cercaElencoIdentificativiComunePerNomeComune" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="isComuneAventeCodiceIstatAbilitatoSigmaterRequest">
+
+      <wsdl:part element="impl:isComuneAventeCodiceIstatAbilitatoSigmater" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIdentificativiComunePerCodiceIstatRequest">
+
+      <wsdl:part element="impl:cercaElencoIdentificativiComunePerCodiceIstat" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:message name="cercaElencoIdentificativiComunePerCodiceIstatResponse">
+
+      <wsdl:part element="impl:cercaElencoIdentificativiComunePerCodiceIstatResponse" name="parameters"/>
+
+   </wsdl:message>
+
+   <wsdl:portType name="sigalfsrvGenerali">
+
+      <wsdl:operation name="cercaElencoComuniPerCodIstatProvincia">
+
+         <wsdl:input message="impl:cercaElencoComuniPerCodIstatProvinciaRequest" name="cercaElencoComuniPerCodIstatProvinciaRequest"/>
+
+         <wsdl:output message="impl:cercaElencoComuniPerCodIstatProvinciaResponse" name="cercaElencoComuniPerCodIstatProvinciaResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoComuni">
+
+         <wsdl:input message="impl:cercaElencoComuniRequest" name="cercaElencoComuniRequest"/>
+
+         <wsdl:output message="impl:cercaElencoComuniResponse" name="cercaElencoComuniResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isComuneAventeCodiceBelfioreAbilitatoSigmater">
+
+         <wsdl:input message="impl:isComuneAventeCodiceBelfioreAbilitatoSigmaterRequest" name="isComuneAventeCodiceBelfioreAbilitatoSigmaterRequest"/>
+
+         <wsdl:output message="impl:isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse" name="isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isComuneAventeCodiceIstatAbilitatoSigmater">
+
+         <wsdl:input message="impl:isComuneAventeCodiceIstatAbilitatoSigmaterRequest" name="isComuneAventeCodiceIstatAbilitatoSigmaterRequest"/>
+
+         <wsdl:output message="impl:isComuneAventeCodiceIstatAbilitatoSigmaterResponse" name="isComuneAventeCodiceIstatAbilitatoSigmaterResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIdentificativiComunePerCodiceIstat">
+
+         <wsdl:input message="impl:cercaElencoIdentificativiComunePerCodiceIstatRequest" name="cercaElencoIdentificativiComunePerCodiceIstatRequest"/>
+
+         <wsdl:output message="impl:cercaElencoIdentificativiComunePerCodiceIstatResponse" name="cercaElencoIdentificativiComunePerCodiceIstatResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIdentificativiComunePerNomeComune">
+
+         <wsdl:input message="impl:cercaElencoIdentificativiComunePerNomeComuneRequest" name="cercaElencoIdentificativiComunePerNomeComuneRequest"/>
+
+         <wsdl:output message="impl:cercaElencoIdentificativiComunePerNomeComuneResponse" name="cercaElencoIdentificativiComunePerNomeComuneResponse"/>
+
+         <wsdl:fault message="impl:UnrecoverableException" name="UnrecoverableException"/>
+
+         <wsdl:fault message="impl:CSIException" name="CSIException"/>
+
+         <wsdl:fault message="impl:SystemException" name="SystemException"/>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="sigalfsrvGeneraliSoapBinding" type="impl:sigalfsrvGenerali">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="cercaElencoComuniPerCodIstatProvincia">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoComuniPerCodIstatProvinciaRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoComuniPerCodIstatProvinciaResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoComuni">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoComuniRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoComuniResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isComuneAventeCodiceBelfioreAbilitatoSigmater">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isComuneAventeCodiceBelfioreAbilitatoSigmaterRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isComuneAventeCodiceBelfioreAbilitatoSigmaterResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="isComuneAventeCodiceIstatAbilitatoSigmater">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="isComuneAventeCodiceIstatAbilitatoSigmaterRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="isComuneAventeCodiceIstatAbilitatoSigmaterResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIdentificativiComunePerCodiceIstat">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoIdentificativiComunePerCodiceIstatRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoIdentificativiComunePerCodiceIstatResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="cercaElencoIdentificativiComunePerNomeComune">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="cercaElencoIdentificativiComunePerNomeComuneRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="cercaElencoIdentificativiComunePerNomeComuneResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+         <wsdl:fault name="UnrecoverableException">
+
+            <wsdlsoap:fault name="UnrecoverableException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="CSIException">
+
+            <wsdlsoap:fault name="CSIException" use="literal"/>
+
+         </wsdl:fault>
+
+         <wsdl:fault name="SystemException">
+
+            <wsdlsoap:fault name="SystemException" use="literal"/>
+
+         </wsdl:fault>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="sigalfsrvGeneraliService">
+
+      <wsdl:port binding="impl:sigalfsrvGeneraliSoapBinding" name="sigalfsrvGenerali">
+
+         <wsdlsoap:address location="http://tst-applogic.reteunitaria.piemonte.it/sigalfsrvApplGeneraliWsfad/services/sigalfsrvGenerali"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

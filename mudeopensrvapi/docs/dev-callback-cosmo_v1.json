@@ -1,0 +1,233 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api MudeOpen Cosmo callback",
+    "version": "v1",
+    "title": "mudeopen-cosmocallback-rp-01",
+    "contact": {
+      "name": "csi"
+    }
+  },
+  "host": "dev-srv-api-cosmo-mudeopen.nivolapiemonte.it",
+  "basePath": "/mudeopen/api/rest/cosmo",
+  "tags": [
+    {
+      "name": "callback",
+      "description": "Api MudeOpen Cosmo callback"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "basic_auth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basic_auth": []
+    }
+  ],
+  "paths": {
+    "/stato-pratica/{idPratica}": {
+      "put": {
+        "tags": [
+          "callback"
+        ],
+        "summary": "Invio callback stato pratica",
+        "description": "Invio aggiornamento stato di una pratica tramite l'id della pratica sul sistema fruitore",
+        "operationId": "callback-put-stato-pratica",
+        "parameters": [
+          {
+            "name": "idPratica",
+            "in": "path",
+            "description": "id della pratica esterna",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/AggiornaStatoPraticaRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Esito"
+            }
+          },
+          "400": {
+            "description": "Bad Request - i dati inviati non sono formalmente corretti"
+          },
+          "404": {
+            "description": "Not found - la pratica specificata non e' stata trovata"
+          },
+          "422": {
+            "description": "Unprocessable entity - i dati inviati non sono corretti"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-auth-type": "Application & Application User",
+        "x-throttling-tier": "Unlimited"
+      }
+    }
+  },
+  "definitions": {
+    "AggiornaStatoPraticaRequest": {
+      "type": "object",
+      "required": [
+        "idRiferimento",
+        "codice",
+        "codiceFiscaleUtente",
+        "dataCambioStato"
+      ],
+      "properties": {
+        "idRiferimento": {
+          "type": "string"
+        },
+        "idFiglia": {
+          "type": "string"
+        },
+        "codice": {
+          "type": "string"
+        },
+        "codiceFiscaleUtente": {
+          "type": "string"
+        },
+        "numeroPratica": {
+          "type": "string"
+        },
+        "annoPratica": {
+          "type": "string"
+        },
+        "numeroProtocollo": {
+          "type": "string"
+        },
+        "dataProtocollo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dataCambioStato": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "documenti": {
+          "type": "array",
+          "description": "array dei documenti della pratica",
+          "items": {
+            "$ref": "#/definitions/DocumentoFruitore"
+          }
+        },
+        "Tipo_istruttoria": {
+          "type": "integer"
+        }
+      }
+    },
+    "DocumentoFruitore": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idPadre": {
+          "type": "string"
+        },
+        "titolo": {
+          "type": "string"
+        },
+        "descrizione": {
+          "type": "string"
+        },
+        "autore": {
+          "type": "string"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "refURL": {
+          "type": "string"
+        },
+        "tipo": {
+          "$ref": "#/definitions/TipoDocumentoFruitore"
+        },
+        "archiviazione": {
+          "$ref": "#/definitions/ArchiviazioneDocumentoFruitore"
+        }
+      },
+      "title": "DocumentoFruitore",
+      "description": "",
+      "x-examples": {}
+    },
+    "ArchiviazioneDocumentoFruitore": {
+      "type": "object",
+      "properties": {
+        "protocollo": {
+          "$ref": "#/definitions/ProtocolloDocumentoFruitore"
+        },
+        "classificazione": {
+          "type": "string"
+        }
+      },
+      "title": "ArchiviazioneDocumento"
+    },
+    "ProtocolloDocumentoFruitore": {
+      "type": "object",
+      "properties": {
+        "numero": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string"
+        }
+      },
+      "title": "ProtocolloDocumentoFruitore"
+    },
+    "TipoDocumentoFruitore": {
+      "type": "object",
+      "properties": {
+        "codice": {
+          "type": "string"
+        },
+        "descrizione": {
+          "type": "string"
+        }
+      },
+      "title": "TipoDocumentoFruitore"
+    },
+    "Esito": {
+      "type": "object",
+      "required": [
+        "code",
+        "status"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "Esito",
+      "description": "Model che contiene i campi che vengono restituiti in caso di errore da tutte le API",
+      "x-examples": {}
+    }
+  }
+}

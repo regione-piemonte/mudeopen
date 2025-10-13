@@ -1,0 +1,2190 @@
+#
+#  SPDX-FileCopyrightText: Copyright 2020 - 2021 | CSI Piemonte
+#  SPDX-License-Identifier: EUPL-1.2
+#
+swagger: '2.0'
+info:
+  title: MUDEOPEN WS-API 10-01-2023
+  description: API per i WS REST
+  version: 1.0.0
+host: 'localhost:8080'
+schemes:
+  - http
+basePath: /mudeopen/ws/rest
+definitions:
+##################################
+#### WS
+##################################    
+  GeoCellula:
+    properties:
+      chiaveCarotaggio:
+          type: string
+      codCellula:
+          format: int64
+          type: integer
+      dataGeoriferimento:
+          format: date
+          type: string
+      GeoFabbricato:
+        items:
+          $ref: '#/definitions/GeoFabbricato'
+        type: array
+    type: object
+  Allegato:
+    properties:
+      idTipoallegato:
+          format: int64
+          type: integer
+      idAllegatoFile:
+          format: int64
+          type: integer
+      nomeAllegato:
+          type: string
+    type: object
+  GeoUbicazione:
+    properties:
+      bis:
+          type: string
+      bisinterno:
+          type: string
+      cap:
+          type: string
+      descFonteUbicazione:
+          type: string
+      descVia:
+          type: string
+      flPersonalizzato:
+          type: string
+      flPrincipale:
+          type: string
+      idCivicoTopon:
+          format: int64
+          type: integer
+      idViaTopon:
+          format: int64
+          type: integer
+      interno:
+          type: string
+      interno2:
+          type: string
+      numCivico:
+          type: string
+      piano:
+          type: string
+      scala:
+          type: string
+      secondario:
+          type: string
+      sedime:
+          type: string
+    type: object
+  CSIGeometry:
+    properties:
+      geometria:
+          type: string
+    type: object
+  MudeRVersioneModello:
+    properties:
+      codModello:
+          type: string
+      codVersioneModello:
+          type: string
+    type: object
+  IstanzaMude:
+    properties:
+      xmlStream:
+          type: string
+      GeoRiferimento:
+        items:
+          $ref: '#/definitions/GeoRiferimento'
+        type: array
+      GeoUbicazione:
+        items:
+          $ref: '#/definitions/GeoUbicazione'
+        type: array
+      Allegato:
+        items:
+          $ref: '#/definitions/Allegato'
+        type: array
+      mudeRVersioneModello:
+        $ref: '#/definitions/MudeRVersioneModello'
+    type: object
+  GeoRiferimento:
+    properties:
+      idLivelloPoligono:
+          format: int64
+          type: integer
+      descLivelloPoligono:
+          type: string
+      servizioFonte:
+          format: int64
+          type: integer
+      servizioLivello:
+          format: int64
+          type: integer
+      dataGeoriferimento:
+          format: date
+          type: string
+      codIstatComune:
+          type: string
+      GeoCellula:
+        items:
+          $ref: '#/definitions/GeoCellula'
+        type: array
+      GeoCatasto:
+        items:
+          $ref: '#/definitions/GeoCatasto'
+        type: array
+      GeoDatocarota:
+        items:
+          $ref: '#/definitions/GeoDatocarota'
+        type: array
+      GeoUbicazione:
+        items:
+          $ref: '#/definitions/GeoUbicazione'
+        type: array
+      csiGeometry:
+        $ref: '#/definitions/CSIGeometry'
+    type: object
+  GeoDatocarota:
+    properties:
+      tipoCarotaggio:
+          type: string
+      idFonte:
+          format: int64
+          type: integer
+      descFonte:
+          type: string
+      idLivello:
+          format: int64
+          type: integer
+      dataGeoriferimento:
+          format: date
+          type: string
+      descLivello:
+          type: string
+      valore:
+          type: string
+    type: object
+  GeoCatasto:
+    properties:
+      foglio:
+          type: string
+      particella:
+          type: string
+      subalterno:
+          type: string
+      flTipoCatasto:
+          type: string
+      flPersonalizzato:
+          type: string
+      chiaveCarotaggio:
+          type: string
+      descFonteCatasto:
+          type: string
+    type: object
+  GeoFabbricato:
+    properties:
+      chiaveCarotaggio:
+          type: string
+      codFabbricato:
+          format: int64
+          type: integer
+      GeoUbicazione:
+        items:
+          $ref: '#/definitions/GeoUbicazione'
+        type: array
+      GeoCatasto:
+        items:
+          $ref: '#/definitions/GeoCatasto'
+        type: array
+    type: object
+##################################
+####
+##################################    
+  InserimentoNotificaVO:
+    properties:
+      numeroIstanza:
+        type: string
+      mittente:
+        type: string
+      tipoNotifica:
+        type: string
+      oggetto:
+        type: string
+      testo:
+        type: string
+      nomeDocumento:
+        type: array
+        items:
+          type: string
+    type: object
+  AllegatoIstanzaVO:
+    properties:
+      numeroIstanza:
+        type: string
+      tipoAllegato:
+        type: string
+      nomeFile:
+        type: string
+    type: object
+  DatiSintesiIstanzaVO:
+    type: object
+    properties:
+      numeroIstanza:
+        type: string
+      tipoIstanza:
+        type: string
+      speciePratica:
+        type: string
+      tipoIntestatario:
+        type: string
+      cognome:
+        type: string
+      nome:
+        type: string
+      ragioneSociale:
+        type: string
+      professionista:
+        type: string
+      sedime:
+        type: string
+      descrizione:
+        type: string
+      numeroCivico:
+        type: string
+      bis:
+        type: string
+      interno:
+        type: string
+      comune:
+        type: string
+      statoIstanza:
+        type: string
+      istanzaDiRiferimento:
+        type: string
+      numeroIntervento:
+        type: string
+  DatiXmlVO:
+    properties:
+      tracciatoXML:
+        type: string
+      versione:
+        type: string
+      descrizioneTipoTracciato:
+        type: string
+    type: object
+  TipoTracciatoXML:
+    properties:
+      codTipoTracciato:
+        type: string
+      descrizione:
+        type: string
+      xmlPresente:
+        type: boolean
+    type: object
+  IstanzaEstesaVO:
+    properties:
+      numeroMude:
+        type: string
+      tipoIstanza:
+        type: string
+      codiceTipoIstanza: 
+        type: string
+      speciePratica:
+        type: string
+      identificativoPratica: 
+        type: string
+      tipoIntestatario:
+        type: string
+      intestatario:
+        type: string
+      nome:
+        type: string
+      numeroCivico:
+        type: string
+      bis:
+        type: string
+      interno:
+        type: string
+      sedime:
+        type: string
+      via:
+        type: string
+      codiceSpeciePratica:
+        type: string
+      numeroIntervento:
+        type: string
+      statoIstanza: 
+        type: string
+      codiceStatoIstanza:
+        type: string
+      occupazioneSuoloPubblico:
+        type: boolean
+      dataRicezione:
+        format: date
+        type: string
+      dataUltimaVariazioneStato:
+        format: date
+        type: string
+      tipiTracciatiXML:
+        $ref: '#/definitions/TipoTracciatoXML'
+    type: object
+  NotificaInviataVO:
+    properties:
+      identificativoNotifica:
+        format: int64
+        type: integer
+      cognomeDestinatario:
+        type: string
+      nomeDestinatario:
+        type: string
+      tipoNotifica:
+        type: string
+      statoNotifica:
+        type: string
+      oggettoNotifica:
+        type: string
+      dataNotifica:
+        type: string
+      dataLettura:
+        type: string
+      esistonoAllegati:
+        type: boolean
+    type: object
+  AllegatoNotificaVO:
+    type: object
+    properties:
+      tipologia:
+        type: string
+      codiceTipologia:
+        type: string
+      nomeFile:
+        type: string
+      dataCaricamento:
+        format: datetime
+        type: string
+      identificativo:
+        format: int64
+        type: integer
+  DocumentoPraticaVO:
+    properties:
+      codiceTipologia:
+        type: string
+      tipologia:
+        type: string
+      nomeFile:
+        type: string
+      dataCaricamento:
+        type: string
+      notificato:
+        type: boolean
+      identificativo:
+        format: int64
+        type: integer
+    type: object 
+  StatiIstanzaAmmessiVO:
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+      oggettoProposto:
+        type: string
+      messaggioProposto:
+        type: string
+    type: object
+  StatoIstanzaVO:
+    properties:
+      codice:
+        type: string
+      descrizione:
+        type: string
+    type: object 
+  TipoDocumentoVO:
+    type: object
+    properties:
+      codiceTipoDocumento:
+        type: string
+      descrizioneTipoDocumento:
+        type: string
+  RuoloVO:
+    type: object
+    properties:
+      codiceRuolo:
+        type: string
+      descrizioneRuolo:
+        type: string
+  TipoNotificaVO:
+    type: object
+    properties:
+      codiceTipoNotifica:
+        type: string
+      descrizioneTipoNotifica:
+        type: string
+  NotificaVO:
+    type: object
+    properties:
+      identificativoNotifica:
+        format: int64
+        type: integer
+      cognomeDestinatario:
+        type: string
+      nomeDestinatario:
+        type: string
+      mittente:
+        type: string
+      oggetto:
+        type: string
+      testo:
+        type: string
+      dettaglioNotifica:
+        type: string
+      allegati:
+        type: boolean
+  DettaglioPraticaVO:
+    type: object
+    properties:
+      numeroPratica:
+        type: string
+      comune:
+        type: string
+      anno:
+        type: integer
+        format: int32
+  DefaultResponse:
+    properties:
+      code:
+        type: string
+      detail:
+        additionalProperties:
+          type: string
+        type: object
+      status:
+        type: string
+    type: object
+  ErrorResponse:
+    properties:
+      status:
+        type: string
+      code:
+        type: string
+      title:
+        type: string
+      detail:
+        type: object
+        additionalProperties:
+          type: string
+      links:
+        type: array
+        items:
+          type: string
+    type: object
+#
+# 2CHECK
+#
+  AnagraficaVO:
+    properties:
+      cellulare:
+        type: string
+      codiceFiscale:
+        type: string
+      cognome:
+        type: string
+      comuneNascita:
+        $ref: '#/definitions/ComuneVO'
+      dataNascita:
+        format: date
+        type: string
+      mail:
+        type: string
+      nome:
+        type: string
+      pec:
+        type: string
+      provinciaNascita:
+        $ref: '#/definitions/ProvinciaVO'
+      sesso:
+        type: string
+      statoNascita:
+        $ref: '#/definitions/NazioneVO'
+      telefono:
+        type: string
+      statoEstero:
+        type: string
+      userCf:
+        type: string
+      codiceFiscaleLegaleRappresentante:
+        type: string
+      cognomeLegaleRappresentante:
+        type: string
+      nazionalita:
+        type: string
+      nomeLegaleRappresentante:
+        type: string
+      partitaIva:
+        type: string
+      partitaIvaComunitaria:
+        type: string
+      ragioneSociale:
+        type: string
+      statoMembro:
+        $ref: '#/definitions/SelectVO'
+      tipoAttivita:
+        type: string
+    type: object
+  ComuneVO:
+    properties:
+      codBelfiore:
+        type: string
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  ContattoVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      id_user:
+        format: int64
+        type: integer
+      userCf:
+        type: string
+      nome:
+        type: string
+      tipo_contatto:
+        type: string
+      guid:
+        type: string
+        format: uuid
+      uuid:
+        type: string
+        format: uuid
+      updatable:
+        type: boolean
+      id_user_accreditato:
+        format: int64
+        type: integer
+      contatto_in_rubrica:
+        type: boolean
+      titolare:
+        type: boolean
+      impresa_lavori:
+        type: boolean
+      professionista:
+        type: boolean
+      anagrafica:
+        $ref: '#/definitions/AnagraficaVO'
+      indirizzi:
+        items:
+          $ref: '#/definitions/IndirizzoVO'
+        type: array
+      qualificheProfessionali:
+        items:
+          $ref: '#/definitions/QualificaVO'
+        type: array
+      no_obbligo_iscrizione_ordine:
+        type: boolean
+      motivazione:
+        type: string
+      legaleRappresentante:
+        $ref: '#/definitions/ContattoVO'
+      id_titolo_rappresentante:
+        type: string
+    type: object
+  FascicoloVO:
+    properties:
+      codice_fascicolo:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      data_creazione:
+        format: date-time
+        type: string
+      id_fascicolo:
+        format: int64
+        type: integer
+      intestatario:
+        $ref: '#/definitions/ContattoVO'
+      json_data:
+        type: string
+      ubicazione:
+        $ref: '#/definitions/IndirizzoVO'
+      tipologia_intervento:
+        $ref: '#/definitions/DizionarioVO'
+      tipologia_istanza:
+        $ref: '#/definitions/SelectVO'
+      elimina:
+        type: boolean
+      modifica:
+        type: boolean
+      visualizza:
+        type: boolean
+      nuova_istanza:
+        type: boolean
+      assegna_abilitazioni:
+        type: boolean
+      index_folder:
+        type: string
+      stato_fascicolo:
+        $ref: '#/definitions/DizionarioVO'
+    type: object
+  IndirizzoVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      cap:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      comuneIndirizzoEstero:
+        type: string
+      duf:
+        type: string
+      dug:
+        $ref: '#/definitions/SelectVO'
+      localita:
+        type: string
+      numero:
+        type: string
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      stato:
+        $ref: '#/definitions/NazioneVO'
+      tipologiaIndirizzo:
+        $ref: '#/definitions/SelectVO'
+      telefono:
+        type: string
+      cellulare:
+        type: string
+      mail:
+        type: string
+      pec:
+        type: string
+    type: object
+  IstanzaVO:
+    properties:
+      anno:
+        format: int64
+        type: integer
+      codice_istanza:
+        type: string
+      comune:
+        $ref: '#/definitions/ComuneVO'
+      data_creazione:
+        format: date-time
+        type: string
+      data_registrazione_pratica:
+        format: date-time
+        type: string
+      elimina:
+        type: boolean
+      id_fascicolo:
+        format: int64
+        type: integer
+      fascicolo:
+        $ref: '#/definitions/FascicoloVO'
+      id_istanza:
+        format: int64
+        type: integer
+      id_istanza_riferimento:
+        format: int64
+        type: integer
+      id_template:
+        format: int64
+        type: integer
+      branch:
+        format: int32
+        type: integer
+      json_data:
+        type: string
+      modifica:
+        type: boolean
+      assegna_abilitazioni:
+        type: boolean
+      numero_pratica:
+        type: string
+      numero_protocollo:
+        type: string
+      data_protocollo:
+        format: date
+        type: string
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      soggetto_abilitato:
+        $ref: '#/definitions/UtenteVO'
+      soggetto_list:
+        items:
+          $ref: '#/definitions/SoggettoIstanzaVO'
+        type: array
+      step:
+        enum:
+          - CREATA
+          - DEFINITO_TIPO_PRESENTATORE
+          - DEFINITO_TITOLO_PRESENTATORE
+          - AGGIUNTI_SOGGETTI
+        type: string
+      stato_istanza:
+        $ref: '#/definitions/DizionarioVO'
+      tipologia_istanza:
+        $ref: '#/definitions/SelectVO'
+      tipologia_presentatore:
+        $ref: '#/definitions/SelectVO'
+      titolo_soggetto_abilitato:
+        $ref: '#/definitions/SelectVO'
+      visualizza:
+        type: boolean
+      nuova_istanza:
+        type: boolean
+      index_folder:
+        type: string
+      index_node:
+        type: string
+      nome_file_istanza:
+        type: string
+      dimensione_file_istanza:
+        format: int64
+        type: integer
+      data_caricamento_file_istanza:
+        format: date
+        type: string
+      hash_file_istanza_generato:
+        type: string
+      abilitazioni:
+        items:
+          $ref: '#/definitions/AbilitazioneFunzioneSlimCustomVO'
+        type: array
+      indirizzo:
+        $ref: '#/definitions/IndirizzoVO'
+      istanza_riferimento:
+        $ref: '#/definitions/IstanzaVO'
+      aggiorna_fascicolo_indirizzo:
+        type: boolean
+      nuovo_indirizzo:
+        type: boolean
+    type: object
+  NazioneVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+      stato_membro_ue:
+        type: string
+    type: object
+  ProvinciaVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      value:
+        type: string
+    type: object
+  QualificaVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      numero_iscrizione_ordine:
+        type: string
+      ordineProfessionale:
+        $ref: '#/definitions/SelectVO'
+      provincia:
+        $ref: '#/definitions/ProvinciaVO'
+      tipologiaQualificaProfessionale:
+        $ref: '#/definitions/SelectVO'
+      specifica_qualifica:
+        type: string
+    type: object
+  RuoliFascicoloRequest:
+    properties:
+      id:
+        type: string
+      soggetti:
+        type: array
+        items:
+          format: int64
+          type: integer
+    type: object
+  TraccXMLVO:
+    properties:
+      tracciatoXML:
+        type: string
+      versione:
+        type: string
+      versioneTracciato:
+        type: string
+    type: object
+  IstanzaExtVO:
+    properties:
+      codIstatComune:
+          type: string
+      tipologiaIstanza:
+          type: string
+      numeroIstanza:
+          type: string
+      numeroFascicoloIntervento:
+          type: string
+      speciePratica:
+          type: string
+      annoIntervento:
+          format: int64
+          type: integer
+      annoIstanza:
+          format: int64
+          type: integer
+      tipoIntestatario:
+          type: string
+      intestatarioCognome:
+          type: string
+      intestatarioNome:
+          type: string
+      intestatarioRagioneSociale:
+          type: string
+      professionistaCognome:
+          type: string
+      professionistaNome:
+          type: string
+      ubicazioneSedime:
+          type: string
+      ubicazioneDescVia:
+          type: string
+      ubicazioneNumeroCivico:
+          format: int64
+          type: integer
+      ubicazioneBis:
+          type: string
+      ubicazioneInterno:
+          type: string
+      operePrecarie:
+          type: string
+      numeroMudeIstanzaPrincipale:
+          type: string
+      compilanteCodiceFiscale:
+          type: string
+      tracciatiXML:
+          type: array
+          items:
+            $ref: '#/definitions/TraccXMLVO'
+      timestampInserimento:
+          type: string
+    type: object
+  DatiModificaStatoIstanza:
+    properties:
+      numeroIstanza:
+        type: string
+      nuovoStato:
+        type: string
+      oggetto:
+        type: string
+      testo:
+        type: string
+      numeroPraticaComunale:
+        type: string
+      annoPratica:
+        type: integer
+      numeroProtocollo:
+        type: string
+      dataProtocollo:
+        type: string
+      responsabileProcedimento:
+        type: string
+    type: object
+  SelectVO:
+    properties:
+      id:
+        type: string
+      value:
+        type: string
+    type: object
+  SoggettoIstanzaVO:
+    properties:
+      id_istanza_soggetto:
+        format: int64
+        type: integer
+      contatto:
+        $ref: '#/definitions/ContattoVO'
+      idSoggetto:
+        format: int64
+        type: integer
+      ruoloSoggetto:
+        items:
+          $ref: '#/definitions/SelectVO'
+        type: array
+      idTitoloSoggetto:
+        format: int64
+        type: integer
+      abilitazioni:
+        items:
+          $ref: '#/definitions/IstanzaUtenteVO'
+        type: array
+      opera_fini_fiscali_dipendente:
+        type: boolean
+      ente_societa_appartenenza:
+        type: string
+      idIstanza:
+        format: int64
+        type: integer
+      ruoliPossibili:
+        type: string
+      domiciliazione_corrispondenza_professionista:
+        type: boolean
+      istanza:
+        $ref: '#/definitions/IstanzaVO'
+    type: object
+  UtenteVO:
+    properties:
+      id:
+        format: int64
+        type: integer
+      backofficeUser:
+        type: boolean
+      contatto:
+        $ref: '#/definitions/ContattoVO'
+    type: object
+  DizionarioVO:
+    properties:
+      id:
+        type: string
+      value:
+        type: string
+      descrizione_estesa:
+        type: string
+    type: object
+  IstanzaUtenteVO:
+    properties:
+      id_istanza_utente:
+        format: int64
+        type: integer
+      istanza:
+        $ref: '#/definitions/IstanzaVO'
+      utente:
+        $ref: '#/definitions/UtenteVO'
+      abilitazione:
+        $ref: '#/definitions/AbilitazioneVO'
+      abilitatore:
+        $ref: '#/definitions/UtenteVO'
+      modificabile:
+        type: boolean
+    type: object
+  AbilitazioneVO:
+    properties:
+      id_abilitazione:
+        format: int64
+        type: integer
+      codice_abilitazione:
+        type: string
+      desc_abilitazione:
+        type: string
+      tipo_abilitazione:
+        type: string
+      necessaria_iscrizione_albo:
+        type: boolean
+      necessaria_presenza_in_istanza:
+        type: boolean
+      necessaria_selezione_quadro:
+        type: boolean
+    type: object
+  AbilitazioneFunzioneSlimCustomVO:
+    properties:
+      abilitazione:
+        type: string
+      funzioni:
+        type: array
+        items:
+          type: string
+      quadri:
+        type: array
+        items:
+          format: int64
+          type: integer
+    type: object
+  CambioStatoIstanzaVO:
+    type: object
+    properties:
+      data_cambio_stato:
+        type: string
+        format: datetime
+      oggetto_notifica:
+        type: string
+      messaggio_notifica:
+        type: string
+      numero_protocollo:
+        type: string
+      data_protocollo:
+        type: string
+        format: datetime
+  Geometry:
+    type: object
+    properties:
+      value:
+        type: String
+        enum: [LineString,Polygon,MultiPolygon,MultiPoint]
+  EditedFeature:
+    type: object
+    properties:
+      type:
+        type: string
+      id:
+        format: int64
+        type: integer
+      geometry:
+        $ref: '#/definitions/Geometry'
+      properties:
+        type: object
+        additionalProperties:
+          type: string
+paths:
+  /istanze:
+    get:
+      operationId: ricercaPaginataIstanze03
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - format: int32
+          in: query
+          name: page
+          required: true
+          type: integer
+        - format: int32
+          in: query
+          name: size
+          required: true
+          type: integer
+        - in: query
+          name: filter
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/IstanzaEstesaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /scarico-xml/{numeroIstanza}/{codiceTipoTracciato}:
+    get:
+      operationId: scaricoXML
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+        - in: path
+          name: codiceTipoTracciato
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DatiXmlVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+
+
+
+  /stato-istanza:
+    put:
+      operationId: modificaStatoIstanza
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: body
+          name: statoIstanza
+          schema:
+            $ref: '#/definitions/DatiModificaStatoIstanza'
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: boolean
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /istanza/{numeroIstanza}:
+    get:
+      operationId: ricercaDatiSintesiIstanza
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DatiSintesiIstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elenco-notifiche-inviate/{numeroIstanza}:
+    get:
+      operationId: elencoNotificheInviate
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/NotificaInviataVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elenco-allegati-notifica/{numeroIstanza}/{idEvento}:
+    post:
+      consumes:
+        - application/json
+      operationId: elencoAllegatiNotifica
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+        - format: int32
+          in: path
+          name: idEvento
+          type: integer
+          required: true
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/AllegatoNotificaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elenco-documenti-pratica/{istatComune}:
+    get:
+      operationId: ricercaElencoDocumentiPratica
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: istatComune
+          type: string
+          required: true
+        - in: query
+          name: numeroPratica
+          type: string
+          required: true
+        - in: query
+          name: annoPratica
+          type: integer
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/DocumentoPraticaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /notifica:
+    post:
+      consumes:
+        - application/json
+      operationId: inserisciNotifica
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/InserimentoNotificaVO'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+          schema:
+            type: integer
+            format: int64
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /file-istanza/{numeroIstanza}:
+    get:
+      operationId: EstraiFileIstanza
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /allegato-istanza/{numeroIstanza}:
+    get:
+      operationId: EstraiAllegatoIstanza
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+        - in: query
+          name: nomeFileAllegato
+          required: true
+          type: string
+        - in: query
+          name: sbustato
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elenco-allegati/{numeroIstanza}:
+    get:
+      operationId: ricercaElencoAllegati
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/AllegatoIstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /stati-istanza-ammessi/{statoIniziale}:
+    get:
+      operationId: ricercaStatiIstanzaAmmessi
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: statoIniziale
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/StatiIstanzaAmmessiVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /stati-istanza:
+    get:
+      operationId: ricercaStatiIstanza
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/StatoIstanzaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /tipi-documento:
+    get:
+      operationId: ricercaTipoDocumento
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/TipoDocumentoVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /ruoli:
+    get:
+      operationId: ricercaRuoli
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/RuoloVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /tipi-notifica:
+    get:
+      operationId: ricercaTipoNotifica
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/TipoNotificaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /documento-pratica/{istatComune}/{numeroPratica}/{anno}:
+    get:
+      operationId: estraiDocumentoPratica
+      produces:
+        - application/octet-stream
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: istatComune
+          required: true
+          type: string
+        - in: path
+          name: numeroPratica
+          required: true
+          type: string
+        - in: path
+          name: anno
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: file
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elimina-documento-pratica/{istatComune}/{numeroPratica}/{anno}:
+    delete:
+      operationId: eliminaDocumentoPratica
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: istatComune
+          required: true
+          type: string
+        - in: path
+          name: numeroPratica
+          required: true
+          type: string
+        - in: path
+          name: anno
+          required: true
+          type: integer
+        - in: query
+          name: nomeDocumento
+          type: string
+          required: true
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: boolean
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /pratiche/{istatComune}:
+    get:
+      operationId: ricercaPratiche
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: istatComune
+          type: string
+          required: true
+        - in: query
+          name: numeroPratica
+          type: string
+        - in: query
+          name: annoPratica
+          type: integer
+      responses:
+        '200':
+          headers:
+            X-Page:
+              type: integer
+              format: int32
+              description: For pagination purposes. The current page.
+            X-Page-Size:
+              type: integer
+              format: int32
+              description: For pagination purposes. The page size.
+            X-Total-Elements:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of elements satisfying the search query.
+            X-Total-Pages:
+              type: integer
+              format: int32
+              description: For pagination purposes. The total number of pages for representing the total number of elements satisfying the query.
+          description: successful operation
+          schema:
+            items:
+              $ref: '#/definitions/DettaglioPraticaVO'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /notifica/{numeroIstanza}/{idEvento}:
+    get:
+      consumes:
+        - application/json
+      operationId: visualizzazioneNotifica
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+        - format: int32
+          in: path
+          name: idEvento
+          type: integer
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/NotificaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+#
+# 2CHECK
+#
+  /upload-documento-pratica:
+    post:
+      operationId: allegaDocumentoPratica
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: formData
+          name: istatComune
+          type: string
+          required: true
+        - in: formData
+          name: numeroPratica
+          type: string
+          required: true
+        - in: formData
+          name: anno
+          type: integer
+          required: true
+        - in: formData
+          name: tipoDocumento
+          type: string
+          required: true
+        - in: formData
+          name: nomeDocumento
+          type: string
+          required: true
+        - in: formData
+          name: file
+          required: true
+          type: file
+      responses:
+        '201':
+          description: successful response
+          schema:
+            $ref: '#/definitions/DocumentoPraticaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /istanza:
+    post:
+      consumes:
+        - application/json
+      operationId: invioIstanza
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/IstanzaExtVO'
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+          schema:
+            type: boolean
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /dati-protocollazione-istanza/{numeroIstanza}:
+    get:
+      operationId: visualizzaDatiProtocollazioneIstanza
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/CambioStatoIstanzaVO'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /genera-numero-mude/{istatComune}/{nuovoIntervento}:
+    post:
+      consumes:
+        - application/json
+      operationId: generaNumeroMUDE
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: istatComune
+          required: true
+          type: string
+        - in: path
+          name: nuovoIntervento
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful response
+          schema:
+            type: boolean
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+########################
+##
+########################
+  /get-elenco-allegati/{numeroIstanza}:
+    get:
+      consumes:
+        - application/json
+      operationId: getElencoAllegatiByNumeroIstanza
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/Allegato'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /estrai-istanza/{numeroIstanza}:
+    get:
+      consumes:
+        - application/json
+      operationId: estraiIstanzaMude
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/IstanzaMude'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+  /elenco-geo-riferimento/{numeroIstanza}:
+    get:
+      consumes:
+        - application/json
+      operationId: getElencoGeoRiferimento
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: numeroIstanza
+          type: string
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            items:
+              $ref: '#/definitions/GeoRiferimento'
+            type: array
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error               
+  /token/{codiceFruitore}:
+    get:
+      operationId: autenticazioneMUDE
+      parameters:
+        - in: header
+          name: X-Request-ID
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          type: string
+        - in: header
+          name: fruitore
+          type: string
+        - in: path
+          name: codiceFruitore
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            type: string
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+##################################
+#### GEECO
+##################################    
+  /geeco/{environment}/{id_editing_session}/layers/{layer_id}:
+    post:
+      consumes:
+        - application/json
+      operationId: insertFeatureForEditingLayer
+      parameters:
+        - in: path
+          name: environment
+          required: true
+          type: string
+        - in: path
+          name: layer_id
+          required: true
+          type: string
+        - in: path
+          name: id_editing_session
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/EditedFeature'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful response
+          schema:
+            $ref: '#/definitions/EditedFeature'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '404':
+          description: Index not found
+        '401':
+          description: Authorization is missing or not valid
+        '500':
+          description: Internal error
+          

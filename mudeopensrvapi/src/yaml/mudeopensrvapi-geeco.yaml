@@ -1,0 +1,291 @@
+swagger: '2.0'
+info:
+  title: MUDEOPEN API
+  description: API per l'esposizione dei servizi di editing delle features per la piattaforma Geeco
+  version: 1.0.0
+host: 'tst-srv-api-mudeopen.nivolapiemonte.it'
+schemes:
+  - http
+basePath: /mudeopen/api/rest
+produces:
+  - application/json
+securityDefinitions:
+  basicAuth:
+    type: basic
+security:
+  - basicAuth: []  
+paths:
+  '/geeco/insert/{environment}/{id_editing_session}/layers/{layer_id}':
+    post:
+      operationId: insertFeatureForEditingLayer
+      summary: >-
+        servizio per il salvataggio delle features inserite nella sessione di editing
+      description: Restituisce un oggetto descrittore dei temi applicativi
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - insertFeatureForEditingLayer
+      parameters:
+        - in: path
+          name: api_version
+          type: string
+          required: true
+          description: versione api
+        - in: path
+          name: environment
+          type: string
+          required: true
+          description: Environment per cui si richiede l'aggiornamento
+        - in: path
+          name: id_editing_session
+          type: string
+          required: true
+          description: sessione di editing cui è associata la feature
+        - in: path
+          name: layer_id
+          type: string
+          required: true
+          description: Identificativo del livello editato
+        - in: body
+          name: features
+          description: Array di features da salvare
+          required: true
+          schema: 
+            $ref: '#/definitions/EditedFeature'
+      responses:
+        '202':
+          description: Salvataggio effettuato con successo
+        '412':
+          description: Salvataggio effettuato con errori
+        '500':
+          description: errore applicativo
+        default:
+          description: Unexpected error
+          schema:
+            type: string
+  '/geeco/update/{environment}/{id_editing_session}/layers/{layer_id}/{feature_id}':     
+    put:
+      operationId: updateFeatureForEditingLayer
+      summary: >-
+        servizio per il salvataggio delle features modificate nella sessione di editing
+      description: Restituisce un oggetto descrittore dei temi applicativi
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - updateFeatureForEditingLayer
+      parameters:
+        - in: path
+          name: api_version
+          type: string
+          required: true
+          description: versione api
+        - in: path
+          name: environment
+          type: string
+          required: true
+          description: Environment per cui si richiede l'aggiornamento
+        - in: path
+          name: id_editing_session
+          type: string
+          required: true
+          description: sessione di editing cui è associata la feature
+        - in: path
+          name: layer_id
+          type: string
+          required: true
+          description: Identificativo del livello editato
+        - in: path
+          name: feature_id
+          type: string
+          required: true
+          description: l'id della feature da modificare
+        - in: body
+          name: features
+          description: Array di features da salvare
+          required: true
+          schema: 
+            $ref: '#/definitions/EditedFeature'
+      responses:
+        '202':
+          description: Salvataggio effettuato con successo
+        '412':
+          description: Salvataggio effettuato con errori
+        '500':
+          description: errore applicativo
+        default:
+          description: Unexpected error
+          schema:
+            type: string
+  '/geeco/delete/{environment}/{id_editing_session}/layers/{layer_id}/{feature_id}':
+    delete:
+      operationId: deleteFeatureForEditingLayer
+      summary: >-
+        servizio per il salvataggio delle features editate nella sessione di editing
+      description: Restituisce un oggetto descrittore dei temi applicativi
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      tags:
+        - deleteFeatureForEditingLayer
+      parameters:
+        - in: path
+          name: api_version
+          type: string
+          required: true
+          description: versione api
+        - in: path
+          name: environment
+          type: string
+          required: true
+          description: Environment per cui si richiede l'aggiornamento
+        - in: path
+          name: id_editing_session
+          type: string
+          required: true
+          description: sessione di editing cui è associata la feature
+        - in: path
+          name: layer_id
+          type: string
+          required: true
+          description: Identificativo del livello editato
+        - in: path
+          name: feature_id
+          type: string
+          required: true
+          description: l'id della feature da modificare 
+        - in: body
+          name: features
+          description: Array di features da salvare
+          required: true
+          schema: 
+            $ref: '#/definitions/EditedFeature'
+      responses:
+        '202':
+          description: Salvataggio effettuato con successo
+        '412':
+          description: Salvataggio effettuato con errori
+        '500':
+          description: errore applicativo
+        default:
+          description: Unexpected error
+          schema:
+            type: string
+  '/geeco/test/test-resources':
+       get:
+         operationId: 'testResources'
+         summary: 'Servizio per la verifica di raggiungibilità di tutte le compoenenti architetturali'
+         description: 'Servizio per la verifica di raggiungibilità di tutte le compoenenti architetturali'
+         produces:
+           - 'application/json'
+         tags:
+           - 'test'
+         parameters:
+           - in: path
+             name: 'api_version'
+             type: 'string'
+             required: true
+             description: 'versione api'
+         responses:
+             '200':
+               description: 'Architettura correttamente dispiegata'
+               schema:
+                 $ref: '#/definitions/TestResourcesResult'
+             '404':
+               description: 'Metodo di test delle risorse non implementato'
+             '500':
+               description: 'Problemi nell''invocazione del metodo di test risorse'
+definitions:
+  TestResourcesResult:
+    type: object
+    properties:
+      db-available:
+        type: boolean
+        description: True if the database is available
+        default: false
+      api-available:
+        type: boolean
+        description: True if api are available
+        default: false
+      response-time:
+        type: number
+        description: Response time in milliseconds for test resources invocation
+  EditedFeature:
+    type: object
+    properties:
+      type: 
+        type: string
+      id: 
+        type: number
+      geometry: 
+        type: object
+        $ref: '#/definitions/Geometry'
+      properties:
+        type: object
+        additionalProperties:
+          type: string
+  Geometry:
+    type: object
+    description: GeoJSon geometry
+    discriminator: type
+    required:
+      - type
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#geometry-objects
+    properties:
+      type:
+        type: string
+        enum:
+        - LineString
+        - Polygon
+        - MultiPoint
+        description: the geometry type
+  Point2D:
+    type: array
+    maxItems: 2
+    minItems: 2
+    items:
+      type: number
+  LineString:
+    type: object
+    description: GeoJSon geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id3
+    allOf:
+      - $ref: "#/definitions/Geometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/definitions/Point2D'
+  Polygon:
+    type: object
+    description: GeoJSon geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id4
+    allOf:
+      - $ref: "#/definitions/Geometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/Point2D'
+  MultiPoint:
+    type: object
+    description: GeoJSon geometry
+    externalDocs:
+      url: http://geojson.org/geojson-spec.html#id5
+    allOf:
+      - $ref: "#/definitions/Geometry"
+      - properties:
+          coordinates:
+            type: array
+            items:
+              $ref: '#/definitions/Point2D'
+
