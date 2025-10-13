@@ -31,14 +31,14 @@ Di seguito le suddivisioni principali della soluzione MUDEOpen:
 
 | Componente | Descrizione | Tecnologia |
 | ---------- | ----------- | ---------- |
-| [mudeopensrvcommon](  ) | Componente funzionalit&agrave; comuni a tutti i moduli| adopt-openjdk 11.0.4|
-| [mudeopenbowcl]( ) | Componente Angular per il backOffice | Angular 10 |
-| [mudeopenboweb](  ) | Componente Web per il backOffice |adopt-openjdk 11.0.4 |
-| [mudeopenfecommon](  ) | Componente funzionalit&agrave; comuni Angular | Angular 10  |
-| [mudeopenfowcl]( ) | Componente Angular per il frontOffice |Angular 10  |
-| [mudeopenfoweb](  ) | Componente Web per il frontOffice | adopt-openjdk 11.0.4 |
-| [mudeopensrvapi]( ) | Componente servizi Rest, utilizzate da backOffice, frontOffice e soap | adopt-openjdk 11.0.4 |
-| [mudeopensrvsoap](  ) | Componente di backend che espone servizi SOAP in ascolto  | adopt-openjdk 11.0.4|
+| [mudeopensrvcommon](./mudeopensrvcommon/) | Componente funzionalit&agrave; comuni a tutti i moduli| adopt-openjdk 11.0.4|
+| [mudeopenbowcl](./mudeopenbowcl) | Componente Angular per il backOffice | Angular 10 |
+| [mudeopenboweb](./mudeopenboweb) | Componente Web per il backOffice |adopt-openjdk 11.0.4 |
+| [mudeopenfecommon](./mudeopenfecommon) | Componente funzionalit&agrave; comuni Angular | Angular 10  |
+| [mudeopenfowcl](./mudeopenfowcl) | Componente Angular per il frontOffice |Angular 10  |
+| [mudeopenfoweb](./mudeopenfoweb) | Componente Web per il frontOffice | adopt-openjdk 11.0.4 |
+| [mudeopensrvapi](./mudeopensrvapi) | Componente servizi Rest, utilizzate da backOffice, frontOffice e soap | adopt-openjdk 11.0.4 |
+| [mudeopensrvsoap](./mudeopensrvsoap) | Componente di backend che espone servizi SOAP in ascolto  | adopt-openjdk 11.0.4|
 
 
 
