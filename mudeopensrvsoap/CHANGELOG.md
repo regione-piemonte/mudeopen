@@ -7,4 +7,4 @@ This project does NOT adhere to [Semantic Versioning](https://semver.org/spec/v2
 
 ### Added
 
-- This is the first release aligned with version 1.1.0 of CSI Piemonte
+- This is the first release
