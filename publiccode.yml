@@ -1,0 +1,55 @@
+publiccodeYmlVersion: 0.4.0
+name: MUDEOPEN
+applicationSuite: Modello Unico Digitale per l'Edilizia
+url: https://github.com/regione-piemonte/mudeopen
+softwareVersion: 1.9.0
+releaseDate: 2025-10-14
+platforms:
+  - web
+categories:
+  - business-process-management
+usedBy:
+  - Regione Piemonte
+developmentStatus: stable
+softwareType: standalone/web
+description:
+  it-IT:
+    localisedName: MUDEOPEN
+    shortDescription: Compilazione e invio delle pratiche edilizie on line da parte di professionisti e aventi titolo e gestione delle pratiche da parte della PA
+    longDescription: MUDEOPEN consente a professionisti e aventi titolo di compilare on line e inviare ai Comuni le pratiche edilizie, e alla PA di gestirle in forma dematerializzata.
+                     La soluzione rende disponibile una componente di Front Office per l’accesso da parte del richiedente (professionista/impresa/cittadino) per la presentazione delle istanze, 
+                     una componente di Back Office per la PA per le attività di gestione e monitoraggio delle istanze, 
+                     una componente specifica di amministrazione per la gestione dei quadri e sezioni che compongono i procedimenti, 
+                     e un set di webservice che assicura l’interoperabilità con i gestionali in uso presso i Comuni.
+    features:
+      - Compilazione guidata delle istanze
+      - Gestione collaborativa
+      - Georiferimento degli interventi
+      - Pagamento on line integrato
+      - Sistema di Notifiche
+      - Interoperabilità con i gestionali in uso presso i comuni
+legal:
+  license: EUPL-1.2
+maintenance:
+  type: internal
+  contacts:
+    - name: Silvana Griffa
+      email: silvana.griffa@csi.it
+    - name: Paolo Sacco
+      email: paolo.sacco@csi.it
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - it
+it:
+  countryExtensionVersion: "1.0"
+  conforme:
+    lineeGuidaDesign: true
+    modelloInteroperabilita: true
+    misureMinimeSicurezza: true
+    gdpr: true
+  piattaforme:
+    spid: true
+    cie: true
+  riuso:
+    codiceIPA: r_piemon
