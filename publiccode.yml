@@ -4,6 +4,7 @@ applicationSuite: Modello Unico Digitale per l'Edilizia
 url: https://github.com/regione-piemonte/mudeopen
 softwareVersion: 1.9.0
 releaseDate: 2025-10-14
+logo: MUDEOPEN.png
 platforms:
   - web
 categories:
